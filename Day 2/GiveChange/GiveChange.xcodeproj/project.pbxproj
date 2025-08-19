@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXCopyFilesBuildPhase section */
-		583BAE5A2E54ED6C00EFD2F0 /* CopyFiles */ = {
+		583BAE712E54F32800EFD2F0 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -19,19 +19,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		583BAE692E54F30000EFD2F0 /* VolumeConvert */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = VolumeConvert; path = "/Users/dylanweiner/MSD/Day 2/VolumeConvert/build/Debug/VolumeConvert"; sourceTree = "<absolute>"; };
+		583BAE732E54F32800EFD2F0 /* GiveChange */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GiveChange; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		583BAE5E2E54ED6C00EFD2F0 /* VolumeConvert */ = {
+		583BAE752E54F32800EFD2F0 /* GiveChange */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = VolumeConvert;
+			path = GiveChange;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		583BAE592E54ED6C00EFD2F0 /* Frameworks */ = {
+		583BAE702E54F32800EFD2F0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,74 +41,82 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		583BAE532E54ED6C00EFD2F0 = {
+		583BAE6A2E54F32800EFD2F0 = {
 			isa = PBXGroup;
 			children = (
-				583BAE5E2E54ED6C00EFD2F0 /* VolumeConvert */,
+				583BAE752E54F32800EFD2F0 /* GiveChange */,
+				583BAE742E54F32800EFD2F0 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		583BAE742E54F32800EFD2F0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				583BAE732E54F32800EFD2F0 /* GiveChange */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		583BAE5B2E54ED6C00EFD2F0 /* VolumeConvert */ = {
+		583BAE722E54F32800EFD2F0 /* GiveChange */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 583BAE632E54ED6C00EFD2F0 /* Build configuration list for PBXNativeTarget "VolumeConvert" */;
+			buildConfigurationList = 583BAE7A2E54F32800EFD2F0 /* Build configuration list for PBXNativeTarget "GiveChange" */;
 			buildPhases = (
-				583BAE582E54ED6C00EFD2F0 /* Sources */,
-				583BAE592E54ED6C00EFD2F0 /* Frameworks */,
-				583BAE5A2E54ED6C00EFD2F0 /* CopyFiles */,
+				583BAE6F2E54F32800EFD2F0 /* Sources */,
+				583BAE702E54F32800EFD2F0 /* Frameworks */,
+				583BAE712E54F32800EFD2F0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				583BAE5E2E54ED6C00EFD2F0 /* VolumeConvert */,
+				583BAE752E54F32800EFD2F0 /* GiveChange */,
 			);
-			name = VolumeConvert;
+			name = GiveChange;
 			packageProductDependencies = (
 			);
-			productName = VolumeConvert;
-			productReference = 583BAE692E54F30000EFD2F0 /* VolumeConvert */;
+			productName = GiveChange;
+			productReference = 583BAE732E54F32800EFD2F0 /* GiveChange */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		583BAE542E54ED6C00EFD2F0 /* Project object */ = {
+		583BAE6B2E54F32800EFD2F0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					583BAE5B2E54ED6C00EFD2F0 = {
+					583BAE722E54F32800EFD2F0 = {
 						CreatedOnToolsVersion = 16.4;
-						LastSwiftMigration = 1640;
 					};
 				};
 			};
-			buildConfigurationList = 583BAE572E54ED6C00EFD2F0 /* Build configuration list for PBXProject "VolumeConvert" */;
+			buildConfigurationList = 583BAE6E2E54F32800EFD2F0 /* Build configuration list for PBXProject "GiveChange" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 583BAE532E54ED6C00EFD2F0;
+			mainGroup = 583BAE6A2E54F32800EFD2F0;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 583BAE532E54ED6C00EFD2F0;
+			productRefGroup = 583BAE742E54F32800EFD2F0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				583BAE5B2E54ED6C00EFD2F0 /* VolumeConvert */,
+				583BAE722E54F32800EFD2F0 /* GiveChange */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		583BAE582E54ED6C00EFD2F0 /* Sources */ = {
+		583BAE6F2E54F32800EFD2F0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -118,7 +126,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		583BAE612E54ED6C00EFD2F0 /* Debug */ = {
+		583BAE782E54F32800EFD2F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -179,7 +187,7 @@
 			};
 			name = Debug;
 		};
-		583BAE622E54ED6C00EFD2F0 /* Release */ = {
+		583BAE792E54F32800EFD2F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -233,49 +241,44 @@
 			};
 			name = Release;
 		};
-		583BAE642E54ED6C00EFD2F0 /* Debug */ = {
+		583BAE7B2E54F32800EFD2F0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
-		583BAE652E54ED6C00EFD2F0 /* Release */ = {
+		583BAE7C2E54F32800EFD2F0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		583BAE572E54ED6C00EFD2F0 /* Build configuration list for PBXProject "VolumeConvert" */ = {
+		583BAE6E2E54F32800EFD2F0 /* Build configuration list for PBXProject "GiveChange" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				583BAE612E54ED6C00EFD2F0 /* Debug */,
-				583BAE622E54ED6C00EFD2F0 /* Release */,
+				583BAE782E54F32800EFD2F0 /* Debug */,
+				583BAE792E54F32800EFD2F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		583BAE632E54ED6C00EFD2F0 /* Build configuration list for PBXNativeTarget "VolumeConvert" */ = {
+		583BAE7A2E54F32800EFD2F0 /* Build configuration list for PBXNativeTarget "GiveChange" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				583BAE642E54ED6C00EFD2F0 /* Debug */,
-				583BAE652E54ED6C00EFD2F0 /* Release */,
+				583BAE7B2E54F32800EFD2F0 /* Debug */,
+				583BAE7C2E54F32800EFD2F0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 583BAE542E54ED6C00EFD2F0 /* Project object */;
+	rootObject = 583BAE6B2E54F32800EFD2F0 /* Project object */;
 }
