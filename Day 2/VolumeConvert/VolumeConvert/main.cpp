@@ -5,9 +5,9 @@
 //  Created by Dylan Weiner and Alexis Blood on 8/19/25.
 //
 
-#include <iostream>
+#include <iostream> //imports library
 
-int main(int argc, const char * argv[]) {
+int main(int argc, const char * argv[]) { //opens entry point.
     float oz; //defines all of our variables
     float cup;
     float pint;
@@ -26,5 +26,5 @@ int main(int argc, const char * argv[]) {
     
     std::cout << oz << " Ounce(s):\n" << cup << " Cup(s)\n" << pint << " Pint(s)\n" << gal << " Gallon(s)\n" << L << " Liter(s)\n" << cbin << " Cubic Inch(es)\n"; //Lists out the values in accordance with the input.
     
-    return 0;
+    return 0; //ends the program.
 }
