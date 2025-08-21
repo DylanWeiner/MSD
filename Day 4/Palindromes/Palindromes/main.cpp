@@ -2,7 +2,7 @@
 //  main.cpp
 //  Palindromes
 //
-//  Created by Dylan Weiner on 8/21/25.
+//  Created by Dylan Weiner & almost everyone in the cohort on 8/21/25.
 //
 
 #include <iostream>
