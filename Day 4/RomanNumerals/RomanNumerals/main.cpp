@@ -20,29 +20,42 @@ int main(int argc, const char * argv[]) {
         int m = num / 1000;
         leftOver = num - (m*1000);
         int cm = leftOver / 900;
+        
         leftOver = leftOver - (cm*900);
         int d = leftOver / 500;
+        
         leftOver = leftOver - (d*500);
         int cd = leftOver / 400;
+        
         leftOver = leftOver - (cd*400);
         int c = leftOver / 100;
+        
         leftOver = leftOver - (c*100);
         int xc = leftOver / 90;
+        
         leftOver = leftOver - (xc*90);
         int l = leftOver / 50;
+        
         leftOver = leftOver - (l*50);
         int xl = leftOver / 40;
+        
         leftOver = leftOver - (xl*40);
         int x = leftOver / 10;
+        
         leftOver = leftOver - (x*10);
         int ix = leftOver / 9;
+        
         leftOver = leftOver - (ix*9);
         int v = leftOver / 5;
+        
         leftOver = leftOver - (v*5);
         int iv = leftOver / 4;
+        
         leftOver = leftOver - (iv*4);
         int i = leftOver / 1;
+        
         leftOver = leftOver - (i*1);
+        
         std::string numeral;
         
         for(p=0;p<m;p++){
