@@ -9,9 +9,8 @@
 #include <string>
 
 bool IsPunctuation(char c) {
-    char exc = c;
     bool punc;
-    if(exc == '!' || exc == '?' || exc == '.') {
+    if(c == '!' || c == '?' || c == '.') {
         punc = true;
     }
     else {
@@ -21,15 +20,14 @@ bool IsPunctuation(char c) {
 }
 
 bool IsVowel(char c) {
-    char vowel = c;
-    bool v;
-    if(vowel == 'a' || vowel == 'e' || vowel == 'i' || vowel == 'o' || vowel == 'u' || vowel == 'y' || vowel == 'A' || vowel == 'E' || vowel == 'I' || vowel == 'O' || vowel == 'U' || vowel == 'Y') {
-        v = true;
+    bool vowel;
+    if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y' || c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y') {
+        vowel = true;
     }
     else {
-        v = false;
+        vowel = false;
     }
-    return v;
+    return vowel;
 }
 
 bool IsConsonants(char c) {

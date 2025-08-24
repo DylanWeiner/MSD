@@ -36,15 +36,25 @@ bool isCapitalized(std::string word1) {
     return cap;
 }
 
-std::string boolToString(bool cap) {
-    if(cap) {
-        return "true";
+bool isPrime(int uNum) {
+    for(int i = 2; i < uNum; i++) {
+        if((uNum % i) == 0) {
+            return false;
+        }
     }
-    else {
-        return "false";
-    }
-    
+        return true;
 }
+    
+    std::string boolToString(bool cap) {
+        if(cap) {
+            return "true";
+        }
+        else {
+            return "false";
+        }
+        
+    }
+
 
 int main()
 {
@@ -53,6 +63,7 @@ int main()
     double zoom;
     double ang;
     std::string word;
+    int prime;
     
     std::cout << "Please input two lengths to find the hypotenuse of a triangle: ";
     std::cin >> x;
@@ -84,6 +95,10 @@ int main()
     else {
         std::cout << "This won't work.";
     }
+    
+    //std::cout << "Please input a number to see if it is prime: ";
+    //std::cin >> isPrime(prime);
+    
     
     std::cout << "Please input a word to see if it's capitalized: ";
     std::cin >> word;
