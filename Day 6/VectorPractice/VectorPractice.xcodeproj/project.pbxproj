@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5852141A2E58F59A004EAAEA /* CopyFiles */ = {
+		5852142D2E5BACC3004EAAEA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -19,33 +19,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5852141C2E58F59A004EAAEA /* StringAnalyzer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StringAnalyzer; sourceTree = BUILT_PRODUCTS_DIR; };
+		5852142F2E5BACC3004EAAEA /* VectorPractice */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VectorPractice; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		585214582E5CBC86004EAAEA /* Exceptions for "StringAnalyzer" folder in "StringAnalyzer" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				letterhelpers.cpp,
-				wordfunc.cpp,
-			);
-			target = 5852141B2E58F59A004EAAEA /* StringAnalyzer */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5852141E2E58F59A004EAAEA /* StringAnalyzer */ = {
+		585214312E5BACC3004EAAEA /* VectorPractice */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				585214582E5CBC86004EAAEA /* Exceptions for "StringAnalyzer" folder in "StringAnalyzer" target */,
-			);
-			path = StringAnalyzer;
+			path = VectorPractice;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		585214192E58F59A004EAAEA /* Frameworks */ = {
+		5852142C2E5BACC3004EAAEA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -55,18 +41,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		585214132E58F59A004EAAEA = {
+		585214262E5BACC3004EAAEA = {
 			isa = PBXGroup;
 			children = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzer */,
-				5852141D2E58F59A004EAAEA /* Products */,
+				585214312E5BACC3004EAAEA /* VectorPractice */,
+				585214302E5BACC3004EAAEA /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		5852141D2E58F59A004EAAEA /* Products */ = {
+		585214302E5BACC3004EAAEA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5852141C2E58F59A004EAAEA /* StringAnalyzer */,
+				5852142F2E5BACC3004EAAEA /* VectorPractice */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -74,63 +60,63 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5852141B2E58F59A004EAAEA /* StringAnalyzer */ = {
+		5852142E2E5BACC3004EAAEA /* VectorPractice */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */;
+			buildConfigurationList = 585214362E5BACC3004EAAEA /* Build configuration list for PBXNativeTarget "VectorPractice" */;
 			buildPhases = (
-				585214182E58F59A004EAAEA /* Sources */,
-				585214192E58F59A004EAAEA /* Frameworks */,
-				5852141A2E58F59A004EAAEA /* CopyFiles */,
+				5852142B2E5BACC3004EAAEA /* Sources */,
+				5852142C2E5BACC3004EAAEA /* Frameworks */,
+				5852142D2E5BACC3004EAAEA /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzer */,
+				585214312E5BACC3004EAAEA /* VectorPractice */,
 			);
-			name = StringAnalyzer;
+			name = VectorPractice;
 			packageProductDependencies = (
 			);
-			productName = StringAnalyzer;
-			productReference = 5852141C2E58F59A004EAAEA /* StringAnalyzer */;
+			productName = VectorPractice;
+			productReference = 5852142F2E5BACC3004EAAEA /* VectorPractice */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		585214142E58F59A004EAAEA /* Project object */ = {
+		585214272E5BACC3004EAAEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					5852141B2E58F59A004EAAEA = {
+					5852142E2E5BACC3004EAAEA = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = 585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzer" */;
+			buildConfigurationList = 5852142A2E5BACC3004EAAEA /* Build configuration list for PBXProject "VectorPractice" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 585214132E58F59A004EAAEA;
+			mainGroup = 585214262E5BACC3004EAAEA;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 5852141D2E58F59A004EAAEA /* Products */;
+			productRefGroup = 585214302E5BACC3004EAAEA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5852141B2E58F59A004EAAEA /* StringAnalyzer */,
+				5852142E2E5BACC3004EAAEA /* VectorPractice */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		585214182E58F59A004EAAEA /* Sources */ = {
+		5852142B2E5BACC3004EAAEA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -140,7 +126,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		585214212E58F59A004EAAEA /* Debug */ = {
+		585214342E5BACC3004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -201,7 +187,7 @@
 			};
 			name = Debug;
 		};
-		585214222E58F59A004EAAEA /* Release */ = {
+		585214352E5BACC3004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -255,7 +241,7 @@
 			};
 			name = Release;
 		};
-		585214242E58F59A004EAAEA /* Debug */ = {
+		585214372E5BACC3004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -263,7 +249,7 @@
 			};
 			name = Debug;
 		};
-		585214252E58F59A004EAAEA /* Release */ = {
+		585214382E5BACC3004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -274,25 +260,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzer" */ = {
+		5852142A2E5BACC3004EAAEA /* Build configuration list for PBXProject "VectorPractice" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214212E58F59A004EAAEA /* Debug */,
-				585214222E58F59A004EAAEA /* Release */,
+				585214342E5BACC3004EAAEA /* Debug */,
+				585214352E5BACC3004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */ = {
+		585214362E5BACC3004EAAEA /* Build configuration list for PBXNativeTarget "VectorPractice" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214242E58F59A004EAAEA /* Debug */,
-				585214252E58F59A004EAAEA /* Release */,
+				585214372E5BACC3004EAAEA /* Debug */,
+				585214382E5BACC3004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 585214142E58F59A004EAAEA /* Project object */;
+	rootObject = 585214272E5BACC3004EAAEA /* Project object */;
 }

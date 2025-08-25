@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5852141A2E58F59A004EAAEA /* CopyFiles */ = {
+		585214662E5CEE3B004EAAEA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -19,33 +19,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5852141C2E58F59A004EAAEA /* StringAnalyzer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StringAnalyzer; sourceTree = BUILT_PRODUCTS_DIR; };
+		585214682E5CEE3B004EAAEA /* VectorHW */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = VectorHW; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		585214582E5CBC86004EAAEA /* Exceptions for "StringAnalyzer" folder in "StringAnalyzer" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				letterhelpers.cpp,
-				wordfunc.cpp,
-			);
-			target = 5852141B2E58F59A004EAAEA /* StringAnalyzer */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5852141E2E58F59A004EAAEA /* StringAnalyzer */ = {
+		5852146A2E5CEE3B004EAAEA /* VectorHW */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				585214582E5CBC86004EAAEA /* Exceptions for "StringAnalyzer" folder in "StringAnalyzer" target */,
-			);
-			path = StringAnalyzer;
+			path = VectorHW;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		585214192E58F59A004EAAEA /* Frameworks */ = {
+		585214652E5CEE3B004EAAEA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -55,18 +41,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		585214132E58F59A004EAAEA = {
+		5852145F2E5CEE3B004EAAEA = {
 			isa = PBXGroup;
 			children = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzer */,
-				5852141D2E58F59A004EAAEA /* Products */,
+				5852146A2E5CEE3B004EAAEA /* VectorHW */,
+				585214692E5CEE3B004EAAEA /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		5852141D2E58F59A004EAAEA /* Products */ = {
+		585214692E5CEE3B004EAAEA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5852141C2E58F59A004EAAEA /* StringAnalyzer */,
+				585214682E5CEE3B004EAAEA /* VectorHW */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -74,63 +60,63 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5852141B2E58F59A004EAAEA /* StringAnalyzer */ = {
+		585214672E5CEE3B004EAAEA /* VectorHW */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */;
+			buildConfigurationList = 5852146F2E5CEE3B004EAAEA /* Build configuration list for PBXNativeTarget "VectorHW" */;
 			buildPhases = (
-				585214182E58F59A004EAAEA /* Sources */,
-				585214192E58F59A004EAAEA /* Frameworks */,
-				5852141A2E58F59A004EAAEA /* CopyFiles */,
+				585214642E5CEE3B004EAAEA /* Sources */,
+				585214652E5CEE3B004EAAEA /* Frameworks */,
+				585214662E5CEE3B004EAAEA /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzer */,
+				5852146A2E5CEE3B004EAAEA /* VectorHW */,
 			);
-			name = StringAnalyzer;
+			name = VectorHW;
 			packageProductDependencies = (
 			);
-			productName = StringAnalyzer;
-			productReference = 5852141C2E58F59A004EAAEA /* StringAnalyzer */;
+			productName = VectorHW;
+			productReference = 585214682E5CEE3B004EAAEA /* VectorHW */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		585214142E58F59A004EAAEA /* Project object */ = {
+		585214602E5CEE3B004EAAEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					5852141B2E58F59A004EAAEA = {
+					585214672E5CEE3B004EAAEA = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = 585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzer" */;
+			buildConfigurationList = 585214632E5CEE3B004EAAEA /* Build configuration list for PBXProject "VectorHW" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 585214132E58F59A004EAAEA;
+			mainGroup = 5852145F2E5CEE3B004EAAEA;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 5852141D2E58F59A004EAAEA /* Products */;
+			productRefGroup = 585214692E5CEE3B004EAAEA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5852141B2E58F59A004EAAEA /* StringAnalyzer */,
+				585214672E5CEE3B004EAAEA /* VectorHW */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		585214182E58F59A004EAAEA /* Sources */ = {
+		585214642E5CEE3B004EAAEA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -140,7 +126,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		585214212E58F59A004EAAEA /* Debug */ = {
+		5852146D2E5CEE3B004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -201,7 +187,7 @@
 			};
 			name = Debug;
 		};
-		585214222E58F59A004EAAEA /* Release */ = {
+		5852146E2E5CEE3B004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -255,7 +241,7 @@
 			};
 			name = Release;
 		};
-		585214242E58F59A004EAAEA /* Debug */ = {
+		585214702E5CEE3B004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -263,7 +249,7 @@
 			};
 			name = Debug;
 		};
-		585214252E58F59A004EAAEA /* Release */ = {
+		585214712E5CEE3B004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -274,25 +260,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzer" */ = {
+		585214632E5CEE3B004EAAEA /* Build configuration list for PBXProject "VectorHW" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214212E58F59A004EAAEA /* Debug */,
-				585214222E58F59A004EAAEA /* Release */,
+				5852146D2E5CEE3B004EAAEA /* Debug */,
+				5852146E2E5CEE3B004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */ = {
+		5852146F2E5CEE3B004EAAEA /* Build configuration list for PBXNativeTarget "VectorHW" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214242E58F59A004EAAEA /* Debug */,
-				585214252E58F59A004EAAEA /* Release */,
+				585214702E5CEE3B004EAAEA /* Debug */,
+				585214712E5CEE3B004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 585214142E58F59A004EAAEA /* Project object */;
+	rootObject = 585214602E5CEE3B004EAAEA /* Project object */;
 }
