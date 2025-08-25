@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5852141A2E58F59A004EAAEA /* CopyFiles */ = {
+		585214442E5CB75B004EAAEA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -19,33 +19,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5852141C2E58F59A004EAAEA /* StringAnalyzer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StringAnalyzer; sourceTree = BUILT_PRODUCTS_DIR; };
+		585214462E5CB75B004EAAEA /* StringAnalyzerMultifile */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StringAnalyzerMultifile; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		585214582E5CBC86004EAAEA /* Exceptions for "StringAnalyzer" folder in "StringAnalyzer" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				letterhelpers.cpp,
-				wordfunc.cpp,
-			);
-			target = 5852141B2E58F59A004EAAEA /* StringAnalyzer */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5852141E2E58F59A004EAAEA /* StringAnalyzer */ = {
+		585214482E5CB75B004EAAEA /* StringAnalyzerMultifile */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				585214582E5CBC86004EAAEA /* Exceptions for "StringAnalyzer" folder in "StringAnalyzer" target */,
-			);
-			path = StringAnalyzer;
+			path = StringAnalyzerMultifile;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		585214192E58F59A004EAAEA /* Frameworks */ = {
+		585214432E5CB75B004EAAEA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -55,18 +41,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		585214132E58F59A004EAAEA = {
+		5852143D2E5CB75B004EAAEA = {
 			isa = PBXGroup;
 			children = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzer */,
-				5852141D2E58F59A004EAAEA /* Products */,
+				585214482E5CB75B004EAAEA /* StringAnalyzerMultifile */,
+				585214472E5CB75B004EAAEA /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		5852141D2E58F59A004EAAEA /* Products */ = {
+		585214472E5CB75B004EAAEA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5852141C2E58F59A004EAAEA /* StringAnalyzer */,
+				585214462E5CB75B004EAAEA /* StringAnalyzerMultifile */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -74,63 +60,63 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5852141B2E58F59A004EAAEA /* StringAnalyzer */ = {
+		585214452E5CB75B004EAAEA /* StringAnalyzerMultifile */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */;
+			buildConfigurationList = 5852144D2E5CB75B004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzerMultifile" */;
 			buildPhases = (
-				585214182E58F59A004EAAEA /* Sources */,
-				585214192E58F59A004EAAEA /* Frameworks */,
-				5852141A2E58F59A004EAAEA /* CopyFiles */,
+				585214422E5CB75B004EAAEA /* Sources */,
+				585214432E5CB75B004EAAEA /* Frameworks */,
+				585214442E5CB75B004EAAEA /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzer */,
+				585214482E5CB75B004EAAEA /* StringAnalyzerMultifile */,
 			);
-			name = StringAnalyzer;
+			name = StringAnalyzerMultifile;
 			packageProductDependencies = (
 			);
-			productName = StringAnalyzer;
-			productReference = 5852141C2E58F59A004EAAEA /* StringAnalyzer */;
+			productName = StringAnalyzerMultifile;
+			productReference = 585214462E5CB75B004EAAEA /* StringAnalyzerMultifile */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		585214142E58F59A004EAAEA /* Project object */ = {
+		5852143E2E5CB75B004EAAEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					5852141B2E58F59A004EAAEA = {
+					585214452E5CB75B004EAAEA = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = 585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzer" */;
+			buildConfigurationList = 585214412E5CB75B004EAAEA /* Build configuration list for PBXProject "StringAnalyzerMultifile" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 585214132E58F59A004EAAEA;
+			mainGroup = 5852143D2E5CB75B004EAAEA;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 5852141D2E58F59A004EAAEA /* Products */;
+			productRefGroup = 585214472E5CB75B004EAAEA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5852141B2E58F59A004EAAEA /* StringAnalyzer */,
+				585214452E5CB75B004EAAEA /* StringAnalyzerMultifile */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		585214182E58F59A004EAAEA /* Sources */ = {
+		585214422E5CB75B004EAAEA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -140,7 +126,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		585214212E58F59A004EAAEA /* Debug */ = {
+		5852144B2E5CB75B004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -201,7 +187,7 @@
 			};
 			name = Debug;
 		};
-		585214222E58F59A004EAAEA /* Release */ = {
+		5852144C2E5CB75B004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -255,7 +241,7 @@
 			};
 			name = Release;
 		};
-		585214242E58F59A004EAAEA /* Debug */ = {
+		5852144E2E5CB75B004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -263,7 +249,7 @@
 			};
 			name = Debug;
 		};
-		585214252E58F59A004EAAEA /* Release */ = {
+		5852144F2E5CB75B004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -274,25 +260,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzer" */ = {
+		585214412E5CB75B004EAAEA /* Build configuration list for PBXProject "StringAnalyzerMultifile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214212E58F59A004EAAEA /* Debug */,
-				585214222E58F59A004EAAEA /* Release */,
+				5852144B2E5CB75B004EAAEA /* Debug */,
+				5852144C2E5CB75B004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */ = {
+		5852144D2E5CB75B004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzerMultifile" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214242E58F59A004EAAEA /* Debug */,
-				585214252E58F59A004EAAEA /* Release */,
+				5852144E2E5CB75B004EAAEA /* Debug */,
+				5852144F2E5CB75B004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 585214142E58F59A004EAAEA /* Project object */;
+	rootObject = 5852143E2E5CB75B004EAAEA /* Project object */;
 }

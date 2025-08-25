@@ -7,8 +7,92 @@
 
 #include <iostream>
 #include <string>
-#include "letterhelpers.h"
-#include "wordfunc.h"
+
+bool IsPunctuation(char c) {
+    if(c == '!' || c == '?' || c == '.') {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool IsVowel(char c) {
+    if(c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'y' || c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' || c == 'Y') {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool IsConsonants(char c) {
+    if(!IsVowel(c) && !IsPunctuation(c) && c != ' ' && c != ',') {
+        return true;
+    }
+    else {
+        return false;
+    }
+
+}
+
+int NumSentences(std::string s) {
+    int per = 0;
+    for(int i = 0; i < s.length()-1; i++) {
+        //std::cout << s[i];
+        if(IsPunctuation(s[i])) {
+            per += 1;
+        }
+        
+    }
+    per += 1;
+    return per;
+}
+
+int NumVowels(std::string s) {
+    int vow = 0;
+    for(int i = 0; i < s.length()-1; i++) {
+        //std::cout << s[i];
+        if(IsVowel(s[i])) {
+            vow += 1;
+        }
+    }
+    return vow;
+}
+
+int NumConsonants(std::string s) {
+    int con = 0;
+    for(int i = 0; i < s.length()-1; i++) {
+        //std::cout << s[i];
+        if(IsConsonants(s[i])) {
+            con += 1;
+        }
+    }
+    return con;
+}
+
+int NumWords(std::string s) {
+    int space = 1;
+    auto pos = s.find(" "); // int and string are different, since npos is defined in string, auto will accept both.
+    std::string spaceless = s;
+    while(pos != std::string::npos) {
+        spaceless.replace(pos, 1, "|");
+        space += 1;
+        pos = spaceless.find(" ");
+    }
+    return space;
+}
+
+
+
+double AverageWordLength(std::string s) {
+    return (NumVowels(s)+NumConsonants(s))/NumWords(s);
+}
+
+double AverageVowelsPerWord(std::string s) {
+    return NumVowels(s)/NumWords(s);
+}
+ 
 
 
 int main(int argc, const char * argv[]) {
