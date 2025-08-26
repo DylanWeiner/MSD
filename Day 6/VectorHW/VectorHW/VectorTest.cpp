@@ -104,13 +104,13 @@ int main()
             
             std::cout << "The largest value in vector 2 is: " << FindMax(v2) << std::endl;
             
-            std::cout << "The largest value in vector 2 is: " << FindMax(v3) << std::endl;
+            std::cout << "The largest value in vector 3 is: " << FindMax(v3) << std::endl;
             
             std::cout << "The average value in vector 1 is: " << Average(v1) << std::endl;
             
             std::cout << "The average value in vector 2 is: " << Average(v2) << std::endl;
             
-            std::cout << "The average value in vector 2 is: " << Average(v2) << std::endl;
+            std::cout << "The average value in vector 3 is: " << Average(v3) << std::endl;
             
             if(IsSorted(v1)) {
                 std::cout << "Vector 1 is sorted lowest to highest!" << std::endl;
@@ -140,4 +140,5 @@ int main()
         std::cout << "All tests passed!\n";
         
     }
+
 

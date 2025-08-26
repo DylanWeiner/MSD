@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5852141A2E58F59A004EAAEA /* CopyFiles */ = {
+		5852147D2E5D1F6E004EAAEA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -19,19 +19,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5852141C2E58F59A004EAAEA /* StringAnalyzer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = StringAnalyzer; sourceTree = BUILT_PRODUCTS_DIR; };
+		5852147F2E5D1F6E004EAAEA /* PoliStructs */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PoliStructs; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5852141E2E58F59A004EAAEA /* StringAnalyzerMultifile */ = {
+		585214812E5D1F6E004EAAEA /* PoliStructs */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = StringAnalyzerMultifile;
+			path = PoliStructs;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		585214192E58F59A004EAAEA /* Frameworks */ = {
+		5852147C2E5D1F6E004EAAEA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -41,18 +41,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		585214132E58F59A004EAAEA = {
+		585214762E5D1F6E004EAAEA = {
 			isa = PBXGroup;
 			children = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzerMultifile */,
-				5852141D2E58F59A004EAAEA /* Products */,
+				585214812E5D1F6E004EAAEA /* PoliStructs */,
+				585214802E5D1F6E004EAAEA /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		5852141D2E58F59A004EAAEA /* Products */ = {
+		585214802E5D1F6E004EAAEA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5852141C2E58F59A004EAAEA /* StringAnalyzer */,
+				5852147F2E5D1F6E004EAAEA /* PoliStructs */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,63 +60,63 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5852141B2E58F59A004EAAEA /* StringAnalyzer */ = {
+		5852147E2E5D1F6E004EAAEA /* PoliStructs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */;
+			buildConfigurationList = 585214862E5D1F6E004EAAEA /* Build configuration list for PBXNativeTarget "PoliStructs" */;
 			buildPhases = (
-				585214182E58F59A004EAAEA /* Sources */,
-				585214192E58F59A004EAAEA /* Frameworks */,
-				5852141A2E58F59A004EAAEA /* CopyFiles */,
+				5852147B2E5D1F6E004EAAEA /* Sources */,
+				5852147C2E5D1F6E004EAAEA /* Frameworks */,
+				5852147D2E5D1F6E004EAAEA /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5852141E2E58F59A004EAAEA /* StringAnalyzerMultifile */,
+				585214812E5D1F6E004EAAEA /* PoliStructs */,
 			);
-			name = StringAnalyzer;
+			name = PoliStructs;
 			packageProductDependencies = (
 			);
-			productName = StringAnalyzer;
-			productReference = 5852141C2E58F59A004EAAEA /* StringAnalyzer */;
+			productName = PoliStructs;
+			productReference = 5852147F2E5D1F6E004EAAEA /* PoliStructs */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		585214142E58F59A004EAAEA /* Project object */ = {
+		585214772E5D1F6E004EAAEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1640;
 				TargetAttributes = {
-					5852141B2E58F59A004EAAEA = {
+					5852147E2E5D1F6E004EAAEA = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
 			};
-			buildConfigurationList = 585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzerMultifile" */;
+			buildConfigurationList = 5852147A2E5D1F6E004EAAEA /* Build configuration list for PBXProject "PoliStructs" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = 585214132E58F59A004EAAEA;
+			mainGroup = 585214762E5D1F6E004EAAEA;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 5852141D2E58F59A004EAAEA /* Products */;
+			productRefGroup = 585214802E5D1F6E004EAAEA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5852141B2E58F59A004EAAEA /* StringAnalyzer */,
+				5852147E2E5D1F6E004EAAEA /* PoliStructs */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		585214182E58F59A004EAAEA /* Sources */ = {
+		5852147B2E5D1F6E004EAAEA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -126,7 +126,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		585214212E58F59A004EAAEA /* Debug */ = {
+		585214842E5D1F6E004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -187,7 +187,7 @@
 			};
 			name = Debug;
 		};
-		585214222E58F59A004EAAEA /* Release */ = {
+		585214852E5D1F6E004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -241,7 +241,7 @@
 			};
 			name = Release;
 		};
-		585214242E58F59A004EAAEA /* Debug */ = {
+		585214872E5D1F6E004EAAEA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -249,7 +249,7 @@
 			};
 			name = Debug;
 		};
-		585214252E58F59A004EAAEA /* Release */ = {
+		585214882E5D1F6E004EAAEA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -260,25 +260,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		585214172E58F59A004EAAEA /* Build configuration list for PBXProject "StringAnalyzerMultifile" */ = {
+		5852147A2E5D1F6E004EAAEA /* Build configuration list for PBXProject "PoliStructs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214212E58F59A004EAAEA /* Debug */,
-				585214222E58F59A004EAAEA /* Release */,
+				585214842E5D1F6E004EAAEA /* Debug */,
+				585214852E5D1F6E004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		585214232E58F59A004EAAEA /* Build configuration list for PBXNativeTarget "StringAnalyzer" */ = {
+		585214862E5D1F6E004EAAEA /* Build configuration list for PBXNativeTarget "PoliStructs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				585214242E58F59A004EAAEA /* Debug */,
-				585214252E58F59A004EAAEA /* Release */,
+				585214872E5D1F6E004EAAEA /* Debug */,
+				585214882E5D1F6E004EAAEA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 585214142E58F59A004EAAEA /* Project object */;
+	rootObject = 585214772E5D1F6E004EAAEA /* Project object */;
 }

@@ -8,6 +8,8 @@
 #ifndef LETTERHELPERS_H
 #define LETTERHELPERS_H
 
+#include <iostream>
+
 bool IsPunctuation(char c);
 bool IsVowel(char c);
 bool IsConsonants(char c);

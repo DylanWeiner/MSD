@@ -60,7 +60,7 @@ int FindMin( vector<int> input )
             small = input[i];
         }
     }
-  return small;
+    return small;
 }
 
 /*
@@ -104,14 +104,13 @@ int Average( vector<int> input )
     if(input.size() == 0) {
         return 0;
     }
+    
     int total = 0;
-    int avg = 0;
     
     for(int i = 0; i < input.size(); i++) {
         total += input[i];
     }
-    avg = total/input.size();
-  return avg;
+    return total/input.size();
 }
 
 
@@ -135,20 +134,16 @@ int Average( vector<int> input )
  *   An empty vector is considered sorted, since there are no items out of order
  *   A single-item vector is considered sorted, since there are no items out of order
  */
-bool IsSorted( vector<int> input )
-{
-    if(input.size() == 0) {
-        return 0;
-    }
-    int sort = input[0];
-        for(int i = 0; i < input.size(); i++) {
-            if(sort > input[i]) {
-                sort = input[i];
-                return false;
-            }
+bool IsSorted( vector<int> input ) {
+
+    for(int i = 1; i < input.size(); i++) {
+        if(input[i - 1] > input[i]) {
+            return false;
         }
-  return true;
+    }
+    return true;
 }
+
 
 bool IsDone(std::string s) {
     if(s == "done" || s == "Done") {
