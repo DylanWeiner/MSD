@@ -15,72 +15,47 @@ struct card {
     std::string suit;
 };
 
-std::vector <card> Numbers(std::vector<card> s) {
+std::vector <card> FullDeck(std::vector<card> s) {
     card deck;
+    std::string suits[] = {"Hearts", "Spades", "Diamonds", "Clubs"};
+    
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 13; j++) {
-            deck.val = j + 1;
-            s.push_back(deck);
-        }
-    }
-    return s;
-}
-
-std::vector <card> Name(std::vector<card> s) {
-    card deck;
-    for(int i = 0; i < 4; i++) {
-        for(int j = 0; j < 13; j++) {
-            if(j < 10 && j > 0) {
-                int full = j + 1;
-                deck.name = std::to_string(full);
+            card cards;
+            cards.val = j + 1;
+            
+            if (j == 0) {
+                cards.name = "Ace";
             }
             else if(j == 10) {
-                deck.name = "Jack";
+                cards.name = "Jack";
             }
             else if(j == 11) {
-                deck.name = "Queen";
+                cards.name = "Queen";
             }
             else if(j == 12) {
-                deck.name = "King";
+                cards.name = "King";
             }
             else {
-                deck.name = "Ace";
+                cards.name = std::to_string(j + 1);
             }
-            s.push_back(deck);
+            
+            cards.suit = suits[i];
+            
+            s.push_back(cards);
         }
-    }
-    return s;
-}
-
-std::vector <card> Suit(std::vector<card> s) {
-    card deck;
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Hearts";
-        s.push_back(deck);
-    }
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Spades";
-        s.push_back(deck);
-    }
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Diamonds";
-        s.push_back(deck);
-    }
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Clubs";
-        s.push_back(deck);
     }
     return s;
 }
 
 int main(int argc, const char * argv[]) {
     std::vector<card> decks;
-    std::vector<card> names = Name(decks);
-    std::vector<card> values = Numbers(decks);
-    std::vector<card> suits = Suit(decks);
+    std::vector<card> names = FullDeck(decks);
+    
+    
     
     for(int i = 0; i < 52; i++){
-        std::cout << "This card is a " << names[i].name << " of " << suits[i].suit << " worth a value of " << values[i].val << std::endl;
+        std::cout << "This card is a " << names[i].name << " of " << names[i].suit << " worth a value of " << names[i].val << std::endl;
     }
     
     return 0;
