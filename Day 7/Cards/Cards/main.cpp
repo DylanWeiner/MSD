@@ -30,7 +30,7 @@ std::vector <card> Name(std::vector<card> s) {
     card deck;
     for(int i = 0; i < 4; i++) {
         for(int j = 0; j < 13; j++) {
-            if(j < 10) {
+            if(j < 10 && j > 0) {
                 int full = j + 1;
                 deck.name = std::to_string(full);
             }
@@ -43,28 +43,9 @@ std::vector <card> Name(std::vector<card> s) {
             else if(j == 12) {
                 deck.name = "King";
             }
-            s.push_back(deck);
-        }
-    }
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Hearts";
-        s.push_back(deck);
-    }
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Spades";
-        s.push_back(deck);
-    }
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Diamonds";
-        s.push_back(deck);
-    }
-    for(int j = 0; j < 13; j++) {
-        deck.suit = "Clubs";
-        s.push_back(deck);
-    }
-    for(int i = 0; i < 4; i++) {
-        for(int j = 0; j < 13; j++) {
-            deck.val = j + 1;
+            else {
+                deck.name = "Ace";
+            }
             s.push_back(deck);
         }
     }
@@ -98,7 +79,7 @@ int main(int argc, const char * argv[]) {
     std::vector<card> values = Numbers(decks);
     std::vector<card> suits = Suit(decks);
     
-    
+    std::cout << "Test";
     
     for(int i = 0; i < 52; i++){
         std::cout << "This card is a " << names[i].name << " of " << suits[i].suit << " worth a value of " << values[i].val << std::endl;
