@@ -79,8 +79,6 @@ int main(int argc, const char * argv[]) {
     std::vector<card> values = Numbers(decks);
     std::vector<card> suits = Suit(decks);
     
-    std::cout << "Test";
-    
     for(int i = 0; i < 52; i++){
         std::cout << "This card is a " << names[i].name << " of " << suits[i].suit << " worth a value of " << values[i].val << std::endl;
     }
