@@ -50,12 +50,12 @@ std::vector <card> FullDeck(std::vector<card> s) {
 
 int main(int argc, const char * argv[]) {
     std::vector<card> decks;
-    std::vector<card> names = FullDeck(decks);
+    std::vector<card> finalDeck = FullDeck(decks);
     
     
     
     for(int i = 0; i < 52; i++){
-        std::cout << "This card is a " << names[i].name << " of " << names[i].suit << " worth a value of " << names[i].val << std::endl;
+        std::cout << "This card is a " << finalDeck[i].name << " of " << finalDeck[i].suit << " worth a value of " << finalDeck[i].val << std::endl;
     }
     
     return 0;
