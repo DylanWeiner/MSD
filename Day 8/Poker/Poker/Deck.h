@@ -42,6 +42,16 @@ bool IsStraight(const vector<Card> & hand);
 
 bool IsFullHouse(const vector<Card> & hand);
 
+bool IsRoyalFlush(const vector<Card> & hand);
+
 bool TenLowest(const vector<Card> & card);
+
+void RiggedFlush(vector<Card> & deck);
+
+void RiggedRoyalFlush(vector<Card> & deck);
+
+void RiggedStraight(vector<Card> & deck);
+
+void RiggedFullHouse(vector<Card> & deck);
 
 #endif

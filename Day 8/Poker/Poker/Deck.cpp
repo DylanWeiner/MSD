@@ -61,7 +61,7 @@ vector<Card> createDeck() {
 // Function to shuffle all cards.
 
 void Shuffle(vector<Card> & deck) {
-    std::srand(std::time(0));
+    srand(time(0));
     for(int i = 0; i < 52; i++) {
         int cap = 0 + std::rand() % 51;
         Card temp = deck[i];
@@ -71,6 +71,27 @@ void Shuffle(vector<Card> & deck) {
 }
 
 // Function to print all cards in the deck
+
+void RiggedFlush(vector<Card> & deck) {
+    deck[0] = deck[8];
+}
+
+void RiggedRoyalFlush(vector<Card> & deck) {
+    deck[1] = deck[12];
+    deck[2] = deck[11];
+    deck[3] = deck[10];
+    deck[4] = deck[9];
+}
+
+void RiggedStraight(vector<Card> & deck) {
+    deck[1] = deck[14];
+}
+
+void RiggedFullHouse(vector<Card> & deck) {
+    deck[1] = deck[13];
+    deck[2] = deck[26];
+    deck[3] = deck[17];
+}
 
 void printDeck(vector<Card> deck) {
     
@@ -92,7 +113,7 @@ vector<Card> createHand(vector<Card> & deck) {
 }
 
 bool isFlush(const vector<Card> & deck) {
-    for(int i = 0; i < deck.size(); i++) {
+    for(int i = 0; i < deck.size()-1; i++) {
         if(deck[i].suit != deck[i+1].suit) {
             return false;
         }
@@ -139,9 +160,26 @@ bool TenLowest(const vector<Card> & card) {
     vector<int> low;
     for(int i = 0; i < card.size(); i++) {
         low.push_back(card[i].rank);
-        if(low[0] == 10) {
-            return true;
+    }
+    sort(low.begin(), low.end());
+    if(low[0] == 1 && low[1] == 10) {
+        return true;
+    }
+    cout << low[0] << low[1] << low[2] << low[3] << low[4];
+    return false;
+}
+
+bool IsRoyalFlush(const vector<Card> & hand) {
+    vector<int> r;
+    for(int i = 0; i < hand.size(); i++) {
+        r.push_back(hand[i].rank);
+    }
+    std::sort(r.begin(), r.end());
+    for(int i = 1; i < r.size() - 1; i++) {
+        if(r[i] + 1 != (r[i+1])) {
+            //cout << r[i];
+            return false;
         }
     }
-    return false;
+    return true;
 }
