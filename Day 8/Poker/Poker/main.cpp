@@ -2,7 +2,7 @@
 
 //Percentages off of 100,000 Shuffles:
 //Royal Flushes: 0%
-//Straight Flushes: 3e-03 %
+//Straight Flushes: 0.003 %
 //Full Houses: 0.141 %
 //Flushes: 0.235 %
 //Straights: 0.373 %

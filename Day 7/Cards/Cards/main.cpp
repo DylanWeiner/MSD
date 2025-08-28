@@ -15,12 +15,15 @@ struct card {
     std::string suit;
 };
 
-std::vector <card> FullDeck(std::vector<card> s) {
+std::vector <card> createDeck() {
+    std::vector<card> s;
     card deck;
-    std::string suits[] = {"Hearts", "Spades", "Diamonds", "Clubs"};
+    std::vector<std::string> suits = {"Hearts", "Spades", "Diamonds", "Clubs"};
+    int suitNum = 4;
+    int cardToSuit = 13;
     
-    for(int i = 0; i < 4; i++) {
-        for(int j = 0; j < 13; j++) {
+    for(int i = 0; i < suitNum; i++) {
+        for(int j = 0; j < cardToSuit; j++) {
             card cards;
             cards.val = j + 1;
             
@@ -49,8 +52,7 @@ std::vector <card> FullDeck(std::vector<card> s) {
 }
 
 int main(int argc, const char * argv[]) {
-    std::vector<card> decks;
-    std::vector<card> finalDeck = FullDeck(decks);
+    std::vector<card> finalDeck = createDeck();
     
     
     
