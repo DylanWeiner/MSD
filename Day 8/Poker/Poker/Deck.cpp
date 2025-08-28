@@ -8,6 +8,8 @@
 
 #include "Deck.h"
 
+#include <ctime>
+
 using namespace std;
 
 // A simple struct to hold a card
@@ -61,7 +63,6 @@ vector<Card> createDeck() {
 // Function to shuffle all cards.
 
 void Shuffle(vector<Card> & deck) {
-    srand(time(0));
     for(int i = 0; i < 52; i++) {
         int cap = 0 + std::rand() % 51;
         Card temp = deck[i];

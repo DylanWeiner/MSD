@@ -1,5 +1,14 @@
 //Done with Demi, Courtney, and Fatima
 
+//Percentages off of 100,000 Shuffles:
+//Royal Flushes: 0%
+//Straight Flushes: 3e-03 %
+//Full Houses: 0.141 %
+//Flushes: 0.235 %
+//Straights: 0.373 %
+//High Cards: 99.248 %
+//Program ended with exit code: 0
+
 #include <iostream>
 
 #include <vector>
@@ -11,25 +20,26 @@
 #include "Deck.h"
 
 int main() {
-    
+    srand(time(0)); //seed needs to be here or it will reset to the exact same seed every time if it's nested in the shuffle function.
     double royfl = 0;
     double strfl = 0;
     double full = 0;
     double fl = 0;
     double str = 0;
-//    double shuffles = 100000;
+    double hc = 0;
+    double shuffles = 100000;
     
     
     
-//    for(int i =0; i < shuffles; i++) {
+    for(int i =0; i < shuffles; i++) {
         
-        // Create a deck
+//        Create a deck
         
         vector<Card> deck = createDeck();
         
-//         Print the deck
+//        Print the deck
         
-        cout << "Here is a full deck of cards:\n";
+//        cout << "Here is a full deck of cards:\n";
         
         Shuffle(deck);
         
@@ -68,20 +78,23 @@ int main() {
         }
         else {
             cout << "You have a high card." << endl;
+            hc += 1;
         }
-//    }
-//    
-//    cout << "\n" << "Whole Numbers: " << "\n" << "Royal Flushes: " << royfl <<endl;
-//    cout << "Straight Flushes: " << strfl << endl;
-//    cout << "Full Houses: " << full <<endl;
-//    cout << "Flushes: " << fl << endl;
-//    cout << "Straights: " << str << endl << endl;
-//    
-//    cout << "\n" << "Fractions: " << "\n" << "Royal Flushes: " << royfl/shuffles <<endl;
-//    cout << "Straight Flushes: " << strfl/shuffles << endl;
-//    cout << "Full Houses: " << full/shuffles <<endl;
-//    cout << "Flushes: " << fl/shuffles << endl;
-//    cout << "Straights: " << str/shuffles << endl;
+    }
+    
+    cout << "\n" << "Whole Numbers: " << "\n" << "Royal Flushes: " << royfl <<endl;
+    cout << "Straight Flushes: " << strfl << endl;
+    cout << "Full Houses: " << full <<endl;
+    cout << "Flushes: " << fl << endl;
+    cout << "Straights: " << str << endl;
+    cout << "High Cards: " << shuffles << endl << endl;
+    
+    cout << "\n" << "Fractions: " << "\n" << "Royal Flushes: " << royfl/shuffles <<endl;
+    cout << "Straight Flushes: " << strfl/shuffles << endl;
+    cout << "Full Houses: " << full/shuffles <<endl;
+    cout << "Flushes: " << fl/shuffles << endl;
+    cout << "Straights: " << str/shuffles << endl;
+    cout << "High Cards: " << hc/shuffles << endl;
     
     return 0;
     
