@@ -55,7 +55,7 @@ int FindMin( vector<int> input )
         return 0;
     }
     int small = input[0];
-    for(int i = 0; i < input.size(); i++) {
+    for(int i = 1; i < input.size() - 1; i++) {
         if(small > input[i]) {
             small = input[i];
         }
