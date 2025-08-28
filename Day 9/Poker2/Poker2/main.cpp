@@ -27,7 +27,7 @@ int main() {
     double fl = 0;
     double str = 0;
     double hc = 0;
-    double shuffles = 10;
+    double shuffles = 1000;
     
     
     
@@ -41,20 +41,22 @@ int main() {
         
 //        cout << "Here is a full deck of cards:\n";
         
-//        Shuffle(deck);
+        Shuffle(deck);
         
         //printDeck(deck);
         
 //        RiggedRoyalFlush(deck);
 //        RiggedFlush(deck);
-        RiggedStraight(deck);
+//        RiggedStraight(deck);
 //        RiggedFullHouse(deck);
     
         vector<Card> myHand = createHand(deck);
         
-        cout << "\n\n";
-        
         sortHand(myHand);
+        
+//        sortHand(deck);
+        
+        cout << "\n\n";
         
         printDeck(myHand);
         
