@@ -147,7 +147,7 @@ bool isFlush(const vector<Card> & deck) {
     return true;
 }
 
-bool IsStraight(const vector<Card> & hand) {
+bool isStraight(const vector<Card> & hand) {
     vector<int> r;
     for(int i = 0; i < hand.size(); i++) {
         r.push_back(hand[i].rank);
@@ -162,7 +162,7 @@ bool IsStraight(const vector<Card> & hand) {
     return true;
 }
 
-bool IsFullHouse(const vector<Card> & hand) {
+bool isFullHouse(const vector<Card> & hand) {
     vector<int> r;
     for(int i = 0; i < hand.size(); i++) {
         r.push_back(hand[i].rank);
@@ -182,7 +182,7 @@ bool IsFullHouse(const vector<Card> & hand) {
     return false;
 }
 
-bool TenLowest(const vector<Card> & card) {
+bool isTenLowest(const vector<Card> & card) {
     vector<int> low;
     for(int i = 0; i < card.size(); i++) {
         low.push_back(card[i].rank);
@@ -195,7 +195,7 @@ bool TenLowest(const vector<Card> & card) {
     return false;
 }
 
-bool IsRoyalFlush(const vector<Card> & hand) {
+bool isRoyalFlush(const vector<Card> & hand) {
     vector<int> r;
     for(int i = 0; i < hand.size(); i++) {
         r.push_back(hand[i].rank);

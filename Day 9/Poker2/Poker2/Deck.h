@@ -40,13 +40,13 @@ vector<Card> createHand(vector<Card> & deck);
 
 bool isFlush(const vector<Card> & deck);
 
-bool IsStraight(const vector<Card> & hand);
+bool isStraight(const vector<Card> & hand);
 
-bool IsFullHouse(const vector<Card> & hand);
+bool isFullHouse(const vector<Card> & hand);
 
-bool IsRoyalFlush(const vector<Card> & hand);
+bool isRoyalFlush(const vector<Card> & hand);
 
-bool TenLowest(const vector<Card> & card);
+bool isTenLowest(const vector<Card> & card);
 
 void RiggedFlush(vector<Card> & deck);
 

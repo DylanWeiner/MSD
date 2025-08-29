@@ -27,7 +27,7 @@ int main() {
     double fl = 0;
     double str = 0;
     double hc = 0;
-    double shuffles = 100000;
+    double shuffles = 1000000;
     
     
     
@@ -60,15 +60,15 @@ int main() {
         
         printDeck(myHand);
         
-        if(IsRoyalFlush(myHand) && isFlush(myHand) && TenLowest(myHand)) {
+        if(isRoyalFlush(myHand) && isFlush(myHand) && isTenLowest(myHand)) {
             std::cout << "You have a royal flush!" << std::endl;
             royfl += 1;
         }
-        else if(IsStraight(myHand) && isFlush(myHand)) {
+        else if(isStraight(myHand) && isFlush(myHand)) {
             std::cout << "You have a straight flush!" << std::endl;
             strfl += 1;
         }
-        else if(IsFullHouse(myHand)) {
+        else if(isFullHouse(myHand)) {
             cout << "You have a full house!" << std::endl;
             full += 1;
         }
@@ -76,11 +76,11 @@ int main() {
             std::cout << "You have a flush!" <<std::endl;
             fl += 1;
         }
-        else if(IsStraight(myHand)) {
+        else if(isStraight(myHand)) {
             std::cout << "You have a straight!" << std::endl;
             str += 1;
         }
-        else if (!IsStraight(myHand) && !isFlush(myHand) && !IsFullHouse(myHand)) {
+        else if (!isStraight(myHand) && !isFlush(myHand) && !isFullHouse(myHand)) {
             cout << "You have a high card." << endl;
             hc += 1;
         }
