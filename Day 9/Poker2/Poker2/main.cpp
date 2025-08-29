@@ -27,7 +27,7 @@ int main() {
     double fl = 0;
     double str = 0;
     double hc = 0;
-    double shuffles = 1000;
+    double shuffles = 100000;
     
     
     
@@ -80,7 +80,7 @@ int main() {
             std::cout << "You have a straight!" << std::endl;
             str += 1;
         }
-        else {
+        else if (!IsStraight(myHand) && !isFlush(myHand) && !IsFullHouse(myHand)) {
             cout << "You have a high card." << endl;
             hc += 1;
         }
@@ -91,7 +91,7 @@ int main() {
     cout << "Full Houses: " << full <<endl;
     cout << "Flushes: " << fl << endl;
     cout << "Straights: " << str << endl;
-    cout << "High Cards: " << shuffles << endl << endl;
+    cout << "High Cards: " << hc << endl << endl;
     
     cout << "\n" << "Fractions: " << "\n" << "Royal Flushes: " << royfl/shuffles <<endl;
     cout << "Straight Flushes: " << strfl/shuffles << endl;

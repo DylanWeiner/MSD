@@ -200,7 +200,7 @@ bool IsRoyalFlush(const vector<Card> & hand) {
     for(int i = 0; i < hand.size(); i++) {
         r.push_back(hand[i].rank);
     }
-    std::sort(r.begin(), r.end());
+    //std::sort(r.begin(), r.end());
     for(int i = 1; i < r.size() - 1; i++) {
         if(r[i] + 1 != (r[i+1])) {
             //cout << r[i];
