@@ -138,19 +138,19 @@ vector<Card> createHand(vector<Card> & deck) {
     return cardHand;
 }
 
-bool isFlush(const vector<Card> & deck) {
-    for(int i = 0; i < deck.size()-1; i++) {
-        if(deck[i].suit != deck[i+1].suit) {
+bool isFlush(const vector<Card> & hand) {
+    for(int i = 0; i < hand.size()-1; i++) {
+        if(hand[i].suit != hand[i+1].suit) {
             return false;
         }
     }
     return true;
 }
 
-bool isStraight(const vector<Card> & hand) {
+bool isStraight(const vector<Card> & sortedHand) {
     vector<int> r;
-    for(int i = 0; i < hand.size(); i++) {
-        r.push_back(hand[i].rank);
+    for(int i = 0; i < sortedHand.size(); i++) {
+        r.push_back(sortedHand[i].rank);
     }
 //    std::sort(r.begin(), r.end());
     for(int i = 0; i < r.size() - 1; i++) {
@@ -187,7 +187,7 @@ bool isTenLowest(const vector<Card> & card) {
     for(int i = 0; i < card.size(); i++) {
         low.push_back(card[i].rank);
     }
-    sort(low.begin(), low.end());
+//    sort(low.begin(), low.end());
     if(low[0] == 1 && low[1] == 10) {
         return true;
     }

@@ -21,12 +21,12 @@
 
 int main() {
     srand(time(0)); //seed needs to be here or it will reset to the exact same seed every time if it's nested in the shuffle function.
-    double royfl = 0;
-    double strfl = 0;
-    double full = 0;
-    double fl = 0;
-    double str = 0;
-    double hc = 0;
+    double royalFlush = 0;
+    double straightFlush = 0;
+    double fullHouse = 0;
+    double flush = 0;
+    double straight = 0;
+    double highCard = 0;
     double shuffles = 1000000;
     
     
@@ -62,43 +62,43 @@ int main() {
         
         if(isRoyalFlush(myHand) && isFlush(myHand) && isTenLowest(myHand)) {
             std::cout << "You have a royal flush!" << std::endl;
-            royfl += 1;
+            royalFlush += 1;
         }
         else if(isStraight(myHand) && isFlush(myHand)) {
             std::cout << "You have a straight flush!" << std::endl;
-            strfl += 1;
+            straightFlush += 1;
         }
         else if(isFullHouse(myHand)) {
             cout << "You have a full house!" << std::endl;
-            full += 1;
+            fullHouse += 1;
         }
         else if(isFlush(myHand)) {
             std::cout << "You have a flush!" <<std::endl;
-            fl += 1;
+            flush += 1;
         }
         else if(isStraight(myHand)) {
             std::cout << "You have a straight!" << std::endl;
-            str += 1;
+            straight += 1;
         }
         else if (!isStraight(myHand) && !isFlush(myHand) && !isFullHouse(myHand)) {
             cout << "You have a high card." << endl;
-            hc += 1;
+            highCard += 1;
         }
     }
     
-    cout << "\n" << "Whole Numbers: " << "\n" << "Royal Flushes: " << royfl <<endl;
-    cout << "Straight Flushes: " << strfl << endl;
-    cout << "Full Houses: " << full <<endl;
-    cout << "Flushes: " << fl << endl;
-    cout << "Straights: " << str << endl;
-    cout << "High Cards: " << hc << endl << endl;
+    cout << "\n" << "Whole Numbers: " << "\n" << "Royal Flushes: " << royalFlush <<endl;
+    cout << "Straight Flushes: " << straightFlush << endl;
+    cout << "Full Houses: " << fullHouse <<endl;
+    cout << "Flushes: " << flush << endl;
+    cout << "Straights: " << straight << endl;
+    cout << "High Cards: " << highCard << endl << endl;
     
-    cout << "\n" << "Fractions: " << "\n" << "Royal Flushes: " << royfl/shuffles <<endl;
-    cout << "Straight Flushes: " << strfl/shuffles << endl;
-    cout << "Full Houses: " << full/shuffles <<endl;
-    cout << "Flushes: " << fl/shuffles << endl;
-    cout << "Straights: " << str/shuffles << endl;
-    cout << "High Cards: " << hc/shuffles << endl;
+    cout << "\n" << "Fractions: " << "\n" << "Royal Flushes: " << royalFlush/shuffles <<endl;
+    cout << "Straight Flushes: " << straightFlush/shuffles << endl;
+    cout << "Full Houses: " << fullHouse/shuffles <<endl;
+    cout << "Flushes: " << flush/shuffles << endl;
+    cout << "Straights: " << straight/shuffles << endl;
+    cout << "High Cards: " << highCard/shuffles << endl;
     
     return 0;
     
