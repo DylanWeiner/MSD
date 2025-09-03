@@ -11,42 +11,43 @@
 
 using namespace std;
 
-int stringToInt(string value, int base) {
-    int valFin = 0;
+int stringToHex(char hexTrack) {
+    int binaryAsciiDiff = 87; // 87 is the difference between the character's ASCII value and its binary value. Rename later.
+    
+    return hexTrack - binaryAsciiDiff;
+}
+
+//char hexToChar(int v) {
+//    char hex;
+//    
+//    if(v < 10) {
+//        hex = v;
+//        return hex;
+//    }
+//    else {
+//        return 'A' + (v - 10);
+//    }
+//}
+
+int stringToNumber(string value, int base) {
+    int convertedNumber = 0;
     
     for(int i = 0; i < value.size(); i++){
         
         int track = value.size()-1-i;
         if(value[track] == '-') {
-            valFin = -1 * valFin;
+            convertedNumber = -1 * convertedNumber;
             break;
         }
-        char val1 = value[track];
-        int numericValue = val1 - '0';
         
-        char hexTrack = value[track];
-        if(hexTrack == 'a') {
-            numericValue = 10;
-        }
-        else if(hexTrack == 'b') {
-            numericValue = 11;
-        }
-        else if(hexTrack == 'c') {
-            numericValue = 12;
-        }
-        else if(hexTrack == 'd') {
-            numericValue = 13;
-        }
-        else if(hexTrack == 'e') {
-            numericValue = 14;
-        }
-        else if(hexTrack == 'f') {
-            numericValue = 15;
-        }
+        int numericValue = value[track] - '0';
         
-        valFin += numericValue*(pow(base, i));
+        if(value[track] >= 'a') { // a has a numerical equivalent so make use of this.
+            numericValue = stringToHex(value[track]);
+        }
+        convertedNumber += numericValue*(pow(base, i));
     }
-    return valFin;
+    return convertedNumber;
 }
 
 string intToDecimalString(int v) {
@@ -90,7 +91,7 @@ string intToBinaryString(int v) {
         
         decValue = to_string(remainder) + decValue;
     }
-
+    
     if(sin < 0) {
         cout << "-" << decValue << endl;
     }
@@ -140,7 +141,7 @@ string intToHexadecimalString(int v) {
         }
         
         decValue = hexVal + decValue;
-//        cout << decValue << endl;
+        //        cout << decValue << endl;
     }
     if(sin < 0) {
         cout << "-" << decValue << endl;
@@ -165,7 +166,7 @@ int main(int argc, const char * argv[]) {
     
     cin >> base;
     
-    int fullVal = stringToInt(value, base);
+    int fullVal = stringToNumber(value, base);
     
     cout << fullVal << endl;
     
