@@ -183,18 +183,15 @@ uint32_t SetByte( uint32_t input, uint8_t value, int b )
  */
 int Negate( int input )
 {
-    if(input != ~input) {
-        int save = ~input&0x7ffffff7;
-        return save|~input;
+    int save = ~input;
+    uint32_t mask = 0x1;
+    
+    while(save&mask) {
+        save = save^mask;
+        mask = mask << 1;
     }
-    else {
-        return ~input;
-    }
-
-  // Note, it may help to do the challenge question (see below) before implementing this one...
-
-  // TODO: Fill in. Do not return 0.
-//  return save;
+    save = save^mask;
+    return save;
 }
 
 
@@ -209,7 +206,9 @@ int Increment( uint32_t x ){
 //    int incr = 0;
     while(x&mask) {
         x = x^mask;
+        mask = mask << 0x1;
     }
+    x = x^mask;
     return int(x);
 }
 
