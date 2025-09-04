@@ -16,8 +16,6 @@
 
 #include <cstdlib>
 
-#include "Deck.h"
-
 using namespace std;
 
 struct Card {

@@ -38,7 +38,7 @@ void fileOutput(string s) {
             c.push_back(word[i]);
             cValue.push_back(word[i]);
             cout << word[i] << endl;
-            if(cValue.back() <= 127) {
+            if(cValue.back() <= 127 && cValue.back() >= 0) {
                 asc += 1;
             }
             else {
@@ -76,6 +76,13 @@ int main(int argc, const char * argv[]) {
     int16_t smin16 = 0x8001;
     int64_t smax64 = 0x7FFFFFFFFFFFFFFF;
     int64_t smin64 = 0x8000000000000001;
+    
+    assert(smin8 == -127);
+    assert(smax8 == 127);
+    assert(smin16 == -32767);
+    assert(smax16 == 32767);
+    assert(smin64 == -9223372036854775807);
+    assert(smax64 == 9223372036854775807);
     
     //    smax8 += 1;
     //    smax16 += 1; // This sets the value to -32768, which is one greater but is now negative as there is one more value in the negative numbers than the positive.

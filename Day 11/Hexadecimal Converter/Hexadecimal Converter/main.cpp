@@ -50,23 +50,57 @@ int stringToNumber(string value, int base) {
     return convertedNumber;
 }
 
-string intToDecimalString(int v) {
+//bool isNegative(int & v) {
+//        if(v < 0) {
+//            return true;
+//        }
+//        else {
+//            return false;
+//        }
+//}
+
+//string negativeResponse(int & v, string & d) {
+//    string ans;
+//    if(v) {
+//        return "-" + d;
+//    }
+//    else {
+//        return d;
+//    }
+//}
+
+
+
+string intToStringConversion(int v, int x) {
     int remainder = v;
     string decValue;
-    int sin = 0;
+    int sin = 1;
     
     if(v < 0) {
         v *= -1;
         sin = -1;
     }
-    
     while(v > 0) {
-        remainder = v % 10;
-        v /= 10;
+        remainder = v % x;
+        v /= x;
         
         decValue = to_string(remainder) + decValue;
     }
-    if(sin < 0) {
+    
+    if(x == 2 && sin < 0) {
+        for(int i = 0; i < decValue.size(); i++) {
+            if(decValue[i] == '0') {
+                decValue[i] = '1';
+            }
+            else{
+                decValue[i] = '0';
+            }
+        }
+        decValue[decValue.size()-1] = '1';
+        cout << decValue << endl;
+    }
+    
+    else if(sin < 0) {
         cout << "-" << decValue << endl;
     }
     else {
@@ -75,30 +109,12 @@ string intToDecimalString(int v) {
     return decValue;
 }
 
+string intToDecimalString(int v) {
+    return intToStringConversion(v, 10);
+}
+
 string intToBinaryString(int v) {
-    int remainder = v;
-    string decValue;
-    int sin = 0;
-    
-    if(v < 0) {
-        v *= -1;
-        sin = -1;
-    }
-    
-    while(v > 0) {
-        remainder = v % 2;
-        v /= 2;
-        
-        decValue = to_string(remainder) + decValue;
-    }
-    
-    if(sin < 0) {
-        cout << "-" << decValue << endl;
-    }
-    else {
-        cout << decValue << endl;
-    }
-    return decValue;
+    return intToStringConversion(v, 2);
 }
 
 string intToHexadecimalString(int v) {
