@@ -38,10 +38,7 @@ using std::string;
  *   GetBit(-42, 31) -> returns true
  */
 bool GetBit( uint32_t input, int b ) {
-    if((input >> b)&1) {
-        return true;
-    }
-  return false;
+    return ((input >> b)&1) != 0;
 }
 
 
@@ -56,13 +53,8 @@ bool GetBit( uint32_t input, int b ) {
  * Returns:
  *   Whether or not the int is negative
  */
-bool IsNegative( int input )
-{
-    int negativeBit = 31;
-    if(input >> negativeBit) {
-        return true;
-    }
-  return false;
+bool IsNegative( int input ) {
+  return GetBit(input, 31);
 }
 
 /*
@@ -83,7 +75,7 @@ int NumBitsSet( uint32_t input )
 {
     int counter = 0;
     for(int i = 0; i < 32; i++) {
-            if((input >> i)&1) {
+            if(GetBit(input, i)) {
                 counter += 1;
             }
     }
@@ -108,8 +100,7 @@ int NumBitsSet( uint32_t input )
  *   GetByte( 0x1234abcd, 3 ) -> returns 0x12 (18 as an unsigned char)
  */
 unsigned char GetByte( uint32_t input, int b ) {
-    unsigned char byte = input >> 8 * b;
-  return byte;
+    return input >> 8 * b;
 }
 
 
@@ -134,25 +125,12 @@ unsigned char GetByte( uint32_t input, int b ) {
 uint32_t SetByte( uint32_t input, uint8_t value, int b )
 {
     uint32_t byte = value;
+    int mask = 0xff << b * 8;
     
-    if(b == 0){
-        input = input&0xffffff00;
-        byte <<= 8 * b;
-    }
-    if(b == 1){
-        input = input&0xffff00ff;
-        byte <<= 8 * b;
-    }
-    if(b == 2){
-        input = input&0xff00ffff;
-        byte <<= 8 * b;
-    }
-    if(b == 3){
-        input = input&0x00ffffff;
-        byte <<= 8 * b;
-    }
-    
+    input &= ~mask;
+    byte <<= 8 * b; //shifts the bits not the bytes, hence the need for * 8
     input = input|byte;
+    
     return input;
 }
 
@@ -181,17 +159,10 @@ uint32_t SetByte( uint32_t input, uint8_t value, int b )
  *   Negate(5) -> returns -5
  *   Negate(-1) -> returns 1
  */
-int Negate( int input )
-{
-    int save = ~input;
-    uint32_t mask = 0x1;
-    
-    while(save&mask) {
-        save = save^mask;
-        mask = mask << 1;
-    }
-    save = save^mask;
-    return save;
+int Increment(uint32_t x);
+
+int Negate( int input ) {
+    return Increment(~input);
 }
 
 
@@ -203,13 +174,12 @@ int Negate( int input )
 */
 int Increment( uint32_t x ){
     uint32_t mask = 0x1;
-//    int incr = 0;
+
     while(x&mask) {
         x = x^mask;
         mask = mask << 0x1;
     }
-    x = x^mask;
-    return int(x);
+    return x|mask;
 }
 
 
