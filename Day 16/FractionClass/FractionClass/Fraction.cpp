@@ -147,52 +147,40 @@ bool Fraction::operator==(const Fraction & rhs) {
     if((*this).n == rhs.n && (*this).d == rhs.d) {
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 bool Fraction::operator!=(const Fraction & rhs) {
-    if((*this).n != rhs.n && (*this).d != rhs.d) {
-        return true;
-    }
-    else {
+    if((*this) == rhs) {
         return false;
     }
+    return true;
 }
 
 bool Fraction::operator<(const Fraction & rhs) {
-    if((*this).n < rhs.n && (*this).d < rhs.d) {
-        return true;
-    }
-    else {
+    if((*this).n > rhs.n && (*this).d > rhs.d) {
         return false;
     }
+    return true;
 }
 
 bool Fraction::operator<=(const Fraction & rhs) {
-    if((*this).n <= rhs.n && (*this).d <= rhs.d) {
+    if((*this) < rhs || (*this) == rhs) {
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
 
 bool Fraction::operator>(const Fraction & rhs) {
-    if((*this).n > rhs.n && (*this).d > rhs.d) {
-        return true;
-    }
-    else {
+    if((*this) < rhs) {
         return false;
     }
+    return true;
 }
 
 bool Fraction::operator>=(const Fraction & rhs) {
-    if((*this).n >= rhs.n && (*this).d >= rhs.d) {
+    if((*this) > rhs || (*this) == rhs) {
         return true;
     }
-    else {
-        return false;
-    }
+    return false;
 }
