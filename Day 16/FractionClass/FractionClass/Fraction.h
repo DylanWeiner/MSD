@@ -20,61 +20,43 @@
 using namespace std;
 
 class Fraction {
-private:
-    long n;
-    
-    long d;
-    
-    void reduce();
-    
-    long GCD();
-    
 public:
     Fraction();
-    
     Fraction(long n, long d);
     
-    Fraction operator+(const Fraction & rhs);
+    Fraction operator+(const Fraction & rhs)const;
+    Fraction operator-(const Fraction & rhs)const;
+    Fraction operator*(const Fraction & rhs)const;
+    Fraction operator/(const Fraction & rhs)const;
     
     Fraction operator+=(const Fraction & rhs);
-    
-    Fraction operator-(const Fraction & rhs);
-    
     Fraction operator-=(const Fraction & rhs);
-    
-    Fraction operator*(const Fraction & rhs);
-    
     Fraction operator*=(const Fraction & rhs);
-    
-    Fraction operator/(const Fraction & rhs);
-    
     Fraction operator/=(const Fraction & rhs);
     
     bool operator==(const Fraction & rhs);
-    
     bool operator!=(const Fraction & rhs);
-    
     bool operator<(const Fraction & rhs);
-    
     bool operator<=(const Fraction & rhs);
-    
     bool operator>(const Fraction & rhs);
-    
     bool operator>=(const Fraction & rhs);
     
-    Fraction plus(Fraction rhs);
-    
-    Fraction minus(Fraction rhs);
-    
-    Fraction times(Fraction rhs);
-    
-    Fraction dividedBy(Fraction rhs);
+    Fraction plus(Fraction rhs)const;
+    Fraction minus(Fraction rhs)const;
+    Fraction times(Fraction rhs)const;
+    Fraction dividedBy(Fraction rhs)const;
     
     string toString()const;
-    
     double toDouble();
-    
     Fraction reciprocal();
+    void normalizeSign();
+    
+private:
+    long n;
+    long d;
+    
+    void reduce();
+    long GCD();
 };
 
 #endif

@@ -10,17 +10,11 @@
 
 int main(int argc, const char * argv[]) {
     vector<int> vec (20);
-    
     vector<std::string> vec2 (20);
-    
     vector<int> vec3 (20);
-    
     vector<int> vec4 (20);
-    
     vector<int> vec5 (19);
-    
     vector<std::string> vec6 (20);
-    
     vector<std::string> vec7 (20);
     
     assert(vec.viewCapacity()==20);
@@ -66,27 +60,18 @@ int main(int argc, const char * argv[]) {
     vec7.pushBack("alchemist");
     
     assert(vec4 >= vec5);
-    
     assert(vec5 <= vec4);
-    
     assert(vec5 != vec4);
-    
     assert(vec == vec3);
-    
     assert(vec7 < vec6);
-    
     assert(vec.get(0)==10);
-    
     assert(vec.get(5)==9 && "Incorrect");
-    
     assert(vec.get(2)==93 && "Incorrect");
     
     vec.popBack();
     
     assert(vec.viewSize() == 5);
-    
     assert(vec.viewSize() != 6);
-    
     assert(vec.get(4) == 6);
     
     vec.set(1, 99);

@@ -25,23 +25,26 @@ long Fraction::GCD() {
 
 void Fraction::reduce() {
     long val = GCD();
-    n = n/val;
-    d = d/val;
+    n /= val;
+    d /= val;
+}
+
+void Fraction::normalizeSign() {
+    if(d < 0) {
+        n *= -1;
+        d *= -1;
+    }
 }
 
 Fraction::Fraction(long numerator, long denominator) {
+    assert(denominator != 0);
     n = numerator;
     d = denominator;
-    
-    if(d <0 || (d < 0 && n <0)) {
-        n = n * -1;
-        d = d * -1;
-    }
-    assert(d != 0);
+    normalizeSign();
     reduce();
 }
 
-Fraction Fraction::operator+(const Fraction & rhs) {
+Fraction Fraction::operator+(const Fraction & rhs)const {
     Fraction temp;
     
     temp.n = ((*this).n * rhs.d) + (rhs.n * (*this).d);
@@ -50,11 +53,11 @@ Fraction Fraction::operator+(const Fraction & rhs) {
     return temp;
 }
 
-Fraction Fraction::plus(const Fraction rhs) {
+Fraction Fraction::plus(const Fraction rhs)const {
     return (*this) + rhs;
 }
 
-Fraction Fraction::operator-(const Fraction & rhs) {
+Fraction Fraction::operator-(const Fraction & rhs)const {
     Fraction temp;
     
     temp.n = (this->n * rhs.d) - (rhs.n * this->d);
@@ -63,11 +66,11 @@ Fraction Fraction::operator-(const Fraction & rhs) {
     return temp;
 }
 
-Fraction Fraction::minus(const Fraction rhs) {
+Fraction Fraction::minus(const Fraction rhs)const {
     return (*this) - rhs;
 }
 
-Fraction Fraction::operator*(const Fraction & rhs) {
+Fraction Fraction::operator*(const Fraction & rhs)const {
     Fraction temp;
     
     temp.n = (*this).n * rhs.n;
@@ -76,11 +79,11 @@ Fraction Fraction::operator*(const Fraction & rhs) {
     return temp;
 }
 
-Fraction Fraction::times(const Fraction rhs) {
+Fraction Fraction::times(const Fraction rhs)const {
     return (*this) * rhs;
 }
 
-Fraction Fraction::operator/(const Fraction & rhs) {
+Fraction Fraction::operator/(const Fraction & rhs)const {
     Fraction temp;
     
     temp.n = (*this).n * rhs.d;
@@ -89,7 +92,7 @@ Fraction Fraction::operator/(const Fraction & rhs) {
     return temp;
 }
 
-Fraction Fraction::dividedBy(const Fraction rhs) {
+Fraction Fraction::dividedBy(const Fraction rhs)const {
     return (*this) / rhs;
 }
 
@@ -110,12 +113,7 @@ Fraction Fraction::reciprocal() {
     Fraction temp;
     temp.n = d;
     temp.d = n;
-    
-    if(temp.d <0) {
-        temp.n *= -1;
-        temp.d *= -1;
-    }
-    
+    temp.normalizeSign();
     temp.reduce();
     return temp;
 }
@@ -144,43 +142,25 @@ Fraction Fraction::operator/=(const Fraction & rhs) {
 }
 
 bool Fraction::operator==(const Fraction & rhs) {
-    if((*this).n == rhs.n && (*this).d == rhs.d) {
-        return true;
-    }
-    return false;
+    return ((*this).n == rhs.n && (*this).d == rhs.d);
 }
 
 bool Fraction::operator!=(const Fraction & rhs) {
-    if((*this) == rhs) {
-        return false;
-    }
-    return true;
+    return !((*this) == rhs);
 }
 
 bool Fraction::operator<(const Fraction & rhs) {
-    if((*this).n > rhs.n && (*this).d > rhs.d) {
-        return false;
-    }
-    return true;
+    return !((*this).n > rhs.n && (*this).d > rhs.d);
 }
 
 bool Fraction::operator<=(const Fraction & rhs) {
-    if((*this) < rhs || (*this) == rhs) {
-        return true;
-    }
-    return false;
+    return ((*this) < rhs || (*this) == rhs);
 }
 
 bool Fraction::operator>(const Fraction & rhs) {
-    if((*this) < rhs) {
-        return false;
-    }
-    return true;
+    return !((*this) < rhs);
 }
 
 bool Fraction::operator>=(const Fraction & rhs) {
-    if((*this) > rhs || (*this) == rhs) {
-        return true;
-    }
-    return false;
+    return((*this) > rhs || (*this) == rhs);
 }
