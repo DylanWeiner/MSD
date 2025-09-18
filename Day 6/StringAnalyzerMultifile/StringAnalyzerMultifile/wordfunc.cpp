@@ -37,6 +37,6 @@ int NumSentences(std::string s) {
             per += 1;
         }
     }
-    per += 1
+    per += 1;
     return per;
 }

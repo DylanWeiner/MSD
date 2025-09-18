@@ -1,8 +1,8 @@
 //
 //  Vector.h
-//  TemplatizedVector
+//  STLVector
 //
-//  Created by Dylan Weiner on 9/11/25.
+//  Created by Dylan Weiner on 9/16/25.
 //
 
 #ifndef VECTOR_H
@@ -13,6 +13,10 @@
 #include <cassert>
 
 #include <string>
+
+#include <algorithm>
+
+#include <numeric>
 
 template <typename T>
 class vector {
@@ -42,6 +46,12 @@ public:
     bool operator<=(const vector & rhs)const;
     bool operator>(const vector & rhs)const;
     bool operator>=(const vector & rhs)const;
+    
+    T * begin()const;
+    T * end()const;
+    
+    T * editableBegin();
+    T * editableEnd();
     
 private:
     T * array;
@@ -183,5 +193,25 @@ template <typename T>
 bool vector<T>::operator>=(const vector & rhs)const {
     return !((*this) < rhs);
 }
+
+template <typename T>
+T * vector<T>::begin()const {
+        return array;
+    } // This works because iterators are generalized pointers. This function will point to the start.
+
+template <typename T>
+    T * vector<T>::end()const {
+        return array + size;
+    } // This will pull the value for the last place.
+
+template <typename T>
+T * vector<T>::editableBegin() {
+    return array(0);
+    } // This works because iterators are generalized pointers. This function will point to the start.
+
+template <typename T>
+    T * vector<T>::editableEnd() {
+        return array(0) + size;
+    } // This will pull the value for the last place.
 
 #endif
