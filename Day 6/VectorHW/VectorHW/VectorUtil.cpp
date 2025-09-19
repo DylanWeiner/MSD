@@ -99,8 +99,8 @@ int FindMax( vector<int> input )
  * Returns:
  *   The (integer) average of all values in the vector
  */
-int Average( vector<int> input )
-{
+
+int sum(vector<int> input) {
     if(input.size() == 0) {
         return 0;
     }
@@ -110,7 +110,12 @@ int Average( vector<int> input )
     for(int i = 0; i < input.size(); i++) {
         total += input[i];
     }
-    return total/input.size();
+    return total;
+}
+
+int Average( vector<int> input )
+{
+    return sum(input)/input.size();
 }
 
 

@@ -8,13 +8,21 @@
 #include <iostream>
 #include <string>
 #include <cmath>
+#include <cassert>
 
 using namespace std;
 
 int stringToHex(char hexTrack) {
-    int binaryAsciiDiff = 87; // 87 is the difference between the character's ASCII value and its binary value. Rename later.
-    
-    return hexTrack - binaryAsciiDiff;
+    if (hexTrack >= '0' && hexTrack <= '9') {
+        return hexTrack - '0';
+    } else if (hexTrack >= 'a' && hexTrack <= 'f') {
+        return hexTrack - 'a' + 10;
+    } else if (hexTrack >= 'A' && hexTrack <= 'F') {
+        return hexTrack - 'A' + 10;
+    } else {
+        cout << "Invalid hex character: " << hexTrack << endl;
+        return 0;
+    }
 }
 
 //char hexToChar(int v) {
@@ -31,22 +39,21 @@ int stringToHex(char hexTrack) {
 
 int stringToNumber(string value, int base) {
     int convertedNumber = 0;
-    
-    for(int i = 0; i < value.size(); i++){
-        
-        int track = value.size()-1-i;
-        if(value[track] == '-') {
-            convertedNumber = -1 * convertedNumber;
+
+    for (int i = 0; i < value.size(); i++) {
+        int track = value.size() - 1 - i;
+        char currentChar = value[track];
+
+        if (currentChar == '-') {
+            convertedNumber *= -1;
             break;
         }
-        
-        int numericValue = value[track] - '0';
-        
-        if(value[track] >= 'a') { // a has a numerical equivalent so make use of this.
-            numericValue = stringToHex(value[track]);
-        }
-        convertedNumber += numericValue*(pow(base, i));
+
+        int numericValue = stringToHex(currentChar); // Correctly handles 0-9, a-f, A-F
+
+        convertedNumber += numericValue * pow(base, i);
     }
+
     return convertedNumber;
 }
 
@@ -191,6 +198,14 @@ int main(int argc, const char * argv[]) {
     intToBinaryString(fullVal);
     
     intToHexadecimalString(fullVal);
+    
+    assert(stringToNumber("99", 10) == 99);
+    assert(stringToNumber("F", 16) == 15);
+    assert(stringToNumber("-F", 16) == -15);
+    assert(stringToNumber("1010", 2) == 10);
+    assert(stringToNumber("10", 2) == 2);
+    
+    
     
     return 0;
 }
