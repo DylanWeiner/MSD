@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(testSFML)
 
-add_executable(testSFML src/Deck.cpp src/Deck.h src/CardTest.cpp)
+add_executable(testSFML src/Deck.cpp src/Deck.h src/CardTests.cpp)
 
 find_package(SFML 3.0.1 COMPONENTS Graphics REQUIRED)
 
