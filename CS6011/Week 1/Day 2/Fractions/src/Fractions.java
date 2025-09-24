@@ -38,7 +38,7 @@ public class Fractions {
 
     public Fractions minus(Fractions other) {
         Fractions result = new Fractions();
-        result.numerator = this.numerator - other.numerator;
+        result.numerator = (this.numerator * other.denominator) - (other.numerator * this.denominator);
         result.denominator = this.denominator * other.denominator;
         reduce();
         return result;
@@ -56,7 +56,7 @@ public class Fractions {
         Fractions result = new Fractions();
         result.numerator = this.numerator * other.denominator;
         result.denominator = this.denominator * other.numerator;
-        reduce();
+        result.reduce();
         result.normalizeSign();
         return result;
     }
