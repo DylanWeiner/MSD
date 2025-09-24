@@ -1,0 +1,35 @@
+My IP - 10.18.128.50
+Courtney - 10.18.145.7
+Jaied - 10.18.220.99
+Alexis - 10.18.237.65
+
+Pinging With a Partner:
+There were ICMP messages that looked like a consistent exchange of information
+that kept the computers connected. There were also ARP messages in which my
+terminal asked "Who has <partner's IPv4>" and their terminal responded and,
+a few ICMP messages later, my partner's terminal asked the same question about
+my IPv4 and my terminal responded. The data looked to be nonsense, likely
+because the data was encrypted and Wireshark, as an outside source, was unable
+to pull the proper documentation. The source address is my IPv4 and the
+destination address is my partner's IPv4. The ASCII seems to be some kind of
+hexadecimal encryption for what is written in the actual text shown in the
+terminal. It takes between 10 and 100 ms to exchange packets with a classmate.
+For Google, it takes roughly 25 ms for the Louvre website, it took between 80
+and 200 ms. This tells us that a website whose servers are further take longer
+to exchange packet information. Congestion also plays a major function.
+
+Pinging with an HTTP:
+Yes, there was much more output than I expected there were also legible words
+among the TCP output. There was much more data received than given since I was
+retrieving a full website and was only providing my IP to obtain a client from
+the server. There was also packet loss when I was interacting with the webpage.
+Rather than simply obtaining the website, curl was able to obtain the info
+stored in the .html and .css files and output them instead. The results were
+much more weighted on my terminal requesting information since the webpage is
+no longer trying to load, but rather trying to find and pull the code that the
+webpage is comprised of. When trying to connect to github, the link changed to
+an https link rather than an http link, this changed the tcp port to 443 rather
+than 80 and left all of the text garbled and ecnrypted because my terminal is
+not authorized to search for the finer details I could observe on an unprotected
+terminal or webpage. After passing through the DNS in the first few lines, I was
+prevented from recording as much data as I would otherwise.
