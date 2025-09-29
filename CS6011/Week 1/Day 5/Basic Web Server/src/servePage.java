@@ -6,18 +6,14 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
-public class HTTPRespond {
-    Socket socketToClient;
-    String filename;
-
-    public HTTPRespond(Socket socketToClient, String filename) throws IOException {
+public class servePage {
+    public servePage(Socket socketToClient, String filename) throws IOException {
         OutputStream out = socketToClient.getOutputStream();
         PrintWriter writer = new PrintWriter(out);
 
         // Send response header.
         String fileContents;
-
-//            HTTPVersionError();
+        //Serves main page
         if (filename.equals("/")) {
             fileContents = Files.readString(Path.of("index.html"));
             writer.print("HTTP/1.1 200 OK\n");
@@ -27,6 +23,7 @@ public class HTTPRespond {
             writer.print(fileContents);
             writer.flush();
         } else
+            // Looks for css files or other pages.
             try {
                 fileContents = Files.readString(Path.of("styles.css"));
                 writer.print("HTTP/1.1 200 OK\n");

@@ -11,7 +11,7 @@ public class HTTPRequest {
         this.socketToClient = socketToClient;
     }
 
-    public String HTTPRequest() throws IOException {
+    public String getRequest() throws IOException {
             InputStream is = socketToClient.getInputStream();
             Scanner lineIntake = new Scanner(is);
 
