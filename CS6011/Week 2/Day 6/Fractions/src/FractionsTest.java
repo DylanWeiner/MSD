@@ -44,7 +44,7 @@ class FractionsTest {
 //        Fractions f1 = new Fractions(1,0 );
 //        System.out.println( f1.toDouble() );
 //    }
-    
+
     @Test
     public void TestTwo() {
         ArrayList<Fractions> frac = new ArrayList<>();
