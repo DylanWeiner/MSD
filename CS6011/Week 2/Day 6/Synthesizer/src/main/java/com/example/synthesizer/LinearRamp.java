@@ -2,8 +2,6 @@ package com.example.synthesizer;
 
 import static com.example.synthesizer.AudioClip.FULL_SAMPLE_RATE;
 import static com.example.synthesizer.AudioClip.SAMPLE_RATE;
-import static java.lang.Math.PI;
-import static java.lang.Math.sin;
 
 public class LinearRamp implements AudioComponent {
     AudioClip clip = new AudioClip();
@@ -18,20 +16,23 @@ public class LinearRamp implements AudioComponent {
          current = 0;
     }
 
+
+
     @Override
     public AudioClip getClip() {
-        float phase = 0;
-        for(int i = 0; i < FULL_SAMPLE_RATE; i++) {
-                phase += (float) (2 * PI * i / SAMPLE_RATE);
-                current = (int) (Short.MAX_VALUE * sin(phase));
-                clip.setSample(i, (int) current);
+        for (int i = 0; i < FULL_SAMPLE_RATE; i++) {
+            if ((current * i / SAMPLE_RATE) % 1 > 0.5) {
+                clip.setSample(i, (int) (start * (FULL_SAMPLE_RATE - i) + stop * i) / FULL_SAMPLE_RATE);
+            } else {
+                clip.setSample(i, (int) -((start * (FULL_SAMPLE_RATE - i) + stop * i) / FULL_SAMPLE_RATE));
+            }
         }
         return clip;
     }
 
     @Override
     public boolean hasInputs() {
-        return false;
+        return input != null;
     }
 
     @Override

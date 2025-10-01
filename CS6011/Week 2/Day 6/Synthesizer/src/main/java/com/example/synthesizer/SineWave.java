@@ -2,8 +2,6 @@ package com.example.synthesizer;
 
 import static com.example.synthesizer.AudioClip.FULL_SAMPLE_RATE;
 import static java.lang.Math.sin;
-import static java.lang.Math.unsignedPowExact;
-
 import javax.sound.sampled.*;
 
 public class SineWave implements AudioComponent {

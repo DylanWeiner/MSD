@@ -8,6 +8,7 @@ public class Main {
         AudioComponent gen = new SineWave(440);
         AudioComponent gen2 = new SineWave(220);
         AudioComponent gen3 = new SineWave(110);
+//        AudioComponent ramped = new SineWave(50);
 
         ArrayList<AudioComponent> genList = new ArrayList<>();
 
@@ -28,11 +29,12 @@ public class Main {
         Mixer m = new Mixer(genList);
 
         LinearRamp ramp = new LinearRamp();
-        ramp.connectInput(gen, 0);
+        VFSineWave vf = new VFSineWave();
+        vf.connectInput(ramp, 0);
 
         try {
-            SoundOutput.play(m.getClip());
-            SoundOutput.play(ramp.getClip());
+//            SoundOutput.play(m.getClip());
+            SoundOutput.play(vf.getClip());
         } catch (LineUnavailableException e) {
             throw new RuntimeException(e);
         }
