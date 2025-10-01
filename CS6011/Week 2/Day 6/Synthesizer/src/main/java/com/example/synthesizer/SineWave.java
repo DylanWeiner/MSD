@@ -13,6 +13,10 @@ public class SineWave implements AudioComponent {
         this.frequency = frequency;
     }
 
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+
     @Override
     public AudioClip getClip() {
         int result = 0;
