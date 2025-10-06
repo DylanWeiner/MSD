@@ -12,6 +12,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 
+import static com.example.synthesizer.SoundOutput.play;
+
 public class SineWaveWidget extends Pane {
     private int swcNumber = 0;
     private HBox swBox;
@@ -20,26 +22,26 @@ public class SineWaveWidget extends Pane {
     Button swBtn;
     SineWave sineWave;
 
-        public void play() throws LineUnavailableException {
-            Clip c = AudioSystem.getClip();// Your code
-
-            // This is the format that we're following, 44.1 KHz mono audio, 16 bits per sample.
-            AudioFormat format16 = new AudioFormat( 44100, 16, 1, true, false );
-
-            c.open( format16, this.sineWave.getClip().getData(), 0, this.sineWave.getClip().getData().length ); // Reads data from our byte array to play it.
-
-            System.out.println( "About to play..." );
-            c.start(); // Plays it.
-            c.loop( 2 ); // Plays it 2 more times if desired, so 6 seconds total
-
-// Makes sure the program doesn't quit before the sound plays.
-            while(c.getFramePosition() < AudioClip.FULL_SAMPLE_RATE || c.isActive() || c.isRunning() ){
-                // Do nothing while we wait for the note to play.
-            }
-
-            System.out.println( "Done." );
-            c.close();
-        }
+//        public void play() throws LineUnavailableException {
+//            Clip c = AudioSystem.getClip();// Your code
+//
+//            // This is the format that we're following, 44.1 KHz mono audio, 16 bits per sample.
+//            AudioFormat format16 = new AudioFormat( 44100, 16, 1, true, false );
+//
+//            c.open( format16, this.sineWave.getClip().getData(), 0, this.sineWave.getClip().getData().length ); // Reads data from our byte array to play it.
+//
+//            System.out.println( "About to play..." );
+//            c.start(); // Plays it.
+//            c.loop( 2 ); // Plays it 2 more times if desired, so 6 seconds total
+//
+//// Makes sure the program doesn't quit before the sound plays.
+//            while(c.getFramePosition() < AudioClip.FULL_SAMPLE_RATE || c.isActive() || c.isRunning() ){
+//                // Do nothing while we wait for the note to play.
+//            }
+//
+//            System.out.println( "Done." );
+//            c.close();
+//        }
 
     public SineWaveWidget(AnchorPane ap) {
         swBox = new HBox(10);
@@ -51,6 +53,7 @@ public class SineWaveWidget extends Pane {
         sineWave = new SineWave(440);
         s.valueProperty().addListener((ov, oldVal, newVal) -> {
             sineWave.setFrequency(newVal.intValue());
+            s.setValue(newVal.intValue());
 //            System.out.println(sineWave.frequency);
         });
 
