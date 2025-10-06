@@ -4,42 +4,71 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import javax.sound.sampled.LineUnavailableException;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import static com.example.synthesizer.SoundOutput.play;
 
 public class SynthesizeApplication extends Application {
-    public void handleButtonPress(String text) {
-        System.out.println("I was pressed.");
-    }
+    AnchorPane ap = new AnchorPane();
+    private static ArrayList<AudioComponentWidget> comps = new ArrayList<>();
 
-    int frequency;
-    public void handleSliderFreq(Slider slider, Text text) {
-        text.setText("Frequency Slider: " + String.format("%.0f", (slider.getValue())));
-        frequency = (int) slider.getValue();
+    public static ArrayList<AudioComponentWidget> getComponents() {
+        return comps;
     }
 
     @Override
     public void start(Stage stage) throws IOException {
-        AnchorPane ap = new AnchorPane();
+        BorderPane borderPane = new BorderPane();
+        Speaker speaker = new Speaker(ap, null);
+        comps.add(speaker);
 
         VBox menu = new VBox(10);
         menu.setStyle("-fx-background-color: lightblue");
         Button swBtn = new Button("Create Sine Wave Component");
         Button vcBtn = new Button("Create Volume Control");
-        swBtn.setOnAction(e -> ap.getChildren().add(new SineWaveWidget(ap)));
-//        vcBtn.setOnAction(e -> ap.getChildren().add(new VolumeWidget()));
 
         menu.getChildren().addAll(swBtn, vcBtn);
 
-        ap.getChildren().add(menu);
+        borderPane.setTop(menu);
+        borderPane.setCenter(ap);
 
-        Scene scene = new Scene(ap, 720, 640);
+        Button pBtn = new Button("Play");
+        pBtn.setOnAction( e -> {
+            try {
+                play(speaker.getAudioClip());
+            } catch (LineUnavailableException ex) {
+                System.out.println("Line unavailable");;
+            }
+        });
+
+        borderPane.setBottom(pBtn);
+
+        swBtn.setOnAction(e -> CreateSineWaveWidget());
+        vcBtn.setOnAction(e -> CreateVolumeControlWidget());
+
+        Scene scene = new Scene(borderPane, 720, 640);
         stage.setTitle("Synthesizer Program");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void CreateSineWaveWidget() {
+        SineWave sine = new SineWave(440);
+        SineWaveWidget sineWave = new SineWaveWidget(ap, sine);
+        comps.add(sineWave);
+    }
+
+    private void CreateVolumeControlWidget() {
+        VolumeAdjuster  vol = new VolumeAdjuster();
+        VolumeWidget volume = new VolumeWidget(ap, vol);
+        comps.add(volume);
     }
 
 }

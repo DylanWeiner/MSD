@@ -6,7 +6,11 @@ public class VolumeAdjuster implements AudioComponent {
     private double volume_;
     private AudioComponent input_;
 
-    public VolumeAdjuster(double volume) {
+    public VolumeAdjuster() {
+        volume_ = 1.0;
+    }
+
+    public void setVolume(double volume) {
         volume_ = volume;
     }
 
