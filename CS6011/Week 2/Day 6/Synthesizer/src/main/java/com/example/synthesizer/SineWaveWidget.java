@@ -8,7 +8,7 @@ public class SineWaveWidget extends AudioComponentWidget {
     Text name;
 
     public SineWaveWidget(AnchorPane ap, SineWave sineWave) {
-        super(sineWave, ap);
+        super(sineWave, ap, "Frequency: ");
         s = new Slider();
         name = new Text("SineWave");
 

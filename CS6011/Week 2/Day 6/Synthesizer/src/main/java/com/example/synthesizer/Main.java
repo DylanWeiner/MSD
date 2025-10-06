@@ -8,7 +8,7 @@
 //        AudioComponent gen = new SineWave(440);
 //        AudioComponent gen2 = new SineWave(220);
 //        AudioComponent gen3 = new SineWave(110);
-////        AudioComponent ramped = new SineWave(50);
+//        AudioComponent ramped = new SineWave(50);
 //
 //        ArrayList<AudioComponent> genList = new ArrayList<>();
 //

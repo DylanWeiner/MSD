@@ -2,11 +2,9 @@ package com.example.synthesizer;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -33,8 +31,9 @@ public class SynthesizeApplication extends Application {
         menu.setStyle("-fx-background-color: lightblue");
         Button swBtn = new Button("Create Sine Wave Component");
         Button vcBtn = new Button("Create Volume Control");
+        Button mixBtn = new Button("Create a Mixer");
 
-        menu.getChildren().addAll(swBtn, vcBtn);
+        menu.getChildren().addAll(swBtn, vcBtn, mixBtn);
 
         borderPane.setTop(menu);
         borderPane.setCenter(ap);
@@ -52,11 +51,18 @@ public class SynthesizeApplication extends Application {
 
         swBtn.setOnAction(e -> CreateSineWaveWidget());
         vcBtn.setOnAction(e -> CreateVolumeControlWidget());
+        mixBtn.setOnAction(e -> CreateMixerWidget());
 
         Scene scene = new Scene(borderPane, 720, 640);
         stage.setTitle("Synthesizer Program");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void CreateMixerWidget() {
+        Mixer mix = new Mixer();
+        MixerWidget mixerWidget = new MixerWidget(mix, ap);
+        comps.add(mixerWidget);
     }
 
     private void CreateSineWaveWidget() {

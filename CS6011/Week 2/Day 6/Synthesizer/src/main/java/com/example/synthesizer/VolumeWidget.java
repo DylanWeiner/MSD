@@ -12,9 +12,10 @@ public class VolumeWidget extends AudioComponentWidget {
     }
 
     public VolumeWidget(AnchorPane ap, VolumeAdjuster vol) {
-        super(vol, ap);
+        super(vol, ap, "Volume: ");
             Slider s = new Slider();
-            Text name = new Text("Volume Slider: ");
+            Text name = new Text("Volume: ");
+
 
             s.setMin(0.0);
             s.setMax(1.0);

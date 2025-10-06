@@ -1,5 +1,6 @@
 package com.example.synthesizer;
 import javafx.geometry.Point2D;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -26,7 +27,7 @@ public class AudioComponentWidget extends Pane {
     VBox vBoxLeft = new VBox(); //input
     VBox vBoxRight = new VBox();//output
 
-    public AudioComponentWidget(AudioComponent audioComponent, AnchorPane ap) {
+    public AudioComponentWidget(AudioComponent audioComponent, AnchorPane ap, String name) {
         this.ac = audioComponent;
         output_.setOnMousePressed(e -> beginDrawConnectionLine(e, output_));
         output_.setOnMouseReleased(e -> endDrawConnectionLine(e));
@@ -39,12 +40,15 @@ public class AudioComponentWidget extends Pane {
         vBoxRight.getChildren().add(output_);
         vBoxLeft.getChildren().add(input_);
 
+        Label title = new Label(name);
         hBox_.getChildren().add(vBoxLeft);
         hBox_.getChildren().add(vBoxRight);
+        hBox_.getChildren().add(title);
 
         hBox_.setLayoutX(200);
         hBox_.setLayoutY(200);
         hBox_.setStyle("-fx-background-color: lightblue;" + "-fx-border-color: darkblue;" + "-fx-border-width: 1px;");
+        title.setStyle("-fx-font-weight: bold; -fx-padding: 2px;");
         this.getChildren().add(hBox_);
         ap.getChildren().add(this);
 
