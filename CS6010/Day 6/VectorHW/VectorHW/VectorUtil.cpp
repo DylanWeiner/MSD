@@ -140,7 +140,6 @@ int Average( vector<int> input )
  *   A single-item vector is considered sorted, since there are no items out of order
  */
 bool IsSorted( vector<int> input ) {
-
     for(int i = 1; i < input.size(); i++) {
         if(input[i - 1] > input[i]) {
             return false;
