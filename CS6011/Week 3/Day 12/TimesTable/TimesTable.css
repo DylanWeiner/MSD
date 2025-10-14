@@ -1,0 +1,9 @@
+.highlight {
+background-color : lightblue;
+text-decoration: underline;
+}
+
+.clicked {
+background-color : lightseagreen;
+text-decoration: bold;
+}
