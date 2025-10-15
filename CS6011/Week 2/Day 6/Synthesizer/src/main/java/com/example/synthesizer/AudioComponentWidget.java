@@ -34,8 +34,8 @@ public class AudioComponentWidget extends Pane {
         input_.setOnMousePressed(e -> beginDrawConnectionLine(e, input_));
         input_.setOnMouseReleased(e -> endDrawInputConnectionLine(e));
 
-        this.setOnMousePressed(e -> handleBeginDrag(e));
-        this.setOnMouseDragged(e -> handleDrag(e));
+        hBox_.setOnMousePressed(e -> handleBeginDrag(e));
+        hBox_.setOnMouseDragged(e -> handleDrag(e));
 
         vBoxRight.getChildren().add(output_);
         vBoxLeft.getChildren().add(input_);
@@ -45,8 +45,8 @@ public class AudioComponentWidget extends Pane {
         hBox_.getChildren().add(vBoxRight);
         hBox_.getChildren().add(title);
 
-        hBox_.setLayoutX(200);
-        hBox_.setLayoutY(200);
+        hBox_.setLayoutX(20);
+        hBox_.setLayoutY(20);
         hBox_.setStyle("-fx-background-color: lightblue;" + "-fx-border-color: darkblue;" + "-fx-border-width: 1px;");
         title.setStyle("-fx-font-weight: bold; -fx-padding: 2px;");
         this.getChildren().add(hBox_);

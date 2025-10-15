@@ -12,8 +12,8 @@ public class RainData {
     private ArrayList<Float> rain = new ArrayList<>();
 
     //Opens supplied file to scan through it.
-    RainData() throws FileNotFoundException {
-        Scanner fileReader = new Scanner(new FileInputStream("src/rainfall_data.txt"));
+    RainData(String fileName) throws FileNotFoundException {
+        Scanner fileReader = new Scanner(new FileInputStream(fileName));
         String state = fileReader.nextLine();
         while (fileReader.hasNext()) {
             month.add(fileReader.next());
@@ -50,14 +50,16 @@ public class RainData {
     }
 
 
-void main(String[] args) {
+public static void main(String[] args) {
     try {
+        RainData rd = new RainData("src/rainfall_data.txt");
         PrintWriter pw = new PrintWriter( new FileOutputStream( "src/rainfall_analysis.txt" ) );
-        String result = String.format("%.2f", calculateOverallAverage());
+        String result = String.format("%.2f", rd.calculateOverallAverage());
         pw.println("The overall average rainfall amount is " + result + " inches.");
 
-        for(int i = 0; i < calculateMonthlyAverage().size(); i++){
-            pw.println(calculateMonthlyAverage().get(i));
+        ArrayList<String> monthlyAverage = rd.calculateMonthlyAverage();
+        for(int i = 0; i < monthlyAverage.size(); i++){
+            pw.println(monthlyAverage.get(i));
         }
         pw.close();
     } catch (FileNotFoundException e) {

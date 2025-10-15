@@ -6,11 +6,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import javax.sound.sampled.LineUnavailableException;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import static com.example.synthesizer.SoundOutput.play;
 
 public class SynthesizeApplication extends Application {
@@ -31,9 +29,9 @@ public class SynthesizeApplication extends Application {
         menu.setStyle("-fx-background-color: lightblue");
         Button swBtn = new Button("Create Sine Wave Component");
         Button vcBtn = new Button("Create Volume Control");
-        Button mixBtn = new Button("Create a Mixer");
+        Button mixBtn = new Button("Create a Mixer"); // This section is responsible for the create widget section.
 
-        menu.getChildren().addAll(swBtn, vcBtn, mixBtn);
+        menu.getChildren().addAll(swBtn, vcBtn, mixBtn); // adds create widgets into a shared menu.
 
         borderPane.setTop(menu);
         borderPane.setCenter(ap);
@@ -45,7 +43,7 @@ public class SynthesizeApplication extends Application {
             } catch (LineUnavailableException ex) {
                 System.out.println("Line unavailable");;
             }
-        });
+        }); // Allows audio to play from speaker output.
 
         borderPane.setBottom(pBtn);
 
@@ -63,18 +61,18 @@ public class SynthesizeApplication extends Application {
         Mixer mix = new Mixer();
         MixerWidget mixerWidget = new MixerWidget(mix, ap);
         comps.add(mixerWidget);
-    }
+    } // Mixer Widget Connection
 
     private void CreateSineWaveWidget() {
         SineWave sine = new SineWave(440);
         SineWaveWidget sineWave = new SineWaveWidget(ap, sine);
         comps.add(sineWave);
-    }
+    } // Sinewave Widget Connection
 
     private void CreateVolumeControlWidget() {
         VolumeAdjuster  vol = new VolumeAdjuster();
         VolumeWidget volume = new VolumeWidget(ap, vol);
         comps.add(volume);
-    }
+    } // Volume Control Widget Connection
 
 }
