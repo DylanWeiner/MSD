@@ -54,21 +54,6 @@ function handleKeyPress( ke ) {
                 );
                 
                 }
-            //     else if(ke.target !== yInput && ke.target !== xInput ) {
-            //         if(yInput.value === "" || isNaN(y)) {
-            //         alert("Please enter a number");
-            //         yInput.value = "<Enter a Number>";
-            //         yInput.select();
-            //         return;
-            //     }
-            //     if(xInput.value === "" || isNaN(x)) {
-            //         alert("Please enter a number");
-            //         xInput.value = "<Enter a Number>";
-            //         xInput.select();
-            //         return;
-            //     }
-                
-            // }
         }
     }
 
