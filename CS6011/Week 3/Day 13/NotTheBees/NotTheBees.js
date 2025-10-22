@@ -26,6 +26,7 @@ let mouseX = 0;
 let mouseY = 0;
 let score = 0;
 let collision = false;
+let header = document.getElementById('title');
 
 function recordMousePos(event) {
   const rect = myCanvas.getBoundingClientRect(); // Finds the canvas's size and correctly adjusts coordinates
@@ -67,7 +68,9 @@ function draw() {
     ctx.drawImage(bee.img, bee.x, bee.y, 50, 50);
   }
   if(isAnimating){
-    // updateBees();
+    updateBees();
+    header.textContent = 'Protect the Honey! Your Score is: '
+    header.append(score);
     collisionDetected();
     animationId = requestAnimationFrame(draw);
 
