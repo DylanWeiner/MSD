@@ -3,7 +3,11 @@ ws.onopen = handleOpen
 ws.onmessage = handleMsg;
 const messageInput = document.getElementById('messageBox');
 let chatMessages = [];
+let joinMessages = [];
+let leaveMessages = [];
+let allMessages = [];
 const page = document.getElementById('fullPage');
+let userHasJoined = false;
 
 function handleKeyPress( ke ) {
     if(ke.key === "Enter" || ke.target === btn) {
@@ -29,12 +33,15 @@ function handleKeyPress( ke ) {
                 return;
             }
 
+            if (!userHasJoined) {
+                allMessages.push(user + " has joined " + chatRoom + ".");
+                updateChat();
+                userHasJoined = true;
+            }
             ws.send("join " + user + " " + chatRoom);
-
             hideInputs();
-
             createRoom();
-
+            updateChat();
         }
         else if(ke.target === messageBox || ke.target === send) {
             let message = messageInput.value.trim();
@@ -44,36 +51,40 @@ function handleKeyPress( ke ) {
         }
         else if(ke.target === leave) {
             ws.send("leave " + user + " " + chatRoom);
+            allMessages.push(user + " has left " + chatRoom + ".");
+            updateChat();
+            removeCanvas();
+            showInputs();
+            userHasJoined = false;
         }
     }
 }
 
 function updateChat() {
     const canvas = document.getElementById("myCanvas");
-    if (!canvas) {
-        console.warn("Canvas element not found!");
-        return;
-    }
+    if (!canvas) return;
     const ctx = canvas.getContext("2d");
 
-    // Clear entire canvas to start fresh
+    // Clear everything
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw background rectangle
+    // Draw background and border
     ctx.fillStyle = "lightgreen";
     ctx.fillRect(50, 50, 1497, 777);
-
-    // Draw border rectangle
     ctx.strokeStyle = "green";
     ctx.lineWidth = 3;
     ctx.strokeRect(50, 50, 1497, 777);
 
-    // Draw chat text
+    // Draw all text (join + main chat + leave)
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
     ctx.fillStyle = "black";
     ctx.font = "16px Arial";
-    let lineHeight = 20;
-    chatMessages.slice(-40).forEach((msg, i) => {
-        ctx.fillText(msg, 60, 80 + i * lineHeight);
+
+
+    const lineHeight = 22;
+    allMessages.slice(-40).forEach((msg, i) => {
+        ctx.fillText(msg, 60, 60 + i * lineHeight);
     });
 }
 
@@ -86,6 +97,14 @@ function hideInputs() {
     btn.style.display = 'none';
     send.style.display = 'block';
     leave.style.display = 'block';
+}
+
+function showInputs() {
+    page.style.display = 'block';
+    btn.style.display = 'block';
+    send.style.display = 'none';
+    leave.style.display = 'none';
+    messageInput.style.display = 'none';
 }
 
 function createRoom() {
@@ -116,7 +135,10 @@ function createRoom() {
     messageInput.style.bottom = '40px';
     messageInput.style.left = '56px';
     messageInput.style.width = "1408px";
-    messageInput.style.height = "100px"
+    messageInput.style.height = "100px";
+
+    canvas.style.display = 'block';
+    canvas.style.zIndex = '10';
 }
 
 function handleJoinBtn() {
@@ -126,18 +148,27 @@ function handleJoinBtn() {
     handleKeyPress(ke);
 }
 
-function handleLeaveBtn() {
-    let ke = {};
-    ke.key = "Enter"
-    ke.target = leave;
-    handleKeyPress(ke);
+function removeCanvas() {
+    const canvas = document.getElementById("myCanvas");
+    if (canvas) {
+        canvas.remove(); // Completely removes element from DOM
+    }
+}
 
-    page.style.display = 'block';
-    btn.style.display = 'block';
-    send.style.display = 'none';
-    leave.style.display = 'none';
-    myCanvas.style.display = 'none';
-    messageInput.style.display = 'none';
+function handleLeaveBtn() {
+    let user = userName.value;
+    let chatRoom = room.value;
+    ws.send("leave " + user + " " + chatRoom);
+
+    setTimeout(() => {
+        allMessages = [];
+        chatMessages = [];
+        joinMessages = [];
+        leaveMessages = [];
+        updateChat();
+        removeCanvas();
+        showInputs();
+    }, 100);
 }
 
 function handleSendBtn() {
@@ -155,12 +186,27 @@ function handleOpen() {
 }
 
 function handleMsg(m) {
+    console.log("Received raw message:", m.data); // Debug log
     let msg = JSON.parse(m.data);
-    console.log(msg.room);
-    let text = msg.user + ": " + msg.message;
-    chatMessages.push(text);
-    updateChat();
+    if (!document.getElementById("myCanvas")) {
+        createRoom();
+    }
+
+    let messageText = "";
+    if (msg.type === "join") {
+        messageText = msg.user + " has joined " + msg.room + ".";
+    } else if (msg.type === "leave") {
+        messageText = msg.user + " has left " + msg.room + ".";
+    } else if (msg.user && msg.message) {
+        messageText = msg.user + ": " + msg.message;
+    }
+
+    if (messageText && !allMessages.includes(messageText)) {
+        allMessages.push(messageText);
+        updateChat();
+    }
 }
+
 
 let btn = document.createElement("button");
 btn.textContent = "Enter";
