@@ -47,7 +47,7 @@ function handleKeyPress( ke ) {
         else if(ke.target === messageBox || ke.target === send) {
             let message = messageInput.value.trim();
             if (message === "") return;
-            ws.send("message " + message);
+            ws.send("message " + user + " " + message);
             messageInput.value = "";
         }
         else if(ke.target === leave) {
@@ -176,7 +176,7 @@ function handleSendBtn() {
     let message = messageInput.value.trim();
     if (message === "") return;
 
-    ws.send("message " + message);
+    ws.send("message " + user + message);
     messageInput.value = "";
 }
 
@@ -188,12 +188,6 @@ function handleOpen() {
 }
 
 function handleMsg(m) {
-   // console.log("Received raw message:", m); // Debug log
-//   const txt = new TextDecoder("utf-8").decode(m.data);
-//   console.log(txt);
-//   const obj = JSON.parse(txt);
-//   console.log(obj);
-
 let text;
 
 if(m.data instanceof Blob) {
@@ -215,7 +209,7 @@ const msg = JSON.parse(text);
         messageText = msg.user + " has joined " + msg.room + ".";
     } else if (msg.type === "leave") {
         messageText = msg.user + " has left " + msg.room + ".";
-    } else if (msg.user && msg.message) {
+    } else if (msg.type === "message") {
         messageText = msg.user + ": " + msg.message;
     }
 
@@ -234,10 +228,10 @@ document.body.appendChild(btn);
 let send = document.createElement("button");
 send.textContent = "Send";
 send.style.position = "fixed";
-send.style.width = "86px";
+send.style.width = "88px";
 send.style.height = "108px";
-send.style.bottom = "41px";
-send.style.right = "103px";
+send.style.bottom = "40px";
+send.style.right = "153px";
 send.onclick = handleSendBtn;
 document.body.appendChild(send);
 

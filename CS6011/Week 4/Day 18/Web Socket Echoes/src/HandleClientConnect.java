@@ -107,7 +107,7 @@ public class HandleClientConnect implements Runnable {
                 payload[i] = (byte) (payload[i]^mask[i & 0x03]);
             }
             String result = new String(payload, "UTF-8");
-            System.out.println("result srtring:" + result);
+            System.out.println("result string:" + result);
 
 
             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
@@ -118,7 +118,7 @@ public class HandleClientConnect implements Runnable {
             if(parts[0].equals("join") || parts[0].equals("leave")) {
                 json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\"}", parts[0], parts[1], parts[2]);
             } else {
-                json = String.format("{\"type\":\"%s\", \"message\":\"%s\"}", parts[0], parts[1]);
+                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"message\":\"%s\"}", parts[0], parts[1], parts[2]);
             }
             byte wsSecondFrameReturn = (byte) (json.getBytes(StandardCharsets.UTF_8).length);
             out.write(wsSecondFrameReturn);
