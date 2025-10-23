@@ -112,11 +112,16 @@ public class HandleClientConnect implements Runnable {
 
             DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
             byte wsFirstFrameReturn = -126;
-            byte wsSecondFrameReturn = (byte) (result.getBytes().length);
             out.write(wsFirstFrameReturn);
-            out.write(wsSecondFrameReturn);
             String[] parts = result.split(" ");
-            String json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\"}", parts[0], parts[1], parts[2]);
+            String json = "i";
+            if(parts[0].equals("join") || parts[0].equals("leave")) {
+                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\"}", parts[0], parts[1], parts[2]);
+            } else {
+                json = String.format("{\"type\":\"%s\", \"message\":\"%s\"}", parts[0], parts[1]);
+            }
+            byte wsSecondFrameReturn = (byte) (json.getBytes(StandardCharsets.UTF_8).length);
+            out.write(wsSecondFrameReturn);
             System.out.println("bytes" + json);
             out.write(json.getBytes(StandardCharsets.UTF_8));
             out.flush();

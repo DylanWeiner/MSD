@@ -189,15 +189,26 @@ function handleOpen() {
 
 function handleMsg(m) {
    // console.log("Received raw message:", m); // Debug log
-   const txt = new TextDecoder("utf-8").decode(m.data);
-   console.log(txt);
-   const obj = JSON.parse(txt);
-   console.log(obj);
+//   const txt = new TextDecoder("utf-8").decode(m.data);
+//   console.log(txt);
+//   const obj = JSON.parse(txt);
+//   console.log(obj);
+
+let text;
+
+if(m.data instanceof Blob) {
+    text =  m.data.text();
+} else if(m.data instanceof ArrayBuffer) {
+    text = new TextDecoder("utf-8").decode(m.data);
+} else {
+    text = m.data;
+}
+console.log(text);
    // let msg = JSON.parse(m);
     if (!document.getElementById("myCanvas")) {
         createRoom();
     }
-
+const msg = JSON.parse(text);
     let messageText = "";
     if (msg.type === "join") {
         console.log("joined a room");
