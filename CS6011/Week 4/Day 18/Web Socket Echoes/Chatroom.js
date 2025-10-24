@@ -2,6 +2,8 @@ let ws = new WebSocket("ws://localhost:8080");
 ws.onopen = handleOpen
 ws.onmessage = handleMsg;
 const messageInput = document.getElementById('messageBox');
+const u = document.getElementById('userName');
+const r = document.getElementById('room');
 let chatMessages = [];
 let joinMessages = [];
 let leaveMessages = [];
@@ -47,7 +49,7 @@ function handleKeyPress( ke ) {
         else if(ke.target === messageBox || ke.target === send) {
             let message = messageInput.value.trim();
             if (message === "") return;
-            ws.send("message " + user + " " + message);
+            ws.send("message " + user + " " + chatRoom + " " + message);
             messageInput.value = "";
         }
         else if(ke.target === leave) {
@@ -62,6 +64,9 @@ function handleKeyPress( ke ) {
 }
 
 function updateChat() {
+    if(!userHasJoined) {
+    return;
+    }
     const canvas = document.getElementById("myCanvas");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -70,9 +75,9 @@ function updateChat() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw background and border
-    ctx.fillStyle = "lightgreen";
+    ctx.fillStyle = "#C9F5D9";
     ctx.fillRect(50, 50, 1497, 777);
-    ctx.strokeStyle = "green";
+    ctx.strokeStyle = "#3CD184";
     ctx.lineWidth = 3;
     ctx.strokeRect(50, 50, 1497, 777);
 
@@ -92,23 +97,31 @@ function updateChat() {
 userName.addEventListener('keypress',handleKeyPress);
 room.addEventListener('keypress',handleKeyPress);
 messageBox.addEventListener('keypress',handleKeyPress);
+//window.addEventListener('unload', handleLeaveBtn());
 
 function hideInputs() {
-    page.style.display = 'none';
-    btn.style.display = 'none';
-    send.style.display = 'block';
-    leave.style.display = 'block';
+    if(userHasJoined) {
+        page.style.display = 'none';
+        btn.style.display = 'none';
+        send.style.display = 'block';
+        leave.style.display = 'block';
+    }
 }
 
 function showInputs() {
-    page.style.display = 'block';
-    btn.style.display = 'block';
-    send.style.display = 'none';
-    leave.style.display = 'none';
-    messageInput.style.display = 'none';
+    if(!userHasJoined) {
+        page.style.display = 'block';
+        btn.style.display = 'block';
+        send.style.display = 'none';
+        leave.style.display = 'none';
+        messageInput.style.display = 'none';
+    }
 }
 
 function createRoom() {
+    if(!userHasJoined) {
+        return;
+    }
     const canvas = document.createElement("canvas");
     canvas.width = 1550;
     canvas.height = 900;
@@ -118,19 +131,19 @@ function createRoom() {
 
     const ctx = canvas.getContext("2d");
 
-    ctx.strokeStyle = "green";
+    ctx.strokeStyle = "#3CD184";
     ctx.lineWidth = 3;
     ctx.strokeRect(50, 50, 1497, 777);
 
-    ctx.fillStyle = "lightgreen";
+    ctx.fillStyle = "#C9F5D9";
     ctx.fillRect(50, 50, 1497, 777);
 
     ctx.stroke();
 
     messageInput.style.display = 'block';
 
-    messageInput.style.backgroundColor = "lightgreen";
-    messageInput.style.outlineColor = "green";
+    messageInput.style.backgroundColor = "#C9F5D9";
+    messageInput.style.outlineColor = "#3CD184";
 
     messageInput.style.position = 'absolute'; // Or 'relative', 'fixed'
     messageInput.style.bottom = '40px';
@@ -160,23 +173,24 @@ function handleLeaveBtn() {
     let user = userName.value;
     let chatRoom = room.value;
     ws.send("leave " + user + " " + chatRoom);
+    userHasJoined = false;
 
     setTimeout(() => {
         allMessages = [];
         chatMessages = [];
         joinMessages = [];
         leaveMessages = [];
-        updateChat();
         removeCanvas();
         showInputs();
     }, 100);
+    updateChat();
 }
 
 function handleSendBtn() {
     let message = messageInput.value.trim();
     if (message === "") return;
 
-    ws.send("message " + user + message);
+    ws.send("message " + user + " " + chatRoom + " " + message);
     messageInput.value = "";
 }
 
@@ -198,7 +212,6 @@ if(m.data instanceof Blob) {
     text = m.data;
 }
 console.log(text);
-   // let msg = JSON.parse(m);
     if (!document.getElementById("myCanvas")) {
         createRoom();
     }
@@ -213,17 +226,20 @@ const msg = JSON.parse(text);
         messageText = msg.user + ": " + msg.message;
     }
 
-    if (messageText && !allMessages.includes(messageText)) {
+    if (messageText && !allMessages.includes(messageText) && userHasJoined) {
         allMessages.push(messageText);
         updateChat();
     }
 }
 
+document.body.style.backgroundColor = "#A9EED1";
 
 let btn = document.createElement("button");
 btn.textContent = "Enter";
 btn.onclick = handleJoinBtn;
 document.body.appendChild(btn);
+btn.style.backgroundColor = "#C9F5D9";
+btn.style.outlineColor = "#3CD184";
 
 let send = document.createElement("button");
 send.textContent = "Send";
@@ -238,4 +254,12 @@ document.body.appendChild(send);
 let leave = document.createElement("button");
 leave.textContent = "Leave Room";
 leave.onclick = handleLeaveBtn;
+leave.style.backgroundColor = "#C9F5D9";
+leave.style.outlineColor = "#3CD184";
 document.body.appendChild(leave);
+
+u.style.backgroundColor = "#C9F5D9";
+u.style.outlineColor = "#3CD184";
+
+r.style.backgroundColor = "#C9F5D9";
+r.style.outlineColor = "#3CD184";

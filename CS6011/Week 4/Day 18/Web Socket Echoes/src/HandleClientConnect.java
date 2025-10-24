@@ -109,22 +109,26 @@ public class HandleClientConnect implements Runnable {
             String result = new String(payload, "UTF-8");
             System.out.println("result string:" + result);
 
-
-            DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
-            byte wsFirstFrameReturn = -126;
-            out.write(wsFirstFrameReturn);
             String[] parts = result.split(" ");
-            String json = "i";
-            if(parts[0].equals("join") || parts[0].equals("leave")) {
+
+            RoomManager.assignClient(parts[1], clientSocket);
+
+            String json = "";
+            if(parts[0].equals("join")) {
+                RoomManager.addRoomOrClient(parts[2]);
                 json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\"}", parts[0], parts[1], parts[2]);
-            } else {
-                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"message\":\"%s\"}", parts[0], parts[1], parts[2]);
+            } else if(parts[0].equals("leave")) {
+                RoomManager.removeClient(parts[2]);
+                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\"}", parts[0], parts[1], parts[2]);
+            }else {
+                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\",\"message\":\"%s\"}", parts[0], parts[1], parts[2], parts[3]);
             }
+
+            byte wsFirstFrameReturn = -126;
             byte wsSecondFrameReturn = (byte) (json.getBytes(StandardCharsets.UTF_8).length);
-            out.write(wsSecondFrameReturn);
-            System.out.println("bytes" + json);
-            out.write(json.getBytes(StandardCharsets.UTF_8));
-            out.flush();
+            byte[] pay = json.getBytes(StandardCharsets.UTF_8);
+
+            RoomManager.sendMessage(parts[2], pay, wsFirstFrameReturn, wsSecondFrameReturn, json);
         }
     }
 
