@@ -201,58 +201,6 @@ function handleOpen() {
     leave.style.display = 'none';
 }
 
-// Handle incoming messages
-//function handleMsg(m) {
-//    let text;
-//    if (m.data instanceof Blob) {
-//        m.data.text().then(t => processMsg(t));
-//        return;
-//    } else if (m.data instanceof ArrayBuffer) {
-//        text = new TextDecoder("utf-8").decode(m.data);
-//    } else {
-//        text = m.data;
-//    }
-//    processMsg(text);
-//}
-//
-//function processMsg(text) {
-//    console.log(text);
-//    if (!document.getElementById("myCanvas")) createRoom();
-//
-//    const msg = JSON.parse(text);
-//    let messageText = "";
-//
-//    if (msg.type === "join") {
-//        messageText = msg.user + " has joined " + msg.room + ".";
-//        if (userHasJoined) {
-//            allMessages.push({ text: messageText, color: msg.color });
-//            updateChat();
-//        }
-//        return;
-//    } else if (msg.type === "leave") {
-//          messageText = msg.user + " has left " + msg.room + ".";
-//          if (!userHasJoined) {
-//              allMessages.push({ text: messageText, color: msg.color });
-//              updateChat();
-//          }
-//          return;
-//      } else if (msg.type === "message") {
-//          messageText = msg.user + ": " + msg.message;
-//          allMessages.push({ text: messageText, color: msg.color });
-//          updateChat();
-//          return;
-//      } else if(msg.type === "color") {
-//        messageText = msg.user + " has changed their text color to " + msg.color;
-//        allMessages.push({ text: messageText, color: msg.color});
-//        updateChat();
-//    }
-//
-//    if (messageText && userHasJoined) {
-//        allMessages.push({ text: messageText, color: msg.color });
-//        updateChat();
-//    }
-//}
-
 function handleMsg(m) {
 let text;
 
