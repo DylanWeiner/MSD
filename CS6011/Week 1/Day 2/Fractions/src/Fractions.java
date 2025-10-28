@@ -1,3 +1,5 @@
+//Dylan Weiner for CS 6011
+
 public class Fractions {
     private long numerator;
     private long denominator;
@@ -7,7 +9,7 @@ public class Fractions {
         denominator = 1;
     }
 
-    public void reduce() {
+    private void reduce() {
         long val = GCD();
         numerator /= val;
         denominator /= val;
@@ -24,7 +26,7 @@ public class Fractions {
     public Fractions(int numerator, int denominator) {
         this.numerator = numerator;
         this.denominator = denominator;
-        reduce();
+        result.reduce();
         normalizeSign();
     }
 
@@ -32,7 +34,7 @@ public class Fractions {
         Fractions result = new Fractions();
         result.numerator = (this.numerator* other.denominator) + (other.numerator * this.denominator);
         result.denominator = this.denominator * other.denominator;
-        reduce();
+        result.reduce();
         return result;
     }
 
@@ -40,7 +42,7 @@ public class Fractions {
         Fractions result = new Fractions();
         result.numerator = (this.numerator * other.denominator) - (other.numerator * this.denominator);
         result.denominator = this.denominator * other.denominator;
-        reduce();
+        result.reduce();
         return result;
     }
 
@@ -48,7 +50,7 @@ public class Fractions {
         Fractions result = new Fractions();
         result.numerator = this.numerator * other.numerator;
         result.denominator = this.denominator * other.denominator;
-        reduce();
+        result.reduce();
         return result;
     }
 
@@ -79,9 +81,9 @@ public class Fractions {
         return numerator + "/" + denominator;
     }
 
-    public long GCD() {
-        long gcd = numerator;
-        long remainder = denominator;
+    private long GCD() {
+        long gcd = Math.abs(numerator);
+        long remainder = Math.abs(denominator);
         while (remainder != 0) {
             long temp = remainder;
             remainder = gcd % remainder;

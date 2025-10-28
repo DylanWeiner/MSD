@@ -74,8 +74,8 @@ public class HandleClientConnect implements Runnable {
 
             else{
                 System.out.println(httpHeaders);
-        String key = httpHeaders.get("Sec-WebSocket-Key");
-        System.out.println(key);
+                String key = httpHeaders.get("Sec-WebSocket-Key");
+                System.out.println(key);
                 MessageDigest md = null;
                 try {
                     md = MessageDigest.getInstance("SHA-1");
@@ -84,65 +84,75 @@ public class HandleClientConnect implements Runnable {
                 }
                 String secret = Base64.getEncoder().encodeToString(md.digest((key + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11").getBytes()));
 
-        outStream.write("HTTP/1.1 101 Switching Protocols\r\n".getBytes());
-        outStream.write("Upgrade: websocket\r\n".getBytes());
-        outStream.write("Connection: Upgrade\r\n".getBytes());
-        outStream.write(("Sec-WebSocket-Accept: " + secret+"\r\n").getBytes());
-        outStream.write(("\r\n").getBytes());
-        outStream.flush();
+                outStream.write("HTTP/1.1 101 Switching Protocols\r\n".getBytes());
+                outStream.write("Upgrade: websocket\r\n".getBytes());
+                outStream.write("Connection: Upgrade\r\n".getBytes());
+                outStream.write(("Sec-WebSocket-Accept: " + secret+"\r\n").getBytes());
+                outStream.write(("\r\n").getBytes());
+                outStream.flush();
 
-        System.out.println("handshake is done");
-        while(true) {
-            DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-            byte wsFirstFrameByte = in.readByte();
-            int opcode = wsFirstFrameByte & 0x0F;
-            int fin = (wsFirstFrameByte >> 7) & 0x01;
-            byte wsSecondFrameByte = in.readByte();
-            int maskBool = (wsSecondFrameByte >> 7) & 0x01;
-            int payloadLength = (wsSecondFrameByte) & 0x7F;
-            byte[] mask = in.readNBytes(4);
-            byte[] payload = in.readNBytes(payloadLength);
+                System.out.println("handshake is done");
+                while(true) {
+                    DataInputStream in = new DataInputStream(clientSocket.getInputStream());
+                    byte wsFirstFrameByte = in.readByte();
+                    int opcode = wsFirstFrameByte & 0x0F;
+                    int fin = (wsFirstFrameByte >> 7) & 0x01;
+                    byte wsSecondFrameByte = in.readByte();
+                    int maskBool = (wsSecondFrameByte >> 7) & 0x01;
+                    int payloadLength = (wsSecondFrameByte) & 0x7F;
+                    byte[] mask = in.readNBytes(4);
+                    byte[] payload = in.readNBytes(payloadLength);
 
-            for(int i = 0; i < payloadLength; i++) {
-                payload[i] = (byte) (payload[i]^mask[i & 0x03]);
+                    for(int i = 0; i < payloadLength; i++) {
+                        payload[i] = (byte) (payload[i]^mask[i & 0x03]);
+                    }
+                    String result = new String(payload, "UTF-8");
+                    System.out.println("result string:" + result);
+
+                    String[] parts = result.split(" ");
+                    String command = parts[0];
+                    String user = parts.length > 1 ? parts[1] : "";
+                    String room = parts.length > 2 ? parts[2] : "";
+                    String message = parts.length > 3 ? parts[3] : "";
+                    String color = parts.length > 4 ? parts[4] : "black";
+
+                    RoomManager.assignClient(user, clientSocket);
+
+                    String json = "";
+
+                    if (command.equals("join")) {
+                        RoomManager.addRoomOrClient(room);
+                        json = String.format("{\"type\":\"join\", \"user\":\"%s\", \"room\":\"%s\"}", user, room);
+                    } else if (command.equals("leave")) {
+                        RoomManager.removeClient(room);
+                        json = String.format("{\"type\":\"leave\", \"user\":\"%s\", \"room\":\"%s\"}", user, room);
+                    } else if (command.equals("message")) {
+                        json = String.format("{\"type\":\"message\", \"user\":\"%s\", \"room\":\"%s\", \"message\":\"%s\", \"color\":\"%s\"}",
+                                user, room, message, color);
+                    } else if (command.equals("color")) {
+                        json = String.format("{\"type\":\"color\", \"user\":\"%s\", \"room\":\"%s\", \"color\":\"%s\"}",
+                                user, room, message);
+                    }
+
+                    byte wsFirstFrameReturn = -126;
+                    byte wsSecondFrameReturn = (byte) (json.getBytes(StandardCharsets.UTF_8).length);
+                    byte[] pay = json.getBytes(StandardCharsets.UTF_8);
+
+                    RoomManager.sendMessage(parts[2], pay, wsFirstFrameReturn, wsSecondFrameReturn, json);
+                }
             }
-            String result = new String(payload, "UTF-8");
-            System.out.println("result string:" + result);
-
-            String[] parts = result.split(" ");
-
-            RoomManager.assignClient(parts[1], clientSocket);
-
-            String json = "";
-            if(parts[0].equals("join")) {
-                RoomManager.addRoomOrClient(parts[2]);
-                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\"}", parts[0], parts[1], parts[2]);
-            } else if(parts[0].equals("leave")) {
-                RoomManager.removeClient(parts[2]);
-                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\"}", parts[0], parts[1], parts[2]);
-            }else {
-                json = String.format("{\"type\":\"%s\", \"user\":\"%s\",\"room\":\"%s\",\"message\":\"%s\"}", parts[0], parts[1], parts[2], parts[3]);
-            }
-
-            byte wsFirstFrameReturn = -126;
-            byte wsSecondFrameReturn = (byte) (json.getBytes(StandardCharsets.UTF_8).length);
-            byte[] pay = json.getBytes(StandardCharsets.UTF_8);
-
-            RoomManager.sendMessage(parts[2], pay, wsFirstFrameReturn, wsSecondFrameReturn, json);
-        }
-    }
 
 
-} catch (IOException ex) {
+        } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
         finally{
-                try {
-                    clientSocket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+        }
     }
 }
