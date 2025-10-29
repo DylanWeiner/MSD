@@ -1,0 +1,64 @@
+#sendButton {
+    position: fixed;
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+    width: 88px;
+    height: 108px;
+    bottom: 40px;
+    right: 153px;
+}
+
+#leaveButton {
+    position: fixed;
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+    top: 16px;
+    right: 193px;
+}
+
+#joinButton {
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+}
+
+#userName {
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+}
+
+#room {
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+}
+
+#messageBox {
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+    resize: none;
+    position: absolute;
+    bottom: 40px;
+    left: 56px;
+    width: 1408px;
+    height: 100px;
+}
+
+#ColorSelect {
+    position: absolute;
+    top: 17px;
+    left: 90px;
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+}
+
+#submitButton {
+    position: fixed;
+    top: 16px;
+    left: 193px;
+    background-color: #C9F5D9;
+    outline-color: #3CD184;
+}
+
+#canvas {
+    width: 1550px;
+    height: 900px;
+}

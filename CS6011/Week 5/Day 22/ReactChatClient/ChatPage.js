@@ -1,0 +1,134 @@
+import InputWidget from "./InputWidget";
+import { useRef, useEffect } from "react";
+import {ScrollView, StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
+
+function ChatPage({chatRoomName, allMessages, message }) {
+    const messageRef = useRef('');
+    const usernameRef = useRef('');
+    const roomRef = useRef('');
+    const canvasRef = useRef(null);
+
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#C9F5D9";
+        ctx.fillRect(50, 50, 1497, 777);
+        ctx.strokeStyle = "#3CD184";
+        ctx.lineWidth = 3;
+        ctx.strokeRect(50, 50, 1497, 777);
+
+        ctx.textAlign = "left";
+        ctx.textBaseline = "top";
+        ctx.font = "16px Arial";
+
+        const lineHeight = 22;
+
+        allMessages.slice(-40).forEach((msg, i) => {
+            ctx.fillStyle = msg.color || "black";
+            ctx.fillText(msg.text, 60, 60 + i * lineHeight);
+        });
+    }, [allMessages]);
+
+    return (
+        <View style={styles.container}>
+            <Text style={styles.chatRoomName}>{chatRoomName}</Text>
+
+            <TouchableOpacity
+                style={styles.leaveButton}
+                onPress={(e) => message(e, usernameRef.current, roomRef.current, "leave")}
+            >
+                <Text>Leave</Text>
+            </TouchableOpacity>
+
+            <ScrollView
+                style={styles.messageBox}
+                ref={scrollViewRef}
+                onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+            >
+                {allMessages.slice(-40).map((msg, index) => (
+                    <Text key={index} style={{ color: msg.color || "black", marginVertical: 2 }}>
+                        {msg.text}
+                    </Text>
+                ))}
+            </ScrollView>
+
+            <TextInput
+                style={styles.messageInput}
+                onChangeText={text => (messageRef.current = text)}
+                onSubmitEditing={(e) => message(e, usernameRef.current, roomRef.current, messageRef.current)}
+                placeholder="Type your message"
+                returnKeyType="send"
+            />
+
+            <TouchableOpacity
+                style={styles.sendButton}
+                onPress={(e) => message(e, usernameRef.current, roomRef.current, messageRef.current)}
+            >
+                <Text>Send</Text>
+            </TouchableOpacity>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 10,
+        backgroundColor: "#C9F5D9",
+    },
+    chatRoomName: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
+    leaveButton: {
+        position: "absolute",
+        top: 16,
+        right: 20,
+        backgroundColor: "#C9F5D9",
+        borderColor: "#3CD184",
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        borderRadius: 4,
+        zIndex: 1,
+    },
+    messageBox: {
+        flex: 1,
+        marginTop: 50,
+        marginBottom: 120, // space for input and send button
+        backgroundColor: "#F0FFF4",
+        borderRadius: 5,
+        padding: 10,
+    },
+    messageInput: {
+        position: "absolute",
+        bottom: 60,
+        left: 10,
+        right: 110,
+        height: 40,
+        backgroundColor: "#C9F5D9",
+        borderColor: "#3CD184",
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        borderRadius: 5,
+    },
+    sendButton: {
+        position: "absolute",
+        bottom: 55,
+        right: 20,
+        width: 80,
+        height: 46,
+        backgroundColor: "#C9F5D9",
+        borderColor: "#3CD184",
+        borderWidth: 1,
+        borderRadius: 5,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+});
+
+export default ChatPage;
