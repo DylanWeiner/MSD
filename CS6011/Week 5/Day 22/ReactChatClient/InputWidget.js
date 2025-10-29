@@ -30,7 +30,7 @@ function InputWidget({login}) {
                 <TextInput
                     style={styles.room}
                     onChangeText={text => (roomValueRef.current = text)}
-                    onSubmitEditing={(e) => {login(e, usernameValueRef.current, roomValueRef.current)}}
+                    onSubmitEditing={() => {login({type: "join"}, usernameValueRef.current, roomValueRef.current)}}
                     returnKeyType="done"
                     autoCorrect={false}
                     autoCapitalize="none"
@@ -39,7 +39,7 @@ function InputWidget({login}) {
             </View>
 
             <TouchableOpacity
-                onPress={(e) => {login(e, usernameValueRef.current, roomValueRef.current)}}
+                onPress={() => {login({type: "join"}, usernameValueRef.current, roomValueRef.current)}}
             >
                 <Text style={styles.joinButton}>Enter</Text>
             </TouchableOpacity>

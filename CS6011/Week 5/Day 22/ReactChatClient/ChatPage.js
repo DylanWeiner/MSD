@@ -1,12 +1,14 @@
-import InputWidget from "./InputWidget";
 import { useRef, useEffect } from "react";
-import {ScrollView, StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
+import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
+import React from "react";
 
-function ChatPage({chatRoomName, allMessages, message }) {
+function ChatPage({allMessages, message }){
+
     const messageRef = useRef('');
     const usernameRef = useRef('');
     const roomRef = useRef('');
     const canvasRef = useRef(null);
+    const scrollViewRef = useRef(null);
 
     useEffect(() => {
         const canvas = canvasRef.current;

@@ -1,11 +1,10 @@
 import InputWidget from './InputWidget.js';
-import {useEffect, useRef, useState} from "react";
 import ChatPage from "./ChatPage";
+import {useEffect, useRef, useState} from "react";
 import {View} from "react-native";
 
 function App() {
     const [home, setHome] = useState(1);
-    const [value, setValue] = useState("black")
     let ws = useRef(null);
 
     let currentUser = useRef('')
@@ -22,13 +21,7 @@ function App() {
         ws.current.onmessage = handleMsg;
         ws.current.binaryType = "arraybuffer";
     },[]);
-    // ws.current.onmessage = (event) => {
-    //     handleMsg(event);
-    // }; Proposed Change
 
-    let chatMessages = [];
-    let joinMessages = [];
-    let leaveMessages = [];
     const [allMessages, setAllMessages] = useState([]);
     const [userHasJoined, setUserHasJoined] = useState(false);
 
@@ -80,8 +73,8 @@ function App() {
 
     // Handle key presses
     function handleLogin(ke, user, rm) {
-        console.log("test 1 " + ke);
-        if (ke.key === "e" || ke.target.id === "joinButton") {
+        console.log("test 1 " + ke.type);
+        if (ke.type === "join") {
             console.log(ke.key + "test 2");
             if (user === "") {
                 alert("Please enter a username");
@@ -89,11 +82,6 @@ function App() {
                 user.select();
                 return;
             }
-
-            if (ke.target.id === "userName") {
-                // "room".focus();
-                console.log("testing")
-            } else if (ke.target.id === "room" || ke.target.id === "joinButton") {
                 if (rm === "") {
                     alert("Please enter a Room Name");
                     rm = "RoomName";
@@ -118,7 +106,6 @@ function App() {
                     showChatRoom();
 
                 }
-            }
         }
     }
 
