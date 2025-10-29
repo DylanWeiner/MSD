@@ -45,9 +45,6 @@ function App() {
             text = m.data;
         }
         console.log("got this", text);
-        if (!document.getElementById("#canvas")) {
-            // createRoom();
-        }
         const msg = JSON.parse(text);
         let messageText = "";
         if (msg.type === "join") {
@@ -111,23 +108,20 @@ function App() {
 
     function handleMessageSend(ke, user, rm, message) {
         // Handle sending message on Enter key in textarea or button click
-        if (
-            (ke.type === "keypress" && ke.key === "Enter" && ke.target.id === "messageBox") ||
-            (ke.type === "click" && ke.target.id === "sendButton")
-        ) {
-            ke.preventDefault();
+        if (ke.type === "message") {
+            console.log(ke.type);
             if (!message || message.trim() === "") return;
 
             let color = userColors[user] || "black";
 
             ws.current.send(`message ${currentUser.current} ${currentRoom.current} ${message} ${color}`);
-            console.log("Message sent:", message);
+            console.log(`message ${currentUser.current} ${currentRoom.current} ${message} ${color}`);
 
             // Clear the message box after sending
-            const messageBox = document.getElementById("messageBox");
-            if(messageBox) {
-                messageBox.value = "";
-            }
+            // const messageBox = document.getElementById("messageBox");
+            // if(messageBox) {
+            //     messageBox.value = "";
+            // }
         }
         // Handle leave button click
         else if (message==='leave') {

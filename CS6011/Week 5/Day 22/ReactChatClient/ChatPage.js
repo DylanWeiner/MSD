@@ -2,36 +2,40 @@ import { useRef, useEffect } from "react";
 import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React from "react";
 
-function ChatPage({allMessages, message }){
+function ChatPage({chatRoomName, allMessages, message }){
 
     const messageRef = useRef('');
     const usernameRef = useRef('');
     const roomRef = useRef('');
-    const canvasRef = useRef(null);
+    // const canvasRef = useRef(null);
     const scrollViewRef = useRef(null);
 
     useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
+        scrollViewRef.current?.scrollToEnd({animated:true});
+        // const canvas = canvasRef.current;
+        // if (!canvas) return;
+        // const ctx = canvas.getContext("2d");
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "#C9F5D9";
-        ctx.fillRect(50, 50, 1497, 777);
-        ctx.strokeStyle = "#3CD184";
-        ctx.lineWidth = 3;
-        ctx.strokeRect(50, 50, 1497, 777);
-
-        ctx.textAlign = "left";
-        ctx.textBaseline = "top";
-        ctx.font = "16px Arial";
-
-        const lineHeight = 22;
-
-        allMessages.slice(-40).forEach((msg, i) => {
-            ctx.fillStyle = msg.color || "black";
-            ctx.fillText(msg.text, 60, 60 + i * lineHeight);
-        });
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // ctx.fillStyle = "#C9F5D9";
+        // ctx.fillRect(50, 50, 1497, 777);
+        // ctx.strokeStyle = "#3CD184";
+        // ctx.lineWidth = 3;
+        // ctx.strokeRect(50, 50, 1497, 777);
+        //
+        // ctx.textAlign = "left";
+        // ctx.textBaseline = "top";
+        // ctx.font = "16px Arial";
+        //
+        // const lineHeight = 22;
+        //
+        console.log("This is working");
+        //
+        // allMessages.slice(-40).forEach((msg, i) => {
+        //     ctx.fillStyle = msg.color || "black";
+        //     ctx.fillText(msg.text, 60, 60 + i * lineHeight);
+        //
+        // });
     }, [allMessages]);
 
     return (
@@ -40,7 +44,7 @@ function ChatPage({allMessages, message }){
 
             <TouchableOpacity
                 style={styles.leaveButton}
-                onPress={(e) => message(e, usernameRef.current, roomRef.current, "leave")}
+                onPress={() => message({type: "leave"}, usernameRef.current, roomRef.current, "leave")}
             >
                 <Text>Leave</Text>
             </TouchableOpacity>
@@ -60,14 +64,14 @@ function ChatPage({allMessages, message }){
             <TextInput
                 style={styles.messageInput}
                 onChangeText={text => (messageRef.current = text)}
-                onSubmitEditing={(e) => message(e, usernameRef.current, roomRef.current, messageRef.current)}
+                onSubmitEditing={() => message({type: "message"}, usernameRef.current, roomRef.current, messageRef.current)}
                 placeholder="Type your message"
                 returnKeyType="send"
             />
 
             <TouchableOpacity
                 style={styles.sendButton}
-                onPress={(e) => message(e, usernameRef.current, roomRef.current, messageRef.current)}
+                onPress={() => message({type: "message"}, usernameRef.current, roomRef.current, messageRef.current)}
             >
                 <Text>Send</Text>
             </TouchableOpacity>
