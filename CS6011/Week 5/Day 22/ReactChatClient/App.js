@@ -79,30 +79,28 @@ function App() {
                 user.select();
                 return;
             }
-                if (rm === "") {
-                    alert("Please enter a Room Name");
-                    rm = "RoomName";
-                    rm.select();
-                    return;
-                }
-                console.log(user + " has joined " + rm + ".");
+            if (rm === "") {
+                alert("Please enter a Room Name");
+                rm = "RoomName";
+                rm.select();
+                return;
+            }
+            console.log(user + " has joined " + rm + ".");
 
-                if (!userHasJoined) {
-                    console.log("test 3");
-                    setAllMessages(prev => [...prev, {text: user + " has joined " + rm + ".", color: "black"}]);
-                    setUserHasJoined(true);
+            if (!userHasJoined) {
+                console.log("test 3");
+                setAllMessages(prev => [...prev, {text: user + " has joined " + rm + ".", color: "black"}]);
+                setUserHasJoined(true);
 
-                    // ws.send("join " + user + " " + chatRoom + " " + selectedColor);
+                ws.current.send("join " + user + " " + rm + " " + 'black');
+                console.log("join " + user + " " + rm + " " + 'black');
 
-                    ws.current.send("join " + user + " " + rm + " " + 'black');
-                    console.log("join " + user + " " + rm + " " + 'black');
+                currentRoom.current=rm;
+                currentUser.current=user;
 
-                    currentRoom.current=rm;
-                    currentUser.current=user;
+                showChatRoom();
 
-                    showChatRoom();
-
-                }
+            }
         }
     }
 

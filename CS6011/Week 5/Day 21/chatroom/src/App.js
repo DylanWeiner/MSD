@@ -109,8 +109,6 @@ function App() {
                     setAllMessages(prev => [...prev, {text: user + " has joined " + rm + ".", color: "black"}]);
                     setUserHasJoined(true);
 
-                    // ws.send("join " + user + " " + chatRoom + " " + selectedColor);
-
                     ws.current.send("join " + user + " " + rm + " " + 'black');
                     console.log("join " + user + " " + rm + " " + 'black');
 

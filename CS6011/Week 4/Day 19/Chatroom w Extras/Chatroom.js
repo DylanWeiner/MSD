@@ -1,6 +1,7 @@
 let ws = new WebSocket("ws://localhost:8080");
 ws.onopen = handleOpen;
 ws.onmessage = handleMsg;
+ws.onclose = handleLeaveBtn;
 
 const messageInput = document.getElementById('messageBox');
 const u = document.getElementById('userName');
@@ -15,7 +16,6 @@ let userHasJoined = false;
 
 let userColors = {}; // Store username → color mapping
 ws.binaryType = "arraybuffer";
-
 
 // Handle key presses
 function handleKeyPress(ke) {

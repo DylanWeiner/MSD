@@ -2,19 +2,10 @@ let beeimg = new Image(); // Alternatively document.createElement('img');
 beeimg.src = "bee.png"; // This should be the file name of the bee image.
 
 let bee1 = {x: 15, y: 25, speed: Math.random()*5+5};
-bee1.img = beeimg;
-
 let bee2 = {x: 250, y: 600, speed: Math.random()*5+5};
-bee2.img = beeimg;
-
 let bee3 = {x: 150, y: 425, speed: Math.random()*5+5};
-bee3.img = beeimg;
-
 let bee4 = {x: 630, y: 120, speed: Math.random()*5+5};
-bee4.img = beeimg;
-
 let bee5 = {x: 510, y: 20, speed: Math.random()*5+5};
-bee5.img = beeimg;
 
 let bees = [bee1, bee2, bee3, bee4, bee5]; // 1024 x 1024
 
@@ -65,6 +56,7 @@ function updateBees() {
 function draw() {
   ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
   for(let bee of bees){
+      bee.img = beeimg;
     ctx.drawImage(bee.img, bee.x, bee.y, 50, 50);
   }
   if(isAnimating){
