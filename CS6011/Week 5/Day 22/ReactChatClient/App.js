@@ -114,14 +114,11 @@ function App() {
 
             let color = userColors[user] || "black";
 
+
+
             ws.current.send(`message ${currentUser.current} ${currentRoom.current} ${message} ${color}`);
             console.log(`message ${currentUser.current} ${currentRoom.current} ${message} ${color}`);
-
-            // Clear the message box after sending
-            // const messageBox = document.getElementById("messageBox");
-            // if(messageBox) {
-            //     messageBox.value = "";
-            // }
+            setAllMessages(prev => [ ...prev, {text: `${currentUser.current}: ${message}`, color}])
         }
         // Handle leave button click
         else if (message==='leave') {
