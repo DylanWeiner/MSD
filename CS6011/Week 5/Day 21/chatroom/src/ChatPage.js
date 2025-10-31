@@ -1,5 +1,4 @@
 import './App.css';
-import InputWidget from "./InputWidget";
 import { useRef, useEffect } from "react";
 
 function ChatPage({chatRoomName, allMessages, message }) {

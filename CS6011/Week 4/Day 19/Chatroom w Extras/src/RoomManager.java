@@ -29,6 +29,7 @@ public class RoomManager {
     }
 
     public static synchronized void addRoomOrClient(String room, ClientSocket client) {
+        System.out.println("Adding room: " + room);
         Room r = rooms.get(room);
         if (r == null) {
             r = new Room(room);

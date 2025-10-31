@@ -117,12 +117,15 @@ function beeStart() {
 }
 
 function collisionDetected() {
-    if(bees[0].x >= mouseX-10 &&
-      bees[0].y >= mouseY-10 &&
-      bees[0].x <= mouseX &&
-      bees[0].y <= mouseY ) {
-      collision = true;
-  }
+    for (let bee of bees) {
+    if (bee.x >= mouseX - 10 &&
+        bee.y >= mouseY - 10 &&
+        bee.x <= mouseX &&
+        bee.y <= mouseY) {
+        collision = true;
+        return;
+    }
+}
   if(bees[1].x >= mouseX-10 &&
       bees[1].y >= mouseY-10 &&
       bees[1].x <= mouseX &&

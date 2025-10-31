@@ -16,7 +16,7 @@ function App() {
 
 
     useEffect(()=> {
-        ws.current = new WebSocket("ws://localhost:8080");
+        ws.current = new WebSocket("ws://10.18.133.73:8080");
         ws.current.onopen = handleOpen;
         ws.current.onmessage = handleMsg;
         ws.current.binaryType = "arraybuffer";
@@ -36,9 +36,10 @@ function App() {
     }
 
     function handleMsg(m) {
+        console.log("Does handleMsg trigger?");
         let text;
         if(m.data instanceof Blob) {
-            text =  m.data.text();
+            text = m.data.text();
         } else if(m.data instanceof ArrayBuffer) {
             text = new TextDecoder("utf-8").decode(m.data);
         } else {
@@ -48,17 +49,18 @@ function App() {
         const msg = JSON.parse(text);
         let messageText = "";
         if (msg.type === "join") {
-            console.log("joined a room");
+            console.log(msg.type + "Testing in this instance for loops");
             messageText = msg.user + " has joined " + msg.room + ".";
         } else if (msg.type === "leave") {
             messageText = msg.user + " has left " + msg.room + ".";
         } else if (msg.type === "message") {
+            console.log(msg.type + "Testing in this instance for loops");
             messageText = msg.user + ": " + msg.message;
         } else if(msg.type === "color") {
             messageText = msg.user + " has changed their text color to " + msg.color;
         }
 
-        if (messageText ) {
+        if (messageText) {
             console.log("set messages for all messages box");
             setAllMessages(prevMessages => {
                 const exists = prevMessages.some(m => m.text === messageText);
@@ -85,6 +87,7 @@ function App() {
                 rm.select();
                 return;
             }
+            setAllMessages([]); // clear prev history, if any
             console.log(user + " has joined " + rm + ".");
 
             if (!userHasJoined) {
@@ -111,8 +114,6 @@ function App() {
             if (!message || message.trim() === "") return;
 
             let color = userColors[user] || "black";
-
-
 
             ws.current.send(`message ${currentUser.current} ${currentRoom.current} ${message} ${color}`);
             console.log(`message ${currentUser.current} ${currentRoom.current} ${message} ${color}`);

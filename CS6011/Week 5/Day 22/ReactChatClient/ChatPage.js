@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: "bold",
         marginBottom: 10,
+        marginVertical:50,
     },
     leaveButton: {
         position: "absolute",
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
         borderRadius: 4,
         zIndex: 1,
+        marginVertical:50,
     },
     messageBox: {
         flex: 1,
