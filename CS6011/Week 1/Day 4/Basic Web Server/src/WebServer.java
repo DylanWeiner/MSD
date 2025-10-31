@@ -8,6 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.Scanner;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 public class WebServer {
 
@@ -31,7 +33,7 @@ public class WebServer {
 
             // Send response header.
             String fileContents;
-            if (filename.equals("/")) {
+            if (filename.equals("/")  || filename.equals("index.html")) {
                 fileContents = Files.readString(Path.of("index.html"));
                 writer.print("HTTP/1.1 200 OK\n");
                 writer.print("Content-Length: " + fileContents.length() + "\n");
@@ -41,10 +43,13 @@ public class WebServer {
                 writer.flush();
             } else
                 try {
-                    fileContents = Files.readString(Path.of("styles.css"));
+                    fileContents = Files.readString(Path.of(filename));
                     writer.print("HTTP/1.1 200 OK\n");
                     writer.print("Content-length: " + fileContents.length() + "\n");
-                    writer.print("Content-Type: text/css\n");
+                    Matcher m = Pattern.compile("[^.]*$").matcher(filename);
+                    m.find();
+                    String fileType = m.group();
+                    writer.print("Content-Type: text/" + fileType + "\n");
                     writer.print("\r\n");
                     writer.print(fileContents);
                     writer.flush();

@@ -61,7 +61,6 @@ public class HandleClientConnect implements Runnable {
                         String path = filename.startsWith("/") ? filename.substring(1) : filename;
                         fileContents = Files.readString(Path.of(path));
                         String contentType = filename.endsWith(".css") ? "text/css" : "text/plain";
-
                         writer.print("HTTP/1.1 200 OK\r\n");
                         writer.print("Content-Length: " + fileContents.length() + "\r\n");
                         writer.print("Content-Type: " + contentType + "\r\n");
