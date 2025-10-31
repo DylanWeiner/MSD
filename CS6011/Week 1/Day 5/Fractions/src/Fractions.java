@@ -28,16 +28,15 @@ public class Fractions {
 
     public Fractions(int numerator, int denominator) {
         try {
-            NonZero();
             this.numerator = numerator;
             this.denominator = denominator;
+            NonZero();
             reduce();
             normalizeSign();
         }
         catch (ArithmeticException e) {
             System.out.println("That won't work!");
-            System.out.println("Error Message: " + e.getMessage());
-            System.exit(-1);
+            throw new ArithmeticException("Error Message: " + e.getMessage());
         }
     }
 

@@ -12,11 +12,11 @@ public class HTTPRequest {
     }
 
     public String getRequest() throws IOException {
-            InputStream is = socketToClient.getInputStream();
-            Scanner lineIntake = new Scanner(is);
+        InputStream is = socketToClient.getInputStream();
+        Scanner lineIntake = new Scanner(is);
 
-            String line = lineIntake.nextLine(); // retrieves "GET / HTTP/1.1"
-            String[] split = line.split(" ");
-            return split[1];
+        String line = lineIntake.nextLine(); // retrieves "GET / HTTP/1.1"
+        String[] split = line.split(" ");
+        return split[1];
     }
 }

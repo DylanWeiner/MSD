@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a378e5a6-f925-4cce-8d52-f162a84c6607" name="Changes" comment="" />
+    <list default="true" id="a378e5a6-f925-4cce-8d52-f162a84c6607" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../../Week 1/Day 5/Fractions/src/Fractions.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Week 1/Day 5/Fractions/src/Fractions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../Week 1/Day 5/Fractions/src/FractionsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../../Week 1/Day 5/Fractions/src/FractionsTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -77,6 +80,7 @@
       <workItem from="1758820065110" duration="10009000" />
       <workItem from="1758905749941" duration="3702000" />
       <workItem from="1761158885979" duration="1456000" />
+      <workItem from="1761939654200" duration="60000" />
     </task>
     <servers />
   </component>

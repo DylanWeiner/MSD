@@ -26,7 +26,7 @@ public class AudioClip {
     }
 
     public byte[] getData() {
-        return Arrays.copyOfRange(bytes, 0, FULL_SAMPLE_RATE);
+        return Arrays.copyOfRange(bytes, 0, (FULL_SAMPLE_RATE*2));
     }
 
 

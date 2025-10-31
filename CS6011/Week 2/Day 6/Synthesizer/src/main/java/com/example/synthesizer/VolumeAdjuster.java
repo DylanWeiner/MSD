@@ -19,9 +19,10 @@ public class VolumeAdjuster implements AudioComponent {
     public AudioClip getClip() {
         AudioClip original = input_.getClip();
         AudioClip adjust = new AudioClip();
-        for(int i = 0; i < FULL_SAMPLE_RATE; i++) {
-            int newVal = (int) (original.getSample(i)*volume_);
-            adjust.setSample(i,newVal);
+        for (int j = 0; j < FULL_SAMPLE_RATE; j++) {
+            int newVal = original.getSample(j) + adjust.getSample(j);
+            newVal = Math.max(Short.MIN_VALUE, Math.min(Short.MAX_VALUE, newVal));
+            adjust.setSample(j, newVal);
         }
         return adjust;
     }

@@ -21,7 +21,7 @@ public class SineWave implements AudioComponent {
     public AudioClip getClip() {
         int result = 0;
         for(int i = 0; i < FULL_SAMPLE_RATE; i++) {
-            result = (int) (Short.MAX_VALUE * sin(2 * Math.PI * frequency * i / FULL_SAMPLE_RATE));
+            result = (int) (Short.MAX_VALUE * sin(2 * Math.PI * frequency * i / (FULL_SAMPLE_RATE/2)));
             clip.setSample(i, result);
         }
         return clip;

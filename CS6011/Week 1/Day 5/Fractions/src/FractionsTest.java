@@ -31,12 +31,10 @@ class FractionsTest {
 
         Assertions.assertEquals( f1.toDouble(), 0.5 );
         Assertions.assertEquals( f11.toDouble(), 4.0 );
-
-
     }
+
     @Test
-    public void TestZero() {
-        Fractions f1 = new Fractions(1,0 );
-        System.out.println( f1.toDouble() );
+    public void TestZero(){
+        Assertions.assertThrows (ArithmeticException.class, () -> new Fractions( 1, 0 ));
     }
 }
