@@ -54,8 +54,8 @@ class FractionsTest {
 
         Collections.sort(frac);
 
-        for (int i = 0; i < frac.size(); i++) {
-            System.out.println(frac.get(i));
+        for (int i = 1; i < frac.size(); i++) {
+            assert(frac.get(i-1).toDouble()<=frac.get(i).toDouble());
         }
     }
 }

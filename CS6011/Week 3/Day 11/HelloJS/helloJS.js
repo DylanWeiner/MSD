@@ -14,11 +14,15 @@ function main() {
 
     function s(a, b) {
         return a + b;
-    };
+    } //I prefer the function as it feels more dynamic and versatile
 
     let sum = function(a, b) {
         return a + b
     };
-};
+
+    console.log(s(5, 12) + " " + s(7.2,4.7) + " " + s("I'm ","Dying") + " " + s(7.3, " Erm, Acshually"));
+    //They aren't assigned data types so they automatically change to whichever data type fits best and prevents errors.
+
+}
 
 window.onload = main;

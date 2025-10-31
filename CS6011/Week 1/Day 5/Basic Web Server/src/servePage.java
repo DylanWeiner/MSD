@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -42,6 +43,10 @@ public class servePage {
         } catch (NoSuchFileException e) {
             writer.print("HTTP 1.1 404 not found");
             writer.flush();
+        } catch(UnsupportedOperationException e) {
+            writer.print("HTTP 1.1 405 Method Not Allowed");
+        } catch(MalformedURLException e) {
+            writer.print("HTTP 1.1 400 Bad Request");
         }
         writer.close();
     }
