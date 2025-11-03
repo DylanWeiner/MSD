@@ -1,0 +1,37 @@
+1. Where is the assertEquals method defined? What does it do? Can we use assertEquals for more than just int types? (Hint: Consult the API for JUnit)
+It is defined in the assertions class. Yes, the documentation shows it can test for other data types that aren't just ints.
+
+2. Briefly describe what each of the three tests is checking.
+Each of the three tests were checking if a random set of numbers would trigger any issues, if an empty array would crash, and
+if three equivalent values would return the correct value.
+
+3. Why is our unimplemented findSmallestDiff method passing one of the tests?
+It was able to pass because it had return, which automatically returns 0, this is the required value for the same values array.
+
+4. Why are we failing the third test? How should our method be modified to correct this?
+It was looking for the smallest value and returning it as the smallest difference. Although 8 is a greater difference than 4,
+-8 is smaller than 0, so we needed to take the absolute value.
+
+5. What is the appropriate call to assertEquals for your new test (test 4)?
+@Test
+public void negativeButSameAbsValues() {
+    assertEquals(2, DiffUtil.findSmallestDiff(arr4));
+}
+
+6. Provide one more test (test 5) for the findSmallestDiff method. Briefly describe your test and write the call to assertEquals here.
+allNegativeValues, a test where all the values in this array were negative. It needed to return 2, but it initially returned
+-2 because the final value is never passed as an absolute value.
+assertEquals(2, DiffUtil.findSmallestDiff(arr5))
+
+7. Briefly describe your unit tests for Assignment 1.
+Assignment 1's unit tests included a test that ensured that getPixel would retrieve the appropriate brightness value at the
+proper coordinates when the method was called. The second tested that each pixel in two images matched one another perfectly.
+The third test ensured that the brightness of the entire image could be averaged out using the level of white in an image by
+asserting an image provided had the expected level that was manually assessed. The fourth test took the field of the image
+and modified the pixels so their brightness would average out to 127 and tested it by taking a few big squares that covered
+the whole image and made them match the brightness level more evenly. The fifth test made the expected image as a mirror of
+the small Square and then compared the two to ensure they matched one another. The sixth image took the small square and
+compared its cropped image to a premade image that would match the parameters expected. The seventh test made a new image
+that would match the cut out square the method should make. And the final test took the getPixel value of a negative number
+to ensure an exception for negatives had been created. In summation, all the tests made predetermined objects that we knew
+should match the expected result and compared them to the outcome of our code to see if our code was correctly executed.
