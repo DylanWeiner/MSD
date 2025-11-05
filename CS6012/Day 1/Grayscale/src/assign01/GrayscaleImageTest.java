@@ -77,4 +77,23 @@ class GrayscaleImageTest {
     void testGetPixelThrowsOnNegativeX(){
         assertThrows(IllegalArgumentException.class, () -> { smallSquare.getPixel(-1,0);});
     }
+
+    @Test
+    void testGetPixelThrowsOnNegativeY(){
+        assertThrows(IllegalArgumentException.class, () -> { smallSquare.getPixel(0,-1);});
+    }
+
+    @Test
+    void testCroppedZero(){
+        assertThrows(IllegalArgumentException.class, () -> {smallSquare.cropped(0,0,0,0);});
+    }
+
+    @Test
+    void testCroppedNegativeX(){
+        assertThrows(IllegalArgumentException.class, () -> {smallSquare.cropped(-1,0,0,0);});
+    }
+    @Test
+    void testCroppedNegativeY(){
+        assertThrows(IllegalArgumentException.class, () -> {smallSquare.cropped(0,-1,0,0);});
+    }
 }

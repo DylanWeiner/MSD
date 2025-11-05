@@ -4,18 +4,19 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 
 /**
  * Class representation of a library (a collection of library books).
  *
  */
-public class Library {
+public class Library<Type> {
 
-    private ArrayList<LibraryBook> library;
+    private ArrayList<LibraryBook<Type>> library;
 
     public Library() {
-        library = new ArrayList<LibraryBook>();
+        library = new ArrayList<LibraryBook<Type>>();
     }
 
     /**
@@ -38,7 +39,7 @@ public class Library {
      * @param list
      *          -- list of library books to be added
      */
-    public void addAll(ArrayList<LibraryBook> list) {
+    public void addAll(ArrayList<LibraryBook<Type>> list) {
         library.addAll(list);
     }
 
@@ -51,7 +52,7 @@ public class Library {
      * @param filename
      */
     public void addAll(String filename) {
-        ArrayList<LibraryBook> toBeAdded = new ArrayList<LibraryBook>();
+        ArrayList<LibraryBook<Type>> toBeAdded = new ArrayList<>();
 
         try (Scanner fileIn = new Scanner(new File(filename))) {
 
@@ -101,8 +102,8 @@ public class Library {
      * @param isbn
      *          -- ISBN of the book to be looked up
      */
-    public String lookup(long isbn) {
-        for (LibraryBook book : library) {
+    public Type lookup(long isbn) {
+        for (LibraryBook<Type> book : library) {
             if(isbn == book.getIsbn()) {
                 return book.getHolder();
             }
@@ -118,11 +119,13 @@ public class Library {
      * @param holder
      *          -- holder whose checked out books are returned
      */
-    public ArrayList<LibraryBook> lookup(String holder) {
-        ArrayList<LibraryBook> books = new ArrayList<>();
-        for (LibraryBook book : library) {
-            if (book.getHolder().equals(holder)) {
-                books.add(book);
+    public ArrayList<LibraryBook<Type>> lookup(Type holder) {
+        ArrayList<LibraryBook<Type>> books = new ArrayList<>();
+        for (LibraryBook<Type> book : library) {
+            if(book.getHolder() != null) {
+                if (book.getHolder().equals(holder)) {
+                    books.add(book);
+                }
             }
         }
         return books;
@@ -149,12 +152,12 @@ public class Library {
      *          -- year of the new due date of the library book
      *
      */
-    public boolean checkout(long isbn, String holder, int month, int day, int year) {
-        for (LibraryBook book : library) {
+    public boolean checkout(long isbn, Type holder, int month, int day, int year) {
+        for (LibraryBook<Type> book : library) {
             if((book.getIsbn() == isbn) && !book.checkedOut) {
                 book.checkedOut = true;
                 book.holder = holder;
-                book.dueDate.set(year, month, day);
+                book.dueDate = new GregorianCalendar(year, month, day);
                 return true;
             }
         }
@@ -174,7 +177,7 @@ public class Library {
      *          -- ISBN of the library book to be checked in
      */
     public boolean checkin(long isbn) {
-        for (LibraryBook book : library) {
+        for (LibraryBook<Type> book : library) {
             if ((book.getIsbn() == isbn) && book.checkedOut) {
                 book.checkedOut = false;
                 book.holder = null;
@@ -197,16 +200,20 @@ public class Library {
      * @param holder
      *          -- holder of the library books to be checked in
      */
-    public boolean checkin(String holder) {
+    public boolean checkin(Type holder) {
         boolean found = false;
-        for (LibraryBook book : library) {
-            if ((book.getHolder().equals(holder)) && book.checkedOut) {
-                book.checkedOut = false;
-                book.holder = null;
-                book.dueDate = null;
-                found = true;
+        for (LibraryBook<Type> book : library) {
+            if(book.holder != null) {
+                if ((book.getHolder().equals(holder)) && book.checkedOut) {
+                    book.checkedOut = false;
+                    book.dueDate = null;
+                    found = true;
+                    book.holder = null;
+                }
             }
         }
         return found;
     }
+
+    
 }

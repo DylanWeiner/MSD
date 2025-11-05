@@ -107,6 +107,10 @@ public class GrayscaleImage {
             return false;
         }
 
+        if(imageData.length != ((GrayscaleImage)other).imageData.length || imageData[0].length != ((GrayscaleImage)other).imageData[0].length){
+            return false;
+        }
+
         GrayscaleImage otherImage = (GrayscaleImage)other;
 
         for(int row = 0; row < imageData.length; row++){
@@ -153,10 +157,7 @@ public class GrayscaleImage {
                 normalizedData[row][col] = imageData[row][col] * scale;
             }
         }
-
-        GrayscaleImage normalizedImage = new GrayscaleImage(normalizedData);
-
-        return normalizedImage;
+        return new GrayscaleImage(normalizedData);
     }
 
 
@@ -176,8 +177,7 @@ public class GrayscaleImage {
                 newImage[row][col] = imageData[row][imageData[0].length-col-1];
             }
         }
-        GrayscaleImage mirroredImage  = new GrayscaleImage(newImage);
-        return mirroredImage;
+        return new GrayscaleImage(newImage);
     }
 
 //    /**
@@ -193,6 +193,9 @@ public class GrayscaleImage {
 //     */
     public GrayscaleImage cropped(int startRow, int startCol, int width, int height){
         double[][] croppedData = new double[width][height];
+        if(width <= 0 || height <= 0){
+            throw new IllegalArgumentException("width and height must be positive numbers");
+        }
         for (int row = startRow; row < startRow+height; row++) {
             for (int col = startCol; col < startCol+width; col++) {
                 croppedData[row-startRow][col-startCol] = imageData[row][col];
@@ -222,26 +225,10 @@ public class GrayscaleImage {
             difference = (height - width);
             edges = difference/2;
             return cropped(edges, 0, width, width);
-//            double[][] squaredData = new double[height-difference][width];
-//            for (int row = 0; row < (height-difference); row++) {
-//                for (int col = 0; col < width; col++) {
-//                    squaredData[row][col] = imageData[edges][col];
-//                    edges++;
-//                }
-//            }
-//            return new GrayscaleImage(squaredData);
         } else if(height < width) {
             difference = (width - height);
             edges = difference/2;
             return cropped(0, edges, height, height);
-//            double[][] squaredData = new double[height][width-difference];
-//            for (int row = 0; row < height; row++) {
-//                for (int col = 0; col < (width-difference); col++) {
-//                    squaredData[row][col] = imageData[row][edges];
-//                    edges++;
-//                }
-//            }
-//            return new GrayscaleImage(squaredData);
         } else {
             return new GrayscaleImage(imageData);
         }
