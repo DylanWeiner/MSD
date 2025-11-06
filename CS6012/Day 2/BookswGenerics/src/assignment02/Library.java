@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -215,5 +216,109 @@ public class Library<Type> {
         return found;
     }
 
-    
+    /**
+     * Returns the list of library books, sorted by ISBN (smallest ISBN
+     first).
+     */
+    public ArrayList<LibraryBook<Type>> getInventoryList() {
+        ArrayList<LibraryBook<Type>> libraryCopy = new
+                ArrayList<LibraryBook<Type>>();
+        libraryCopy.addAll(library);
+        OrderByIsbn comparator = new OrderByIsbn();
+        sort(libraryCopy, comparator);
+        return libraryCopy;
+    }
+
+    /**
+     * Returns the list of library books, sorted by author
+     */
+    public ArrayList<LibraryBook<Type>> getOrderedByAuthor() {
+        ArrayList<LibraryBook<Type>> orderedByAuthor = new ArrayList<LibraryBook<Type>>(library);
+        Comparator<LibraryBook<Type>> comparator = new OrderByAuthor();
+        sort(orderedByAuthor, comparator);
+        return orderedByAuthor;
+    }
+
+    /**
+     * Returns the list of library books whose due date is older than the
+     input
+     * date. The list is sorted by date (oldest first).
+     *
+     * If no library books are overdue, returns an empty list.
+     */
+    public ArrayList<LibraryBook<Type>> getOverdueList(int month, int day, int year) {
+        ArrayList<LibraryBook<Type>> overdueList = new ArrayList<>();
+        GregorianCalendar todaysDate = new GregorianCalendar(month, day, year);
+
+        Comparator<LibraryBook<Type>> comparator = new OrderByDueDate();
+
+        for(LibraryBook<Type> book : overdueList) {
+            if(book.checkedOut && book.getDueDate().compareTo(todaysDate) > 0){
+                overdueList.add(book);
+            }
+        }
+        sort(overdueList, comparator);
+        return overdueList;
+    }
+
+    /**
+     * Performs a SELECTION SORT on the input ArrayList.
+     * 1. Find the smallest item in the list.
+     * 2. Swap the smallest item with the first item in the list.
+     * 3. Now let the list be the remaining unsorted portion
+     * (second item to Nth item) and repeat steps 1, 2, and 3.
+     */
+    private static <ListType> void sort(ArrayList<ListType> list,
+                                        Comparator<ListType> c) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            int j, minIndex;
+            for (j = i + 1, minIndex = i; j < list.size(); j++)
+                if (c.compare(list.get(j), list.get(minIndex)) < 0)
+                    minIndex = j;
+            ListType temp = list.get(i);
+            list.set(i, list.get(minIndex));
+            list.set(minIndex, temp);
+        }
+    }
+
+    /**
+     * Comparator that defines an ordering among library books using the
+     ISBN.
+     */
+    protected class OrderByIsbn implements Comparator<LibraryBook<Type>> {
+        /**
+         * Returns a negative value if lhs is smaller than rhs. Returns a positive
+         * value if lhs is larger than rhs. Returns 0 if lhs and rhs are equal.
+         */
+        public int compare(LibraryBook<Type> lhs,
+                           LibraryBook<Type> rhs) {
+            return (int) (lhs.getIsbn() - rhs.getIsbn());
+        }
+    }
+
+    /**
+     * Comparator that defines an ordering among library books using the
+     author, and book title as a tie-breaker.
+     */
+    protected class OrderByAuthor implements Comparator<LibraryBook<Type>> {
+        public int compare(LibraryBook<Type> lhs, LibraryBook<Type> rhs) {
+            if(lhs.getAuthor().equals(rhs.getAuthor())) {
+                return lhs.getTitle().compareTo(rhs.getTitle());
+            }
+            return lhs.getAuthor().compareTo(rhs.getAuthor());
+        }
+    }
+
+    /**
+     * Comparator that defines an ordering among library books using the
+     due date.
+     */
+    protected class OrderByDueDate implements Comparator<LibraryBook<Type>> {
+        public int compare(LibraryBook<Type> lhs, LibraryBook<Type> rhs) {
+            if(lhs.getDueDate().equals(rhs.getDueDate())) {
+                return lhs.getTitle().compareTo(rhs.getTitle());
+            }
+            return lhs.getDueDate().compareTo(rhs.getDueDate());
+        }
+    }
 }
