@@ -1,0 +1,31 @@
+1. Which two binarySearch tests are failing?
+Tests 2 and 3 are failing.
+
+2. What are the values of arr and goal passed in to binary search?
+The goal value passed in was 0 and arr was the array [1, 2, 3, 4, 5]
+
+3. For each of the two cases of binarySearch that are failing, which return statements are they executing in error (is it
+returning true when it should be returning false, or the other way around)?
+It is doing both. It should be returning false when it is returning true and it should return true when it is returning false.
+We know this because the arrays that contain values we are looking for return false, as is true in the first and third tests
+and arrays that do not contain values we are searching for return true such as in the second and fourth tests.
+
+4. What is the bug in binarySearch? How do you fix it?
+The bug is that it is always comparing the number we are searching for to the middle index value. We can fix this by comparing
+goal to arr[mid] instead of mid itself as this is just an index value.
+
+5. Which loops appear to be infinite?
+Loops 2 and 4.
+
+6. For the loops that you found to be infinite, briefly explain why they are never progressing.
+Loop 2 b starts the loop with a value of zero, so no matter how much a's value changes, it will always be multiplied by zero
+when setting b's value, meaning it will never have a value greater than 13 and never leave the loop.Loop 4 is always having f
+subtract the value of c and on every loop c alternates between 1 and negative 1, f - -1 is f + 1 and f + 1 - 1 is f, keeping
+f perpetually between 5 and 6 and preventing it from dropping below zero and leaving the loop.
+
+7. What does the call to password.split(" ") appear to do? Hint: examine the input value of "password", then examine the items in the "tokens" array returned by the call.
+It takes each piece of the password separated by a space and turns the acquired characters into a string separate from the full
+password.
+
+8. What is the correct password?
+1 4 9 16 25
