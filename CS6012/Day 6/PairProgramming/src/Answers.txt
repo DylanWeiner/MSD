@@ -1,0 +1,24 @@
+1. What activities did you do as the driver? What activities did you do as the navigator?
+As the driver, I felt like I was able to focus more on ensuring the code was syntactically sound, whereas being the navigator
+made me feel as though I thought through the end goal of the code I was trying to provide.
+
+2. What are the advantages and disadvantages of serving in each role?
+As the driver, I feel somewhat helpless to help correct the code as I am trusting someone else to know the path being taken to
+the desired goal. As the navigator I felt as though my shortcomings substantially slowed our momentum.
+
+3. How often did you and your partner switch roles? Did you switch often enough?
+We swapped anytime the other had an idea on how to fix the other's issue. We swapped often enough because we somewhat bounced
+off the ideas of one another.
+
+4. Which is your preferred role and why?
+Navigator because I felt as though I struggle with implementing concepts that I'm only hearing.
+
+5. Explain why this is a BAD test case for your method: assertEquals("bird", MedianSolver.median(new String[]{"bird", "cat",
+"dog", "ant"}))
+There is technically no middle value because there are an even number of elements, meaning you have a 50% chance of a false
+true or a false negative.
+
+6. Explain how you could change the test to make it "valid" and explain how you could change the specification so that this is
+considered a "good" test
+You could add one more element to ensure it is selecting the true middle value or you can make it so even numbered indexed
+arrays return two values rather than one.

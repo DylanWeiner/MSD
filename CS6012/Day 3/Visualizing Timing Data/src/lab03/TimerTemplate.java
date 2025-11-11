@@ -1,4 +1,7 @@
 package lab03;
+
+import java.sql.SQLOutput;
+
 /**
  * Abstract class which can be used as a skeleton for perfoming timing tests
  * You provide the problem sizes, number of times to repeat the tests
@@ -9,7 +12,7 @@ package lab03;
 abstract public class TimerTemplate {
 
     private int[] problemSizes; //what N's should we time?
-    private int timesToLoop; //average the result of many trials
+    protected int timesToLoop; //average the result of many trials
 
     /**
      * Create a timer
@@ -67,7 +70,7 @@ abstract public class TimerTemplate {
         //actual timing code
         startTime = System.nanoTime();
         for(int i = 0; i < timesToLoop; i++){
-            timingIteration(n);
+            timingIteration(i); // We're passing this to use as an index for findMe
         }
         long afterTimedCode = System.nanoTime();
         //compensation loop
@@ -88,6 +91,7 @@ abstract public class TimerTemplate {
     Result[] run(){
         var ret = new Result[problemSizes.length];
         for(int i = 0; i < problemSizes.length; i++){
+            System.out.println("Starting problem size " + problemSizes[i]);
             ret[i] = timeIt(problemSizes[i]);
         }
         return ret;

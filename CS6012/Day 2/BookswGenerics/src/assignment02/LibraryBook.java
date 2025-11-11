@@ -3,8 +3,8 @@ package assignment02;
 import java.util.GregorianCalendar;
 
 public class LibraryBook<Type> extends Book {
-    boolean checkedOut;
-    Type holder;
+    boolean checkedOut = false;
+    Type holder = null;
     GregorianCalendar dueDate = null;
 
     public LibraryBook(long isbn, String author, String title) {
@@ -12,10 +12,7 @@ public class LibraryBook<Type> extends Book {
     }
 
     public Type getHolder() {
-        if(checkedOut) {
-            return holder;
-        }
-        return null;
+        return holder;
     }
 
     public GregorianCalendar getDueDate() {

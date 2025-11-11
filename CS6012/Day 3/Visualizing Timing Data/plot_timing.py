@@ -1,31 +1,33 @@
 import matplotlib.pyplot as plt
 
-X = 0
-Y = 1
 def main():
-    data = readFile("data.csv")
-    plt.figure(1)
-    for key in data:
-        plt.plot(data[key][X], data[key][Y])
-    plt.savefig('python_example1.png')
-    plt.show()
-    plt.close()
-
-
-
-def readFile(filename):
-    data = None
-    delim = ","
-    plot = {}
+    filename = "data.csv" #change me if desired
     with open(filename, 'r') as f:
-        data = [line.split(delim) for line in f]
-    for datum in data[1:]:
-        key = datum[0]
-        if(key not in plot):
-            plot[key] = ([],[])
-        plot[key][X].append(datum[1])
-        plot[key][Y].append(datum[2])
-    return plot
+        lines = f.readlines()
+        headers = lines[0].split(",")
+        data = {h: [] for h in headers}
+        for line in lines[1:]:
+            cols = line.split(",")
+            for i, col in enumerate(cols):
+                data[headers[i]].append(float(col))
+
+        print(data)
+
+
+        plt.figure(1)
+        # Assumes X axis is column 1, plots all other columns on the same plot
+        for h in headers[1:]:
+            plt.plot(data[headers[0]], data[h])
+
+        plt.xlabel(headers[0])
+        plt.ylabel("Time(ns)") #change me
+        plt.title("Amount of Time Searching for a Value Contained in an Array of Size N") #change me
+        plt.legend(headers[1:]) # label the lines
+        plt.savefig('Value_Contained.png') #change me
+
+        plt.show()
+        plt.close()
+
 
 
 if __name__ == '__main__':

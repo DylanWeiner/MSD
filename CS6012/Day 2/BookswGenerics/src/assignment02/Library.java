@@ -31,7 +31,7 @@ public class Library<Type> {
      *          -- title of the book to be added
      */
     public void add(long isbn, String author, String title) {
-        library.add(new LibraryBook(isbn, author, title));
+        library.add(new LibraryBook<Type>(isbn, author, title));
     }
 
     /**
@@ -79,7 +79,7 @@ public class Library<Type> {
                         throw new ParseException("Title", lineNum);
                     }
                     String title = lineIn.next();
-                    toBeAdded.add(new LibraryBook(isbn, author, title));
+                    toBeAdded.add(new LibraryBook<Type>(isbn, author, title));
                 }
                 lineNum++;
             }
@@ -221,9 +221,7 @@ public class Library<Type> {
      first).
      */
     public ArrayList<LibraryBook<Type>> getInventoryList() {
-        ArrayList<LibraryBook<Type>> libraryCopy = new
-                ArrayList<LibraryBook<Type>>();
-        libraryCopy.addAll(library);
+        ArrayList<LibraryBook<Type>> libraryCopy = new ArrayList<LibraryBook<Type>>(library);
         OrderByIsbn comparator = new OrderByIsbn();
         sort(libraryCopy, comparator);
         return libraryCopy;
@@ -252,7 +250,7 @@ public class Library<Type> {
 
         Comparator<LibraryBook<Type>> comparator = new OrderByDueDate();
 
-        for(LibraryBook<Type> book : overdueList) {
+        for(LibraryBook<Type> book : library) {
             if(book.checkedOut && book.getDueDate().compareTo(todaysDate) > 0){
                 overdueList.add(book);
             }
@@ -268,8 +266,7 @@ public class Library<Type> {
      * 3. Now let the list be the remaining unsorted portion
      * (second item to Nth item) and repeat steps 1, 2, and 3.
      */
-    private static <ListType> void sort(ArrayList<ListType> list,
-                                        Comparator<ListType> c) {
+    private static <ListType> void sort(ArrayList<ListType> list, Comparator<ListType> c) {
         for (int i = 0; i < list.size() - 1; i++) {
             int j, minIndex;
             for (j = i + 1, minIndex = i; j < list.size(); j++)

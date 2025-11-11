@@ -7,6 +7,7 @@ import java.util.*;
 
 public class ArrayListAddition extends TimerTemplate {
     ArrayList<Integer> set = new ArrayList<>();
+    ArrayList<Integer> findMe = new ArrayList<>();
 
     /**
      * Create a timer
@@ -17,45 +18,7 @@ public class ArrayListAddition extends TimerTemplate {
     public ArrayListAddition(int[] problemSizes, int timesToLoop) {
         super(problemSizes, timesToLoop);
     }
-//    String fileName = "data.csv";
-//    String COMMA_DELIMITER = ",";
-//    String NEW_LINE_SEPARATOR = "\n";
-//    try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-//
-//
-//
-//
-//        ArrayList<Double> timePerLoop = new ArrayList<>();
-//        // Number of iterations to average
-//        for(int x = 1; x <= 20; x++) {
-//        // Add to array list 1 to problem size
-//        for (int size : problemSize) {
-//            long startTime = System.nanoTime();
-//            for (int i = 1; i <= size; i++) {
-//                set.add(i);
-//            }
-//            long lastTime = System.nanoTime();
-//            timePerLoop.add((double) (lastTime - startTime) / (double) size);
-//        }
-//
-////            int elements = 0;
-//            int avgTimePerLoop = 0;
-//            for (int i = 0; i < timePerLoop.size(); i++) {
 
-    /// /                elements += problemSize.get(i);
-//                avgTimePerLoop += timePerLoop.get(i);
-//            }
-//        writer.append("Average Time(ns)");
-//        writer.append(COMMA_DELIMITER);
-//        writer.append("" + (avgTimePerLoop/timePerLoop.size()));
-//        writer.append(NEW_LINE_SEPARATOR);
-//        System.out.println("Iteration: " + x);
-//    }
-//
-//    } catch (IOException e) {
-//        System.err.println("Error writing to CSV file: " + e.getMessage());
-//        e.printStackTrace();
-//    }
     @Override
     protected void setup(int n) {
         for (int size = 0; size < n; size++) {
@@ -64,44 +27,48 @@ public class ArrayListAddition extends TimerTemplate {
             }
         }
         Collections.shuffle(set);
+        for (int i = 1; i <= this.timesToLoop; i++) {
+            findMe.add(set.get(i));
+        }
+        Collections.shuffle(set);
     }
 
     @Override
     protected void timingIteration(int n) {
-        int val = n / 2;
-        set.contains(val);
-        Collections.shuffle(set);
+        set.contains(findMe.get(n)); // We passed in timesToLoop as n to use to index findMe
     }
 
     @Override
     protected void compensationIteration(int n) {
-        int val = n / 2;
-        Collections.shuffle(set);
-    }
-
-    @Override
-    public Result[] run() {
-        Result[] result = super.run();
-        return result;
     }
 
     public static void main() throws IOException {
-        int[] problemSize = new int[10];
+        System.out.println("running");
+        int[] problemSize = new int[11];
         int index = 0;
-        for (int i = 10; i <= 20; i++) {
+        for (int i = 4; i <= 14; i++) {
             problemSize[index] = (int) (Math.pow(2, i));
             index++;
         }
 
-//        ArrayListAddition al = new ArrayListAddition(problemSize, 10);
-//        al.run();
+        var timer = new ArrayListAddition(problemSize, 10);
+        var results = timer.run();
 
         String fileName = "data.csv";
         String COMMA_DELIMITER = ",";
         String NEW_LINE_SEPARATOR = "\n";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
 
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            writer.write("Time(ns)" + COMMA_DELIMITER +  "N" + NEW_LINE_SEPARATOR);
+            for (var result : results) {
+                writer.write(result.n() + COMMA_DELIMITER + result.avgNanoSecs() + NEW_LINE_SEPARATOR);
+            }
+            writer.flush();
+            writer.close();
         }
     }
 }
+
+
 

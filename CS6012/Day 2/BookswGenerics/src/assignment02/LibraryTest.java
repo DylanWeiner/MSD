@@ -66,7 +66,7 @@ class LibraryTest {
 
         lib.checkin("Sybil Eye");
 
-        assertEquals(lib.lookup("Sybil Eye"), new ArrayList<>());
+        assertEquals(new ArrayList<>(), lib.lookup("Sybil Eye"));
     }
 
     @Test
