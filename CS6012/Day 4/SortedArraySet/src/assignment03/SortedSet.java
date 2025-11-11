@@ -85,6 +85,8 @@ public interface SortedSet<E> {
      */
     public Iterator<E> iterator();
 
+//    boolean hasNext();
+
     /**
      * Removes the specified element from this set if it is present.
      *

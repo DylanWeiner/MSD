@@ -1,26 +1,20 @@
 package assignment03;
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 public class BinarySearchSet<E> implements SortedSet<E> {
-    private E[] set = (E[]) new Object[1];
+    private E[] set;
     private Comparator<? super E> comparator;
     private int size = 0;
-    private Iterator<E> iterator;
 
     public BinarySearchSet() {
-        this.set = set;
-        this.iterator = iterator();
-    }
+        this.set = (E[]) new Object[10];
+    } // This uses natural ordering
 
     public BinarySearchSet(Comparator<? super E> comparator) {
-        this.set = set;
+        this.set = (E[]) new Object[10];
         this.comparator = comparator;
-        this.iterator = iterator();
-    }
+    } // This uses the comparator specified
 
         @Override
         public Comparator<? super E> comparator() {
@@ -29,33 +23,36 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
         @Override
         public E first() throws NoSuchElementException {
+            if(size == 0) {
+                return null;
+            }
             return set[0];
-        }
+        } // Returns the first value
 
         @Override
         public E last() throws NoSuchElementException {
-            return set[set.length - 1];
-        }
+            if(size == 0) {
+                return null;
+            }
+            return set[size - 1];
+        } // Returns last value
 
         @Override
         public boolean add(E element) {
-            boolean isContained = false;
-            if(size()+1>set.length) {
-                doubleArray();
+            if(element == null) {
+                return false;
             }
-            for(E e : set) {
-                if(!e.equals(element)) {
-                    isContained = true;
+            if(!contains(element)) {
+                if(size+1>=set.length) {
+                    doubleArray();
                 }
-            }
-            if(!isContained && element!=null) {
-                for(int i = 0; i < set.length - 1; i++) {
-                    if(set[i] == null) {
-                        set[i] = element;
-                        size++;
-                        return true;
-                    }
+                int index = -(BinarySearch(element));
+                for(int i = size; i > index; i--) {
+                    set[i] = set[i-1];
                 }
+                set[index] = element;
+                size++;
+                return true;
             }
             return false;
         }
@@ -63,24 +60,9 @@ public class BinarySearchSet<E> implements SortedSet<E> {
         @Override
         public boolean addAll(Collection<? extends E> elements) {
             boolean result = false;
-            boolean isContained = false;
-            if(size()+elements.size()>set.length) {
-                doubleArray();
-            }
             for(E e : elements) {
-                for (int i = 0; i < elements.size(); i++) {
-                    if (!set[i].equals(e)) {
-                        isContained = true;
-                    }
-                }
-                if (!isContained) {
-                    for (int i = 0; i < set.length - 1; i++) {
-                        if (set[i] == null) {
-                            set[i] = e;
-                            size++;
-                            result = true;
-                        }
-                    }
+                if(add(e)) {
+                    result = true;
                 }
             }
             return result;
@@ -88,21 +70,17 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
         @Override
         public void clear() {
-            for(int i = set.length-1; i > 0; i--) {
-                while (set[i] != null) {
-                    set[i] = null;
-                }
-            }
+            E[] newSet = (E[]) new Object[10];
+            size = 0;
+            set = newSet;
         }
 
         @Override
         public boolean contains(E element) {
-            for (E e : set) {
-                if (element.equals(e)) {
-                    return true;
-                }
-            }
-            return false;
+        if (BinarySearch(element) > 0) {
+            return true;
+        }
+        return false;
         }
 
         @Override
@@ -111,8 +89,6 @@ public class BinarySearchSet<E> implements SortedSet<E> {
             for (E e : elements) {
                 if (contains(e)) {
                     isContained = true;
-                } else {
-                    return false;
                 }
             }
             return isContained;
@@ -121,7 +97,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
         @Override
         public boolean isEmpty() {
             boolean noValue = true;
-            for(int i = 0; i < set.length-1; i++) {
+            for(int i = 0; i < set.length; i++) {
                 if (set[i] != null) {
                     noValue = false;
                 }
@@ -131,13 +107,21 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
         @Override
         public Iterator<E> iterator() {
-            return iterator;
+            return null;
         }
+
+//        @Override
+//        public boolean hasNext() {
+//            if(size()<set.length) {
+//                return true;
+//            }
+//            return false;
+//        }
 
         @Override
         public boolean remove(E element) {
             int index;
-            if(!contains(element)) {
+            if(contains(element)) {
                 for (int i = 0; i < set.length - 1; i++) {
                     if (set[i].equals(element)) {
                         set[i] = null;
@@ -156,24 +140,11 @@ public class BinarySearchSet<E> implements SortedSet<E> {
         @Override
         public boolean removeAll(Collection<? extends E> elements) {
             boolean isRemoved = false;
-            int numRemoved = 0;
-            int index;
             for(E e : elements) {
-                if(!contains(e)) {
-                    for (int i = 0; i < set.length - 1; i++) {
-                        if (set[i].equals(e)) {
-                            set[i] = null;
-                            index = i;
-                            for (int j = index; j < set.length - 1; j++) {
-                                set[j] = set[j + 1];
-                            }
-                            isRemoved = true;
-                            numRemoved++;
-                        }
-                    }
+                if(remove(e)) {
+                    isRemoved = true;
                 }
             }
-            size-=numRemoved;
             return isRemoved;
         }
 
@@ -201,11 +172,29 @@ public class BinarySearchSet<E> implements SortedSet<E> {
             return ((Object[]) sortedSet);
         }
 
-        public void doubleArray() {
-            E[] newSet = (E[]) new Object[set.length*2];
-            for(int i = 0; i < set.length-1; i++) {
-                newSet[i] = set[i];
+        private int BinarySearch(E element) {
+            int low = 0;
+            int high = size - 1;
+            while(low <= high) {
+                int mid = (low + high)/2;
+                if((comparator != null && element.equals(set[mid]))
+                        || (comparator == null && (((Comparable<E>) element).equals((E) set[mid])))) {
+                    return mid;
+                }
+                else if((comparator != null && comparator.compare(element, set[mid]) < 0)
+                        || ((Comparable<E>) element).compareTo(set[mid]) < 0) {
+                    low = mid + 1;
+                }
+                else if((comparator != null && comparator.compare(element, set[mid]) > 0)
+                        || (comparator == null && (((Comparable<E>) element).compareTo((E) set[mid]) > 0))) {
+                    high = mid - 1;
+                }
             }
+            return -(low + 1);
+        }
+
+        public void doubleArray() {
+            E[] newSet = Arrays.copyOf(set, set.length * 2);
             set = newSet;
         }
 }
