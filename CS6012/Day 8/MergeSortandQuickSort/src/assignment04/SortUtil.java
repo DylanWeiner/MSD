@@ -104,15 +104,15 @@ public class SortUtil<T> {
         return arr;
     }
 
-    public static <T> int partition(ArrayList<T> arr, T pivotVal,  Comparator<? super T> comp) {
-//        T getPivot = arr.get(pivotVal);
+    public static <T> int partition(ArrayList<T> arr, int pivotIndex,  Comparator<? super T> comp) {
+        T pivotVal = arr.get(pivotIndex);
         int left = 0;
         int right = arr.size()-1;
         while(left < right) {
-            while(comp.compare(arr.get(left), pivotVal) < 0) {
+            while(left < right && comp.compare(arr.get(left), pivotVal) < 0) {
                 left++;
             }
-            while(comp.compare(arr.get(right), pivotVal) > 0) {
+            while(left < right && comp.compare(arr.get(right), pivotVal) > 0) {
                 right--;
             }
             if(left < right) {
@@ -129,19 +129,25 @@ public class SortUtil<T> {
         return rand.nextInt(arr.size());
     }
 
-    public static <T> void quicksort(ArrayList<T> arr, Comparator<? super T> comp) {
+    public static <T> void quicksort(ArrayList<T> arr, int low, int high, Comparator<? super T> comp) {
         if(arr.size() < threshold) {
             insertionSort(arr, comp);
             return;
         }
+        if(low >= high) {
+            return;
+        }
+
         int pivotIndex = getRandom(arr, comp);
-        int partition = partition(arr, arr.get(pivotIndex), comp);
+        int partition = partition(arr, pivotIndex, comp);
 
-        ArrayList<T> left = new ArrayList<>(arr.subList(0, partition));
-        ArrayList<T> right = new ArrayList<>(arr.subList(partition, arr.size()));
+//        ArrayList<T> left = new ArrayList<>(arr.subList(0, partition));
+//        ArrayList<T> right = new ArrayList<>(arr.subList(partition, arr.size()));
 
-        quicksort(left, comp);
-        quicksort(right, comp);
+        quicksort(arr, low, partition, comp);
+        quicksort(arr, partition+1, high, comp);
+
+//        arr.clear();
 
 
     }
