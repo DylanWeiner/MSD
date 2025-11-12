@@ -9,7 +9,7 @@ class SortUtilTest {
     ArrayList<Integer> best = new ArrayList<>();
     ArrayList<Integer> avg = new ArrayList<>();
     ArrayList<Integer> worst = new ArrayList<>();
-    int size = 5;
+    int size = 10;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -44,7 +44,7 @@ class SortUtilTest {
 
     @org.junit.jupiter.api.Test
     void quicksortTestOne() {
-        SortUtil.quicksort(best, 0, best.size(), Integer::compare);
+        SortUtil.quicksort(best, Integer::compare);
         for(int i = 1; i < best.size(); i++) {
             assertTrue(best.get(i) > best.get(i - 1));
         }
@@ -52,7 +52,7 @@ class SortUtilTest {
 
     @org.junit.jupiter.api.Test
     void quicksortTestTwo() {
-        SortUtil.quicksort(avg, 0, avg.size(), Integer::compare);
+        SortUtil.quicksort(avg, Integer::compare);
         for(int i = 1; i < avg.size(); i++) {
             assertTrue(avg.get(i) > avg.get(i - 1));
         }
@@ -60,7 +60,7 @@ class SortUtilTest {
 
     @org.junit.jupiter.api.Test
     void quicksortTestThree() {
-        SortUtil.quicksort(worst, 0, worst.size(), Integer::compare);
+        SortUtil.quicksort(worst, Integer::compare);
         for(int i = 1; i < worst.size(); i++) {
             assertTrue(worst.get(i) > worst.get(i - 1));
         }
