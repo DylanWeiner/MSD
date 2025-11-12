@@ -14,7 +14,7 @@ class BinarySearchSetTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         set.add(1);
-        set.add(10);
+        set.add(2);
         set.add(3);
 
         list.add(4);
@@ -28,82 +28,71 @@ class BinarySearchSetTest {
         list2.add(3);
     }
 
-    @org.junit.jupiter.api.AfterEach
-    void tearDown() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void comparator() {
-    }
-
     @org.junit.jupiter.api.Test
     void first() {
         assertEquals(1, set.first());
-    }
+    } //Tests first value is correctly returned
 
     @org.junit.jupiter.api.Test
     void last() {
         assertEquals(3, set.last());
-    }
+    } //Tests last value is correctly returned
 
     @org.junit.jupiter.api.Test
     void add() {
         BinarySearchSet<Integer> set = new BinarySearchSet<>();
         assertTrue(set.add(3));
-    }
+    } //Tests add function works correctly
 
     @org.junit.jupiter.api.Test
     void addAll() {
         set.addAll(list);
         assertEquals(8, set.last());
-    }
+    } //Tests addAll function works correctly
 
     @org.junit.jupiter.api.Test
     void clear() {
         set.clear();
         assertTrue(set.isEmpty());
-    }
+    } //Tests clear function actually empties array.
 
     @org.junit.jupiter.api.Test
     void contains() {
         assertTrue(set.contains(1));
         assertFalse(set.contains(10));
-    }
+    } //Tests contains function works correctly
 
     @org.junit.jupiter.api.Test
     void containsAll() {
         assertTrue(set.containsAll(list2));
         assertFalse(set.containsAll(list));
-    }
+    } //Tests containsAll function works correctly
 
     @org.junit.jupiter.api.Test
     void isEmpty() {
-        BinarySearchSet<Integer> set = new BinarySearchSet<>();
-        assertTrue(set.isEmpty());
-    }
-
-    @org.junit.jupiter.api.Test
-    void iterator() {
-    }
+        BinarySearchSet<Integer> set2 = new BinarySearchSet<>();
+        assertTrue(set2.isEmpty());
+        assertFalse(set.isEmpty());
+    } //Tests isEmpty function correctly checks array.
 
     @org.junit.jupiter.api.Test
     void remove() {
-        set.remove(1);
-        assertFalse(set.contains(1));
-        assertTrue(set.remove(2));
+        set.remove(1); // Tests remove function works correctly
+        assertFalse(set.contains(1)); // Tests value is no longer contained
+        assertTrue(set.remove(2)); // Tests remove returns correct boolean response.
         assertFalse(set.remove(4));
     }
 
     @org.junit.jupiter.api.Test
     void removeAll() {
-        set.removeAll(list2);
-        assertFalse(set.containsAll(list2));
+        set.removeAll(list2); // tests removeAll function
+        assertFalse(set.containsAll(list2)); //tests containAll and that the values were properly removed.
     }
 
     @org.junit.jupiter.api.Test
     void size() {
         assertEquals(3, set.size());
-    }
+    } // checks size of the array.
 
     @org.junit.jupiter.api.Test
     void toArray() {
@@ -111,6 +100,6 @@ class BinarySearchSetTest {
         for(Object e : set.toArray()) {
             System.out.println("Value " + iter + ":" + e);
             iter++;
-        }
+        } // Checks that the array is iterable when set to toArray().
     }
 }

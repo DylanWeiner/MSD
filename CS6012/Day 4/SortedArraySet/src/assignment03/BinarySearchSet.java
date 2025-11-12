@@ -9,6 +9,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
     public BinarySearchSet() {
         this.set = (E[]) new Object[10];
+        this.comparator = null;
     } // This uses natural ordering
 
     public BinarySearchSet(Comparator<? super E> comparator) {
@@ -19,11 +20,11 @@ public class BinarySearchSet<E> implements SortedSet<E> {
         @Override
         public Comparator<? super E> comparator() {
             return comparator;
-        }
+        } // sets non-natural ordering comparator.
 
         @Override
         public E first() throws NoSuchElementException {
-            if(size == 0) {
+            if(size == 0) { // returns null for first value of empty arrays
                 return null;
             }
             return set[0];
@@ -31,7 +32,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
         @Override
         public E last() throws NoSuchElementException {
-            if(size == 0) {
+            if(size == 0) { // returns null for last value of empty arrays
                 return null;
             }
             return set[size - 1];
@@ -41,31 +42,31 @@ public class BinarySearchSet<E> implements SortedSet<E> {
         public boolean add(E element) {
             if(element == null) {
                 return false;
-            }
+            } // returns false if element submitted is null
             if(!contains(element)) {
                 if(size+1>=set.length) {
-                    doubleArray();
+                    doubleArray(); // doubles the array if the size that is about to be achieved is greater than the number of available slots in the array.
                 }
-                int index = -(BinarySearch(element));
-                for(int i = size; i > index; i--) {
-                    set[i] = set[i-1];
+                int index = Math.abs(BinarySearch(element)); // Takes the index the value should be placed at.
+                for(int i = size-1; i > index; i--) {
+                    set[i] = set[i-1]; // Moves all values by one index to insert the new value in the right position.
                 }
-                set[index] = element;
-                size++;
+                set[index] = element; // Places element in the correct position.
+                size++; // increases size.
                 return true;
             }
-            return false;
+            return false; // returns false if the array already contains the element.
         }
 
         @Override
         public boolean addAll(Collection<? extends E> elements) {
             boolean result = false;
-            for(E e : elements) {
-                if(add(e)) {
-                    result = true;
+            for(E e : elements) { // iterates through every element in the Collection of elements passed in.
+                if(add(e)) { // Attempts to add each element to the array
+                    result = true; // marks true for any value being added to the array
                 }
             }
-            return result;
+            return result; // Returns value of whether or not any values are added.
         }
 
         @Override
@@ -73,22 +74,24 @@ public class BinarySearchSet<E> implements SortedSet<E> {
             E[] newSet = (E[]) new Object[10];
             size = 0;
             set = newSet;
-        }
+        } // Creates new empty array to replace the current one.
 
         @Override
         public boolean contains(E element) {
-        if (BinarySearch(element) > 0) {
+        if (BinarySearch(element) > 0) { // Checks if element exists within the array by looking for its index
+            return true;
+        } else if(BinarySearch(element) == 0 && set[0] == element) { // Checks if element is at index 0
             return true;
         }
-        return false;
+        return false; // returns false if element is not found.
         }
 
         @Override
         public boolean containsAll(Collection<? extends E> elements) {
             boolean isContained = false;
-            for (E e : elements) {
+            for (E e : elements) { // Iterates through every value in elements
                 if (contains(e)) {
-                    isContained = true;
+                    isContained = true; // returns a value from the containsAll function as true if any are found.
                 }
             }
             return isContained;
@@ -97,42 +100,82 @@ public class BinarySearchSet<E> implements SortedSet<E> {
         @Override
         public boolean isEmpty() {
             boolean noValue = true;
-            for(int i = 0; i < set.length; i++) {
-                if (set[i] != null) {
+                if (iterator().hasNext()) { // Checks to see if there is a value in the array by searching for the next value.
                     noValue = false;
                 }
-            }
             return noValue;
         }
 
         @Override
         public Iterator<E> iterator() {
-            return null;
+            return new ListIterator<>() {
+                private int index = 0;
+
+                @Override
+                public boolean hasNext() {
+                    return index < size;
+                } // checks if there is a value in the next index.
+
+                @Override
+                public E next() {
+                    if(!hasNext()) {
+                        throw new NoSuchElementException();
+                    } // Throws an error if there is no next element.
+                    return set[index++]; // returns value at the next index.
+                }
+
+                @Override
+                public boolean hasPrevious() {
+                    return index > 0;
+                }
+
+                @Override
+                public E previous() {
+                    if(!hasPrevious()) {
+                        throw new NoSuchElementException();
+                    }
+                    return set[index--];
+                }
+
+                @Override
+                public int nextIndex() {
+                    return index++;
+                }
+
+                @Override
+                public int previousIndex() {
+                    return index--;
+                }
+
+                @Override
+                public void remove() {
+
+                }
+
+                @Override
+                public void set(E e) {
+
+                }
+
+                @Override
+                public void add(E e) {
+
+                }
+            };
         }
 
-//        @Override
-//        public boolean hasNext() {
-//            if(size()<set.length) {
-//                return true;
-//            }
-//            return false;
-//        }
-
         @Override
-        public boolean remove(E element) {
+        public boolean remove(E element) throws NoSuchElementException {
             int index;
             if(contains(element)) {
-                for (int i = 0; i < set.length - 1; i++) {
-                    if (set[i].equals(element)) {
-                        set[i] = null;
-                        index = i;
-                        for (int j = index; j < set.length - 1; j++) {
-                            set[j] = set[j + 1];
-                        }
-                        size--;
-                        return true;
-                    }
+                index = Math.abs(BinarySearch(element)); // Grabs desired index of value you wish to remove
+                set[index] = null; // removes value
+                for (int i = index; i < size-1; i++) {
+                    set[i] = set[i + 1]; // moves other values over to fill the gap
                 }
+                set[size-1] = null; //
+                size--;
+                return true;
             }
             return false;
         }
@@ -155,21 +198,8 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
         @Override
         public Object[] toArray() {
-            E temp;
-            E[] sortedSet = (E[]) new Object[size];
-            for(int i = 0; i < sortedSet.length; i++) {
-                sortedSet[i] = set[i];
-            }
-            for(int i = 1; i < sortedSet.length; i++) {
-                for(int j = i; j < sortedSet.length; j++) {
-                    if (comparator.compare(sortedSet[i], sortedSet[i - 1]) < 0) {
-                        temp = sortedSet[i];
-                        sortedSet[i] = sortedSet[i - 1];
-                        sortedSet[i - 1] = temp;
-                    }
-                }
-            }
-            return ((Object[]) sortedSet);
+            Object[] arraySet = (Object[]) Arrays.copyOf(set, size);
+            return arraySet;
         }
 
         private int BinarySearch(E element) {
@@ -177,20 +207,21 @@ public class BinarySearchSet<E> implements SortedSet<E> {
             int high = size - 1;
             while(low <= high) {
                 int mid = (low + high)/2;
-                if((comparator != null && element.equals(set[mid]))
-                        || (comparator == null && (((Comparable<E>) element).equals((E) set[mid])))) {
+                int cmp = 0;
+                if(comparator != null) {
+                    cmp = comparator.compare(element, set[mid]);
+                } else {
+                    cmp = ((Comparable<E>) element).compareTo(set[mid]);
+                }
+                if(cmp == 0) {
                     return mid;
-                }
-                else if((comparator != null && comparator.compare(element, set[mid]) < 0)
-                        || ((Comparable<E>) element).compareTo(set[mid]) < 0) {
+                } else if(cmp > 0) {
                     low = mid + 1;
-                }
-                else if((comparator != null && comparator.compare(element, set[mid]) > 0)
-                        || (comparator == null && (((Comparable<E>) element).compareTo((E) set[mid]) > 0))) {
+                } else  {
                     high = mid - 1;
                 }
             }
-            return -(low + 1);
+            return -(low);
         }
 
         public void doubleArray() {

@@ -1,15 +1,16 @@
-package lab03;
+package assignment03;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class ArrayListAddition extends TimerTemplate {
-    ArrayList<Integer> set = new ArrayList<>();
-    ArrayList<Integer> findMe = new ArrayList<>();
+public class BinarySearchSetTiming extends TimerTemplate {
+    BinarySearchSet<Integer> set = new BinarySearchSet<>();
+//    List<Integer> list = new ArrayList<>();
+//    List<Integer> list2 = new ArrayList<>();
 
-    public ArrayListAddition(int[] problemSizes, int timesToLoop) {
+    public BinarySearchSetTiming(int[] problemSizes, int timesToLoop) {
         super(problemSizes, timesToLoop);
     }
 
@@ -20,16 +21,11 @@ public class ArrayListAddition extends TimerTemplate {
                 set.add(i);
             }
         }
-        Collections.shuffle(set);
-        for (int i = 1; i <= this.timesToLoop; i++) {
-            findMe.add(set.get(i));
-        }
-        Collections.shuffle(set);
     }
 
     @Override
     protected void timingIteration(int n) {
-        set.contains(findMe.get(n)); // We passed in timesToLoop as n to use to index findMe
+        set.contains(n/2);
     }
 
     @Override
@@ -45,7 +41,7 @@ public class ArrayListAddition extends TimerTemplate {
             index++;
         }
 
-        var timer = new ArrayListAddition(problemSize, 10);
+        var timer = new BinarySearchSetTiming(problemSize, 10);
         var results = timer.run();
 
         String fileName = "data.csv";
