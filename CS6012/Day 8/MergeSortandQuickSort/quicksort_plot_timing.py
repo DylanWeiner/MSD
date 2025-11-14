@@ -39,6 +39,7 @@ def main():
 
     plt.xlabel("N (input size)")
     plt.ylabel("Average Time (ns)")
+    plt.yscale('log')
     plt.title("MergeSort vs QuickSort")
 
     plt.legend()

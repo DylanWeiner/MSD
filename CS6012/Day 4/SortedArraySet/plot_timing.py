@@ -22,6 +22,7 @@ def main():
         plt.xlabel(headers[0])
         plt.ylabel("Time(ns)") #change me
         plt.title("Amount of Time Searching for a Value Contained in an Array of Size N") #change me
+        plt.yscale('log')
         plt.legend(headers[1:]) # label the lines
         plt.savefig('Value_Contained.png') #change me
 

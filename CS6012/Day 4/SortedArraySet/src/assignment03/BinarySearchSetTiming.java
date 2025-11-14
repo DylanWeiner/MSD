@@ -7,8 +7,6 @@ import java.util.*;
 
 public class BinarySearchSetTiming extends TimerTemplate {
     BinarySearchSet<Integer> set = new BinarySearchSet<>();
-//    List<Integer> list = new ArrayList<>();
-//    List<Integer> list2 = new ArrayList<>();
 
     public BinarySearchSetTiming(int[] problemSizes, int timesToLoop) {
         super(problemSizes, timesToLoop);
@@ -34,9 +32,9 @@ public class BinarySearchSetTiming extends TimerTemplate {
 
     public static void main() throws IOException {
         System.out.println("running");
-        int[] problemSize = new int[11];
+        int[] problemSize = new int[5];
         int index = 0;
-        for (int i = 4; i <= 14; i++) {
+        for (int i = 10; i < 15; i++) {
             problemSize[index] = (int) (Math.pow(2, i));
             index++;
         }
@@ -50,12 +48,11 @@ public class BinarySearchSetTiming extends TimerTemplate {
 
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            writer.write("Time(ns)" + COMMA_DELIMITER +  "N" + NEW_LINE_SEPARATOR);
+            writer.write("N" + COMMA_DELIMITER +  "Time(ns)" + NEW_LINE_SEPARATOR);
             for (var result : results) {
                 writer.write(result.n() + COMMA_DELIMITER + result.avgNanoSecs() + NEW_LINE_SEPARATOR);
             }
             writer.flush();
-            writer.close();
         }
     }
 }
