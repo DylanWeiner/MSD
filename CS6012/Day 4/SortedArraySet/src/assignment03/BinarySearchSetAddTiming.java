@@ -3,31 +3,30 @@ package assignment03;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
 
-public class BinarySearchSetTiming extends TimerTemplate {
+public class BinarySearchSetAddTiming extends TimerTemplate {
     BinarySearchSet<Integer> set = new BinarySearchSet<>();
 
-    public BinarySearchSetTiming(int[] problemSizes, int timesToLoop) {
+    public BinarySearchSetAddTiming(int[] problemSizes, int timesToLoop) {
         super(problemSizes, timesToLoop);
     }
 
     @Override
     protected void setup(int n) {
-        for (int size = 0; size < n; size++) {
-            for (int i = 1; i <= size; i++) {
-                set.add(i);
-            }
+        for (int i = 1; i <= n; i++) {
+            set.add(i);
         }
     }
 
     @Override
     protected void timingIteration(int n) {
-        set.contains(n/2);
+        set.add(n/2);
+        set.remove(n/2);
     }
 
     @Override
     protected void compensationIteration(int n) {
+        set.remove(n/2);
     }
 
     public static void main() throws IOException {
@@ -42,7 +41,7 @@ public class BinarySearchSetTiming extends TimerTemplate {
         var timer = new BinarySearchSetTiming(problemSize, 10);
         var results = timer.run();
 
-        String fileName = "data.csv";
+        String fileName = "additionData.csv";
         String COMMA_DELIMITER = ",";
         String NEW_LINE_SEPARATOR = "\n";
 
@@ -56,6 +55,3 @@ public class BinarySearchSetTiming extends TimerTemplate {
         }
     }
 }
-
-
-
