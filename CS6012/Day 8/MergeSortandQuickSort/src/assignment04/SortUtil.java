@@ -8,76 +8,77 @@ import java.util.Random;
 
 import static java.util.Collections.swap;
 
-public class SortUtil<T> {
-    private ArrayList<T> arr;
-    private Comparator<? super T> comparator;
-    private static int threshold = 2;
+public class SortUtil {
+    private static int threshold = 5;
+    private static int strat = 0;
 
-    public SortUtil() {
-        this.arr = new ArrayList<>();
-        this.comparator = null;
-    }
-
-    public SortUtil(ArrayList<T> arr, Comparator<? super T> comp) {
-        this.arr = new ArrayList<>();
-        this.comparator = comp;
-    }
-
-    public Comparator<? super T> comparator() {
-        return this.comparator;
-    }
-
-    public static <T> void insertionSort(ArrayList<T> arr, Comparator<? super T> comp) {
-        for (int i = 1; i < arr.size(); i++) {
-            for (int j = i; j > 0; j--) {
-                if (comp.compare(arr.get(j), arr.get(j - 1)) < 0) {
-                    T temp = arr.get(j);
-                    arr.set(j, arr.get(j - 1));
-                }
+    public static <T> void insertionSort(ArrayList<T> arr, int low, int high, Comparator<? super T> comp) { // add a begin and an end a parameter to pass.
+        for (int i = low + 1; i < high; i++) {
+            T temp = arr.get(i);
+            int j = i - 1;
+            while(j >= low && comp.compare(arr.get(j), temp) > 0) {
+                arr.set(j + 1, arr.get(j));
+                j--;
             }
+            arr.set(j + 1, temp);
         }
     }
 
-    public static <T> void merge(ArrayList<T> arr, ArrayList<T> left, ArrayList<T> right, Comparator<? super T> comp) {
-        int i = 0;
-        int l = 0;
-        int r = 0;
-        while(l < left.size() && r < right.size()) {
-            if(comp.compare(left.get(l),right.get(r)) <= 0) {
-                arr.set(i, left.get(l));
-                i++;
-                l++;
+    private static <T> int getEndpointPivot(int low) {
+        return low;
+    }
+
+    public static <T> void merge(ArrayList<T> arr, ArrayList<T> temp, int left, int mid, int right, Comparator<? super T> comp) {
+        int i = left;
+        int l = mid + 1;
+        int r = left;
+
+        while (i <= mid && l <= right) {
+            if (comp.compare(arr.get(i), arr.get(l)) <= 0) {
+                temp.set(r++, arr.get(i++));
             } else {
-                arr.set(i, right.get(r));
-                i++;
-                r++;
+                temp.set(r++, arr.get(l++));
             }
-        } // leftovers in the left half or right half.
-        // copy the remainder to the end of the output array.
-        for( ; l < left.size(); l++, i++) {
-            arr.set(i, left.get(l));
         }
-        for( ; r < right.size(); r++, i++) {
-            arr.set(i, right.get(r));
+        while (i <= mid) {
+            temp.set(r++, arr.get(i++));
         }
+        while (l <= right) {
+            temp.set(r++, arr.get(l++));
+        }
+        for(i = left; i <= right; i++){
+            arr.set(i, temp.get(i));
+        }
+    }
+
+    public static void setThreshold(int threshold) {
+        SortUtil.threshold = threshold;
+    }
+
+    public static int getThreshold(int threshold) {
+        return threshold;
+    }
+
+    private static <T> void merger(ArrayList<T> arr, ArrayList<T> temp, int left, int right, Comparator<? super T> comp) {
+        int middle = (left + right) / 2;
+        if (right - left + 1 <= threshold) {
+            insertionSort(arr, left, right, comp);
+            return;
+        }
+
+        merger(arr, temp, left, middle, comp);
+        merger(arr, temp, middle + 1, right, comp);
+        merge(arr, temp, left, middle, right, comp);
     }
 
     public static <T> void mergeSort(ArrayList<T> arr, Comparator<? super T> comp) {
-        int middle = arr.size() / 2;
-        ArrayList<T> left = new ArrayList<>(arr.subList(0, middle));
-        ArrayList<T> right = new ArrayList<>(arr.subList(middle, arr.size()));
-        if(arr.size() < threshold) {
-            insertionSort(arr, comp);
-            return;
-        }
-        mergeSort(left, comp);
-        mergeSort(right, comp);
-        merge(arr, left, right, comp);
+        ArrayList<T> temp = new ArrayList<>(arr);
+        merger(arr, temp, 0, arr.size() - 1, comp);
     }
 
     public static ArrayList<Integer> generateBestCase(int size) {
         ArrayList<Integer> arr = new ArrayList<>(size);
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             arr.add(i);
         }
         return arr;
@@ -86,10 +87,10 @@ public class SortUtil<T> {
     public static ArrayList<Integer> generateAverageCase(int size) {
         ArrayList<Integer> arr = new ArrayList<>(size);
         Random rand = new Random();
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             arr.add(i);
         }
-        for(int i = size-1; i > 0; i--) {
+        for (int i = size - 1; i > 0; i--) {
             int j = rand.nextInt(i);
             swap(arr, j, i);
         }
@@ -98,37 +99,56 @@ public class SortUtil<T> {
 
     public static ArrayList<Integer> generateWorstCase(int size) {
         ArrayList<Integer> arr = new ArrayList<>(size);
-        for(int i = size; i > 0; i--) {
+        for (int i = size; i > 0; i--) {
             arr.add(i);
         }
         return arr;
     }
 
-    public static <T> void sort(ArrayList<T> arr, int low, int high, Comparator<? super T> comp) {
-        int pivotIndex = getRandom(arr, low, high, comp);
-        int partition = partition(arr, pivotIndex, comp);
+    public static <T> void sort(ArrayList<T> arr, int low, int high, Comparator<? super T> comp, int strat) {
+        if(low >= high) {
+            return;
+        }
 
-        sort(arr, low, partition, comp);
-        sort(arr, partition + 1, high, comp);
+        if (high - low < threshold) {
+            insertionSort(arr, low, high, comp);
+            return;
+        }
+
+        int pivotIndex = 0;
+
+        if (strat == 0) {
+            pivotIndex = getRandom(arr, low, high, comp);
+        } else if (strat == 1) {
+            pivotIndex = getEndpointPivot(low);
+        } else if (strat == 2) {
+            pivotIndex = getEndpointPivot((low+high)/2);
+        }
+
+        int partition = partition(arr, low, high, pivotIndex, comp);
+
+        sort(arr, low, partition - 1, comp, strat);
+        sort(arr, partition + 1, high, comp, strat);
     }
 
-    public static <T> int partition(ArrayList<T> arr, int pivotIndex,  Comparator<? super T> comp) {
+    public static <T> int partition(ArrayList<T> arr, int low, int high, int pivotIndex, Comparator<? super T> comp) {
         T pivotVal = arr.get(pivotIndex);
-        int left = 0;
-        int right = arr.size()-1;
-        while(left < right) {
-            while(comp.compare(arr.get(left), pivotVal) < 0) {
+        swap(arr, pivotIndex, high);
+        int left = low;
+        int right = high;
+
+        while (left < right) {
+            while (comp.compare(arr.get(left), pivotVal) < 0) {
                 left++;
             }
-            while(comp.compare(arr.get(right), pivotVal) > 0) {
+            while (comp.compare(arr.get(right), pivotVal) > 0) {
                 right--;
             }
-            if(left < right) {
+            if (left < right) {
                 swap(arr, left, right);
-                left++;
-                right--;
             }
         }
+        swap(arr, pivotIndex, high);
         return left;
     }
 
@@ -136,12 +156,11 @@ public class SortUtil<T> {
         return low + new Random().nextInt(high - low + 1);
     }
 
-    public static <T> void quicksort(ArrayList<T> arr, Comparator<? super T> comp) {
-        if(arr.size() < threshold) {
-            insertionSort(arr, comp);
-            return;
-        }
+    public static <T> void setStrat(int strat) {
+        SortUtil.strat = strat;
+    }
 
-        sort(arr, 0, arr.size()-1, comp);
+    public static <T> void quicksort(ArrayList<T> arr, Comparator<? super T> comp) {
+        sort(arr, 0, arr.size() - 1, comp, strat);
     }
 }

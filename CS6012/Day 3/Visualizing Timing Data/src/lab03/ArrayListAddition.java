@@ -37,7 +37,7 @@ public class ArrayListAddition extends TimerTemplate {
     }
 
     public static void main() throws IOException {
-        System.out.println("running");
+//        System.out.println("running");
         int[] problemSize = new int[11];
         int index = 0;
         for (int i = 4; i <= 14; i++) {
