@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static assignment04.SortUtil.*;
 
@@ -34,7 +33,7 @@ public class MergeSortTiming extends TimerTemplate {
     @Override
     protected void timingIteration(int n) {
         setThreshold(n);
-        SortUtil.mergeSort((ArrayList<Integer>) avg.clone(), Integer::compare);
+        SortUtil.mergesort((ArrayList<Integer>) avg.clone(), Integer::compare);
     }
 
     @Override

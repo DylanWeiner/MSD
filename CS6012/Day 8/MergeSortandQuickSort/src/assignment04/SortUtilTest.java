@@ -19,24 +19,40 @@ class SortUtilTest {
     }
 
     @org.junit.jupiter.api.Test
-    void mergeSortTestOne() {
-        SortUtil.mergeSort(best, Integer::compare);
+    void mergesortTestOne() {
+        SortUtil.mergesort(best, Integer::compare);
         for(int i = 1; i < best.size(); i++) {
             assertTrue(best.get(i) > best.get(i - 1));
         }
     }
 
     @org.junit.jupiter.api.Test
-    void mergeSortTestTwo() {
-        SortUtil.mergeSort(avg, Integer::compare);
+    void insertionSortTestOne() {
+        SortUtil.insertionSort(avg, 0, avg.size()-1, Integer::compare);
         for(int i = 1; i < avg.size(); i++) {
             assertTrue(avg.get(i) > avg.get(i - 1));
         }
     }
 
     @org.junit.jupiter.api.Test
-    void mergeSortTestThree() {
-        SortUtil.mergeSort(worst, Integer::compare);
+    void insertionSortTestTwo() {
+        SortUtil.insertionSort(worst, 0, worst.size()-1, Integer::compare);
+        for(int i = 1; i < worst.size(); i++) {
+            assertTrue(worst.get(i) > worst.get(i - 1));
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void mergesortTestTwo() {
+        SortUtil.mergesort(avg, Integer::compare);
+        for(int i = 1; i < avg.size(); i++) {
+            assertTrue(avg.get(i) > avg.get(i - 1));
+        }
+    }
+
+    @org.junit.jupiter.api.Test
+    void mergesortTestThree() {
+        SortUtil.mergesort(worst, Integer::compare);
         for(int i = 1; i < worst.size(); i++) {
             assertTrue(worst.get(i) > worst.get(i - 1));
         }
@@ -69,18 +85,27 @@ class SortUtilTest {
     void partitionTestOne() {
         ArrayList<Integer> arr = new ArrayList<>();
         arr = generateAverageCase(5);
-        SortUtil.partition(arr, 0, arr.size()-1, (arr.size()-1)/2, Integer::compare);
+        int p = SortUtil.partition(arr, 0, arr.size()-1, (arr.size())/2, Integer::compare);
+        for(int j = 0; j < p; j++) {
+            assertTrue(arr.get(j) < arr.get(p));
+        }
     }
     @org.junit.jupiter.api.Test
     void partitionTestTwo() {
         ArrayList<Integer> arr = new ArrayList<>();
         arr = generateAverageCase(3);
-        SortUtil.partition(arr, 0, arr.size()-1, (arr.size()-1)/2, Integer::compare);
+        int p = SortUtil.partition(arr, 0, arr.size()-1, (arr.size())/2, Integer::compare);
+        for(int j = 0; j < p; j++) {
+            assertTrue(arr.get(j) < arr.get(p));
+        }
     }
     @org.junit.jupiter.api.Test
     void partitionTestThree() {
         ArrayList<Integer> arr = new ArrayList<>();
         arr = generateAverageCase(1);
-        SortUtil.partition(arr, 0, arr.size()-1, arr.size()/2, Integer::compare);
+        int p = SortUtil.partition(arr, 0, arr.size()-1, (arr.size()-1)/2, Integer::compare);
+        for(int j = 1; j < (arr.size()-1)/2; j++) {
+            assertTrue(arr.get(j) < arr.get(p));
+        }
     }
 }

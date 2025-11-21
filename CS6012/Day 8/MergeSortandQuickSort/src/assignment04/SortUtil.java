@@ -9,11 +9,11 @@ import java.util.Random;
 import static java.util.Collections.swap;
 
 public class SortUtil {
-    private static int threshold = 5;
+    private static int threshold_ = 5;
     private static int strat = 0;
 
     public static <T> void insertionSort(ArrayList<T> arr, int low, int high, Comparator<? super T> comp) { // add a begin and an end a parameter to pass.
-        for (int i = low + 1; i < high; i++) {
+        for (int i = low + 1; i <= high; i++) {
             T temp = arr.get(i);
             int j = i - 1;
             while(j >= low && comp.compare(arr.get(j), temp) > 0) {
@@ -52,7 +52,7 @@ public class SortUtil {
     }
 
     public static void setThreshold(int threshold) {
-        SortUtil.threshold = threshold;
+        threshold_ = threshold;
     }
 
     public static int getThreshold(int threshold) {
@@ -60,20 +60,22 @@ public class SortUtil {
     }
 
     private static <T> void merger(ArrayList<T> arr, ArrayList<T> temp, int left, int right, Comparator<? super T> comp) {
-        int middle = (left + right) / 2;
-        if (right - left + 1 <= threshold) {
+        if (right - left + 1 <= threshold_) {
             insertionSort(arr, left, right, comp);
             return;
         }
 
+        int middle = (left + right) / 2;
+
         merger(arr, temp, left, middle, comp);
         merger(arr, temp, middle + 1, right, comp);
+
         merge(arr, temp, left, middle, right, comp);
     }
 
-    public static <T> void mergeSort(ArrayList<T> arr, Comparator<? super T> comp) {
+    public static <T> void mergesort(ArrayList<T> arr, Comparator<? super T> comp) {
         ArrayList<T> temp = new ArrayList<>(arr);
-        merger(arr, temp, 0, arr.size() - 1, comp);
+        merger(arr, temp, 0, arr.size()-1, comp);
     }
 
     public static ArrayList<Integer> generateBestCase(int size) {
@@ -110,7 +112,7 @@ public class SortUtil {
             return;
         }
 
-        if (high - low < threshold) {
+        if (high - low < threshold_) {
             insertionSort(arr, low, high, comp);
             return;
         }
@@ -148,7 +150,7 @@ public class SortUtil {
                 swap(arr, left, right);
             }
         }
-        swap(arr, pivotIndex, high);
+//        swap(arr, pivotIndex, high);
         return left;
     }
 
