@@ -17,11 +17,10 @@ public class SinglyLinkedList<E> implements List<E> {
     private int size;
     private Node head;
     private Node tail;
-    private Node data;
-
 
     public SinglyLinkedList() {
         this.head = null;
+        this.tail = null;
         this.size = 0;
     }
 
@@ -33,7 +32,18 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public void insert(int index, Object element) throws IndexOutOfBoundsException {
-
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException;
+        }
+        if(isEmpty()) {
+            insertFirst(element);
+        }
+        for(int i = 0; i < index; i++) {
+            current = current.next;
+            if(i == index) {
+                current = element;
+            }
+        }
     }
 
     @Override
@@ -58,12 +68,28 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public E deleteFirst() throws NoSuchElementException {
-        return null;
+        if(isEmpty()) {
+            throw new NoSuchElementException;
+        }
+        head = head.next;
+        return head.data;
     }
 
     @Override
     public E delete(int index) throws IndexOutOfBoundsException {
-        return null;
+        if(isEmpty()) {
+            throw new IndexOutOfBoundsException;
+        }
+        Node n = head;
+        while(hasNext()) {
+            n = n.next;
+            if(i == index) {
+                Node val = n;
+                n = n.next;
+            }
+        }
+        n.next = null;
+        return val.data;
     }
 
     @Override
