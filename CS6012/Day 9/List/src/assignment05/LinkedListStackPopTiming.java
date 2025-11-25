@@ -32,9 +32,9 @@ public class LinkedListStackPopTiming extends TimerTemplate {
 
     public static void main() throws IOException {
         System.out.println("running");
-        int[] problemSize = new int[7];
+        int[] problemSize = new int[10];
         int index = 0;
-        for (int i = 10; i < 17; i++) {
+        for (int i = 10; i < 20; i++) {
             problemSize[index] = (int) (Math.pow(2, i));
             index++;
         }

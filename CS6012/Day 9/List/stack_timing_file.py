@@ -39,8 +39,8 @@ def main():
 
     plt.xlabel("N (input size)")
     plt.ylabel("Average Time (ns)")
-    # plt.yscale('log')
-    plt.title("MergeSort vs QuickSort")
+    plt.xscale('log')
+    plt.title("Linked List Stack vs Array Stack")
 
     plt.legend()
     plt.grid(True)
