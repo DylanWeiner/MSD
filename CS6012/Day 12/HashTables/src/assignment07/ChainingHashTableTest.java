@@ -1,7 +1,5 @@
 package assignment07;
 
-import com.sun.net.httpserver.Filter;
-
 import java.util.LinkedList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,9 +16,9 @@ class ChainingHashTableTest {
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         capacity = 100;
-        badHF = new ChainingHashTable.BadHashFunctor();
-        mediocreHF = new ChainingHashTable.MediocreHashFunctor();
-        goodHF = new ChainingHashTable.GoodHashFunctor();
+        badHF = new BadHashFunctor();
+        mediocreHF = new MediocreHashFunctor();
+        goodHF = new GoodHashFunctor();
         goodHT = new ChainingHashTable(capacity, goodHF);
         mediocreHT = new ChainingHashTable(capacity, mediocreHF);
         badHT = new ChainingHashTable(capacity, badHF);
@@ -62,6 +60,7 @@ class ChainingHashTableTest {
 
     @org.junit.jupiter.api.Test
     void contains() {
+        assertFalse(goodHT.contains("Cat"));
         goodHT.add("Cat");
         goodHT.add("Dog");
         goodHT.add("Act");
@@ -72,10 +71,12 @@ class ChainingHashTableTest {
     @org.junit.jupiter.api.Test
     void containsAll() {
         LinkedList<String> l = new LinkedList<>();
+        assertTrue(goodHT.containsAll(l));
         l.add("Cat");
         l.add("Dog");
         l.add("Act");
         l.add("Animal");
+
         assertTrue(goodHT.addAll(l));
         assertTrue(goodHT.containsAll(l));
     }

@@ -1,9 +1,6 @@
 package assignment07;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class ChainingHashTable implements Set<String> {
@@ -11,35 +8,6 @@ public class ChainingHashTable implements Set<String> {
     private HashFunctor functor;
     private int intialCapacity;
     private int size;
-
-    public static class BadHashFunctor implements HashFunctor {
-        @Override
-        public int hash(String item) {
-            return item.length();
-        }
-    }
-
-    public static class MediocreHashFunctor implements HashFunctor {
-        @Override
-        public int hash(String item) {
-            int hash = 0;
-            for(char c : item.toCharArray()) {
-                hash += c;
-            }
-            return hash;
-        }
-    }
-
-    public static class GoodHashFunctor implements HashFunctor {
-        @Override
-        public int hash(String item) {
-            int hash = 7;
-            for(char c : item.toCharArray()) {
-                hash = ((hash << 5) + hash) + c;
-            }
-            return (int) (hash % Integer.MAX_VALUE);
-        }
-    }
 
     public int hashcode(String item) {
         int index = functor.hash(item) %  storage.length;
@@ -67,12 +35,6 @@ public class ChainingHashTable implements Set<String> {
             return false;
         }
         int hashValue = hashcode(item);
-//        if(storage[hashValue].contains(item)) {
-//            return false;
-//        }
-//        if(storage[hashValue] == null) {
-//            storage[hashValue] = new LinkedList<>();
-//        }
         storage[hashValue].add(item);
         size++;
         return true;
@@ -109,10 +71,13 @@ public class ChainingHashTable implements Set<String> {
 
     @Override
     public boolean containsAll(Collection<? extends String> items) {
-        if(items == null) {
-            throw new NullPointerException();
-        }
         boolean contained = false;
+        if(items.isEmpty()) {
+            return true;
+        }
+        if(isEmpty()) {
+            return contained;
+        }
         for(String item : items) {
             if(contains(item)) {
                 contained = true;
