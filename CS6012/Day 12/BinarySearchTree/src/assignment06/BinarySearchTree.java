@@ -36,40 +36,18 @@ public class BinarySearchTree<E extends Comparable<? super E>> implements Sorted
     private Node head;
     private int found = 0;
 
-    public void normalizeTree() {
-        ArrayList<E> r = new ArrayList();
-        r = toArrayList();
-        head = new Node(r.get(r.size()/2));
-        r.remove(r.size()/2);
-        addAll(r);
-    }
-
-    public boolean addRecursive(E item, Node root) {
+    public Node addRecursive(E item, Node root) {
         if (root == null) {
-            return false;
+            root = new Node(item);
+            size++;
         }
         else if(item.compareTo(root.getData()) < 0) {
-            if(root.left == null) {
-                    root.left = new Node(item);
-                    size++;
-                    return true;
-            }
-            else {
-                root = root.left;
-                return addRecursive(item, root);
-            }
+            root.left = addRecursive(item, root.left);
         }
         else { // if(item.compareTo(head.getData()) > 0)
-            if(root.right == null) {
-                    root.right = new Node(item);
-                    size++;
-                    return true;
-            }
-            else {
-                root = root.right;
-                return addRecursive(item, root);
-            }
+            root.right = addRecursive(item, root.right);
         }
+        return root;
     }
 
     @Override
@@ -81,7 +59,12 @@ public class BinarySearchTree<E extends Comparable<? super E>> implements Sorted
         if(item == null) {
             throw new NullPointerException("item is null");
         }
-        return addRecursive(item, head);
+        int prevSize = size;
+        addRecursive(item, head);
+        if(prevSize != size) {
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -47,7 +47,7 @@ class BinarySearchTreeTest {
         list.add(5);
         list.add(6);
         assertTrue(BST.addAll(list));
-        BST.normalizeTree();
+//        BST.normalizeTree();
         assertTrue(BST.contains(5));
     }
 
