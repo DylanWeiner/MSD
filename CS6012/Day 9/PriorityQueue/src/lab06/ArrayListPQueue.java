@@ -3,6 +3,7 @@ package lab06;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import static java.util.Collections.min;
 import static java.util.Collections.swap;
 
 public class ArrayListPQueue<E extends Comparable<? super E>> implements PriorityQueue<E> {
@@ -44,33 +45,34 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
     }
 
     public void percolateDown(int index) {
+//        System.out.println("current size: " + arrayList.size());
+
         int minIndex = MinFinder(index);
         if(arrayList.get(index).compareTo(arrayList.get(minIndex)) > 0) {
             swap(arrayList, index, minIndex);
             percolateDown(minIndex);
         }
-
-//        if(left.compareTo(root) < 0 && right.compareTo(root) < arrayList.size()) {
-//            if (rightChild > leftChild) {
-//
-//                percolateDown(rightChild);
-//            } else {
-//                swap(arrayList, index, leftChild);
-//                percolateDown(leftChild);
-//            }
-//        }
-        else {
-            return;
-        }
     }
 
-    public void percolateUp(int item) {
-        int parentIndex = 2*item-1;
-        E itemVal = arrayList.get(item);
-        E parent = arrayList.get(parentIndex);
+    private int MaxFinder(int index) {
+        int parentIndex = 2*index-1;
+        int maxIndex = index;
+        if(parentIndex < 0) {
+            E itemVal = arrayList.get(index);
+        } else if(parentIndex < arrayList.size()) {
+            E parent = arrayList.get(parentIndex);
+            if(parent.compareTo(arrayList.get(maxIndex)) < 0) {
+                maxIndex = parentIndex;
+            }
+        }
+        return maxIndex;
+    }
 
-        while(parent.compareTo(itemVal) > 0) {
-            swap(arrayList, item, parentIndex);
+    public void percolateUp(int index) {
+        int maxIndex = MaxFinder(index);
+        if(arrayList.get(index).compareTo(arrayList.get(maxIndex)) > 0) {
+            swap(arrayList, index, maxIndex);
+            percolateUp(maxIndex);
         }
     }
 
@@ -82,12 +84,21 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
 
     @Override
     public E removeMin() {
-        E removedValue = arrayList.get(0);
-        arrayList.removeFirst();
-        arrayList.set(0, arrayList.get(arrayList.size()-1));
-        arrayList.removeLast();
-        percolateDown(0);
-        return removedValue;
+        if(arrayList.isEmpty()) {
+            return null;
+        }
+
+        if(arrayList.size() == 1) {
+            return arrayList.remove(0);
+        }
+//        else if(arrayList.size() > 1) {
+            E removedValue = arrayList.getFirst();
+        swap(arrayList, 0, arrayList.size()-1);
+//            arrayList.removeFirst();
+//            arrayList.set(0, arrayList.getLast());
+            arrayList.removeLast();
+            percolateDown(0);
+            return removedValue;
     }
 
     @Override
