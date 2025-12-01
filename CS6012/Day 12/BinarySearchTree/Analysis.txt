@@ -26,6 +26,12 @@ is allowed to be unbalanced. Use Java's TreeSet as an example of the former and 
 latter. Carefully describe your experiment, so that anyone reading this document could replicate your results. Plot the
 results of your experiment. Since the organization of your plot(s) is not specified here, the labels and titles of your
 plots(s), as well as your interpretation of the plots, are critical.
+For my experiment, I took a TreeSet and my Unbalanced BST and added an increasing number of values to both. I then picked a
+random number (placing the retrieval of the random number in the compensation iteration) and looked for that number using
+the contains method. I timed how long the contains function would take and compared the runtime of the two. The Balanced Tree
+is far more optimized and even has an overall smaller Big O runtime when compared to the Unbalanced Tree. The runtimes began
+with a similar runtime but approaching an N of roughly 10^4, there was an exponential increase in the runtime of the contains
+method for the Unbalanced BST.
 
 
 Discuss whether a BST is a good data structure for representing a dictionary. If you think that it is, explain why. If you

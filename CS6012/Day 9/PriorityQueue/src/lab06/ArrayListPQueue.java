@@ -18,25 +18,49 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
     }
 
     public void heapify(ArrayList<E> arrayList) {
-        for(int i = arrayList.size()/2; i > 0; i++) { // Everything right of size/2 is a leaf and can't percolate down
+        for(int i = (arrayList.size()/2)-1; i > 0; i--) { // Everything right of size/2 is a leaf and can't percolate down
             percolateDown(i);
         }
     }
 
-    public void percolateDown(int item) {
-        int leftChild = 2*item+1;
-        int rightChild = 2*item+2;
-        E root = arrayList.get(item);
-        E left = arrayList.get(leftChild);
-        E right = arrayList.get(rightChild);
+    private int MinFinder(int index) {
+        int leftChild = 2*index+1;
+        int rightChild = 2*index+2;
+        int minIndex = index;
 
-        while(root.compareTo(left) > 0 || root.compareTo(right) > 0) {
-            if(right.compareTo(left) > 0) {
-                swap(arrayList, item, rightChild);
+        if(leftChild < arrayList.size()) {
+            E left = arrayList.get(leftChild);
+
+            if(left.compareTo(arrayList.get(minIndex)) < 0) {
+                minIndex = leftChild;
             }
-            else {
-                swap(arrayList, item, leftChild);
+        } else if(rightChild < arrayList.size()) {
+            E right = arrayList.get(rightChild);
+            if(right.compareTo(arrayList.get(minIndex)) < 0) {
+                minIndex = rightChild;
             }
+        }
+        return minIndex;
+    }
+
+    public void percolateDown(int index) {
+        int minIndex = MinFinder(index);
+        if(arrayList.get(index).compareTo(arrayList.get(minIndex)) > 0) {
+            swap(arrayList, index, minIndex);
+            percolateDown(minIndex);
+        }
+
+//        if(left.compareTo(root) < 0 && right.compareTo(root) < arrayList.size()) {
+//            if (rightChild > leftChild) {
+//
+//                percolateDown(rightChild);
+//            } else {
+//                swap(arrayList, index, leftChild);
+//                percolateDown(leftChild);
+//            }
+//        }
+        else {
+            return;
         }
     }
 
