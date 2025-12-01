@@ -129,4 +129,14 @@ public class ChainingHashTable implements Set<String> {
         }
         return filledBuckets;
     }
+
+    public int collisions() {
+        int collisions = 0;
+        for(LinkedList<String> bucket : storage) {
+            if(bucket != null && bucket.size() > 1) {
+                collisions += bucket.size() - 1;
+            }
+        }
+        return collisions;
+    }
 }

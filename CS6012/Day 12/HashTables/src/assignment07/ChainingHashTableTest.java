@@ -161,7 +161,3 @@ class ChainingHashTableTest {
         assertEquals(2, badHT.bucketCheck());
     }
 }
-
-// for analysis use enum for testFunc to separate good, mediocre, and bad
-// Use another hashmap to store n values and strings (HashMap<Integer, ArrayList<String>>
-// We can use hashmaps to track collisions.

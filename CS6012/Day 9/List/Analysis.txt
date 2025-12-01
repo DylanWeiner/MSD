@@ -1,0 +1,29 @@
+What is your programming partner's name and which of you submitted the program files to Gradescope? Briefly discuss the pair programming experience, including:
+Sophia Perez
+How well did you apply the techniques of pair programming (as explained on this page) to this assignment?
+Fairly well, I think we did a good job of having one of us drive the primary train of thought but rather than having one person focus each task, I feel we
+focused more on having the driving role juggle more and we both wrote our own versions of the code based of whatever was the present thought being provided.
+
+What percentage of the program code did you write using these techniques?
+I would say roughly 50%, we made more use of the fact there were two minds well oriented towards the desired outcome than we did having one person explicitly
+focus each task.
+
+About how many hours did you spend completing the programming and testing portion of this assignment? Evaluate your programming partner.
+Sophia was a great programming partner and was very team oriented, assisting me on deliberating the best path forward even when we were both struggling to
+understand how to proceed.
+
+Do you plan to work with this person again?
+I would work with this person again.
+
+Compare the running time of the push method. What is the growth rate of the method's running time for each stack class, and why?
+Both of these show a runtime of O(N) because it is always adding the element to the first position.
+
+Compare the running time of the pop method. What is the growth rate of the method's running time for each stack class, and why?
+Both of these show a runtime of O(N) because it is always removing the element to the first position.
+
+Compare the running time of the peek method. What is the growth rate of the method's running time for each stack class, and why?
+Both of these show a runtime of O(N) because it is always checking the element at the first position.
+
+Based on your timing experiments, which stack class do you think is more efficient for using in your WebBrowser application? Why?
+The Array Stack because it is more optimized since it can pull information from memory, and it can retrieve the surrounding values whereas the Linked List cannot
+since it is unable to accurately grab the surrounding values. This is what makes Linked Lists fool's gold.

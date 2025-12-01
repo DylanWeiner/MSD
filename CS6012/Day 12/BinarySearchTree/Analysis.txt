@@ -1,0 +1,37 @@
+Explain how the order that items are inserted into a BST affects the construction of the tree, and how this construction
+affects the running time of subsequent calls to the add, contains, and remove methods.
+The order in which items are inserted to the BST determine how often the tree is traversed and how often information must be
+percolated up or down the tree. This impacts the runtime of the methods because it can increase time depending on if the
+information ever gets to be inserted in the middle of branches or replace the root as the new root value. It can also impact
+how easily information is removed (i.e. removing values from most to least will be substantially slower than removing values
+from lowest to highest or even in a random order. The same rule applies for contains. Add will see decreased speed when values
+are inserted from least to most as compared to most to least or a random order.
+
+Design and conduct an experiment to illustrate the effect of building an N-item BST by inserting the N items in sorted order
+versus inserting the N items in a random order. Carefully describe your experiment, so that anyone reading this document could
+replicate your results.
+For this experiment, I created a list that contains values from 0 to 2^10, then 0 to 2^11 and so on until 0 to 2^15. After,
+I shuffled it in one case and haad it in order from least to greatest in the other case and in both cases inserted the values
+to a Binary Search Tree and timed the amount of time in nanoseconds it took to insert all the values and wrote them to a file
+to have the comparison graphed.
+
+Plot the results of your experiment. Since the organization of your plot(s) is not specified here, the labels and titles of
+your plots(s), as well as your interpretation of the plots, are critical.
+When inserted in order, I found that the inserted values worked far slower than when they were inserted in a random order. This
+is because every value meant the tree would be traversed again from the beginning when taken in order, but a random order
+meant it would often only traverse a few levels before finding the necessary position.
+
+Design and conduct an experiment to illustrate the differing performance in a BST with a balance requirement and a BST that
+is allowed to be unbalanced. Use Java's TreeSet as an example of the former and your BinarySearchTree as an example of the
+latter. Carefully describe your experiment, so that anyone reading this document could replicate your results. Plot the
+results of your experiment. Since the organization of your plot(s) is not specified here, the labels and titles of your
+plots(s), as well as your interpretation of the plots, are critical.
+
+
+Discuss whether a BST is a good data structure for representing a dictionary. If you think that it is, explain why. If you
+think that it is not, discuss other data structure(s) that you think would be better. (Keep in mind that for a typical
+dictionary, insertions and deletions of words are infrequent compared to word searches.)
+
+
+Many dictionaries are in alphabetical order. What problem will it create for a dictionary BST if it is constructed by
+inserting words in alphabetical order? What can you do to fix the problem?
