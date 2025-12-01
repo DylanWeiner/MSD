@@ -31,7 +31,10 @@ plots(s), as well as your interpretation of the plots, are critical.
 Discuss whether a BST is a good data structure for representing a dictionary. If you think that it is, explain why. If you
 think that it is not, discuss other data structure(s) that you think would be better. (Keep in mind that for a typical
 dictionary, insertions and deletions of words are infrequent compared to word searches.)
-
+A BST would be good for a dictionary since BSTs are optimized for finding values. This means that the purpose of a dictionary
+(searching for words) would have its needs perfectly met by using a BST.
 
 Many dictionaries are in alphabetical order. What problem will it create for a dictionary BST if it is constructed by
 inserting words in alphabetical order? What can you do to fix the problem?
+This will make it so every instance in which a word is added triggers a full traversal of the BST. A good solution would be to
+add them in the reverse of alphabetical order or simply inserting them from a random order.
