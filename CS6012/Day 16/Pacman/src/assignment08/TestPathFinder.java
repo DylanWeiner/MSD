@@ -14,5 +14,14 @@ public class TestPathFinder {
          * You are still required to make JUnit tests...just lookin' at text files ain't gonna fly.
          */
         PathFinder.solveMaze("mazes/tinyMaze.txt", "mazes/tinyMazeOutput.txt");
+        PathFinder.solveMaze("mazes/bigMaze.txt", "mazes/bigMazeOutput.txt");
+        PathFinder.solveMaze("mazes/classic.txt", "mazes/classicOutput.txt");
+        PathFinder.solveMaze("mazes/demoMaze.txt", "mazes/demoMazeOutput.txt");
+        PathFinder.solveMaze("mazes/mediumMaze.txt", "mazes/mediumMazeOutput.txt");
+        PathFinder.solveMaze("mazes/randomMaze.txt", "mazes/randomMazeOutput.txt");
+        PathFinder.solveMaze("mazes/tinyOpen.txt", "mazes/tinyOpenOutput.txt");
+        PathFinder.solveMaze("mazes/turn.txt", "mazes/turnOutput.txt");
+        PathFinder.solveMaze("mazes/unsolvable.txt", "mazes/unsolvableOutput.txt");
+        PathFinder.solveMaze("mazes/straight.txt", "mazes/straightOutput.txt");
     }
 }

@@ -4,139 +4,124 @@ import java.io.*;
 import java.util.*;
 
 public class PacmanGraph {
-    private static PacmanNode[][] maze;
-    static int height;
-    static int width;
-    private static PacmanNode source;
-    private static PacmanNode target;
-    int x_start;
-    int y_start;
-    int x_end;
-    int y_end;
+    private PacmanNode[][] maze;
+    int height;
+    int width;
+    int column_start;
+    int row_start;
+    int column_end;
+    int row_end;
 
     public PacmanGraph() {
         PacmanNode[][] nodes;
-        this.height = height;
-        this.width = width;
-        this.x_start = x_start;
-        this.y_start = y_start;
-        this.x_end = x_end;
-        this.y_end = y_end;
     }
 
     private class PacmanNode {
         char character; // character of the node
-        boolean visited; // tracks if we visited each node.
-        int x;
-        int y;
+        boolean visited = false; // tracks if we visited each node.
+        int column;
+        int row;
         PacmanNode prevNode;
 
-        PacmanNode(char character, int x, int y) {
+        PacmanNode(char character, int column, int row) {
             this.character = character;
-            this.x = x;
-            this.y = y;
+            this.column = column;
+            this.row = row;
             this.prevNode = null;
             this.visited = false;
         }
     }
 
     public void GraphBuilder(String inputFile, String outputFile) throws IOException {
-        int height = 0;
-        int width = 0;
-
-        PacmanGraph pGraph = new PacmanGraph();
-
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             String[] dimensions = br.readLine().split(" ");
             String line;
-            int row = 0;
+            int curr_row = 0;
             BufferedWriter mazeOutput = new BufferedWriter(new FileWriter(outputFile));
             height = Integer.parseInt(dimensions[0]);
             width = Integer.parseInt(dimensions[1]);
             maze = new PacmanNode[height][width];
+            mazeOutput.write(height + " " + width + "\n");
             while ((line = br.readLine()) != null) {
                 for (int i = 0; i < line.length(); i++) {
-                    maze[row][i] = new PacmanNode(line.charAt(i), i, row);
-                    if (maze[row][i].character == 'S') {
-                        x_start = i;
-                        y_start = row;
-                    } else if (maze[row][i].character == 'G') {
-                        x_end = i;
-                        y_end = row;
+                    maze[curr_row][i] = new PacmanNode(line.charAt(i), i, curr_row);
+                    if (maze[curr_row][i].character == 'S') {
+                        column_start = i;
+                        row_start = curr_row;
+                    } else if (maze[curr_row][i].character == 'G') {
+                        column_end = i;
+                        row_end = curr_row;
                     }
-                    mazeOutput.write(maze[row][i].character);
+                    mazeOutput.write(maze[curr_row][i].character);
                 }
                 mazeOutput.write("\n");
-                row++;
+                curr_row++;
             }
             mazeOutput.close();
         }
     }
 
-    public static PacmanNode BFS() {
-        Set<PacmanNode> seen = new HashSet<PacmanNode>();
+    public void BFS() {
         Queue<PacmanNode> queue = new LinkedList<>() {
         };
+//        ArrayList<PacmanNode> directions = new ArrayList<PacmanNode>();
+        boolean[][] visited = new boolean[height][width];
+        visited[row_start][column_start] = true;
+        PacmanNode source = new PacmanNode('S', column_start, row_start);
+
+        int[][] edges = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
         queue.offer(source);
+        source.visited = true;
+
         while (!queue.isEmpty()) {
             PacmanNode curr = queue.poll();
-            source = curr;
-            source.visited = true;
-            if(source.x+1 <= width) {
-                source.x = curr.x + 1;
-            } else if(source.y+1 <= height) {
-                source.y = curr.y + 1;
-            } else if(source.x + 1 > width && source.y + 1 > height) {
-                source.x = 0;
-                source.y = 0;
+            System.out.println("Visiting " + curr.character + " at " + curr.row + " " + curr.column);
+            if (curr.character == 'G') {
+                return;
+//                return true;
             }
-            if (curr == target) {
-                System.out.println("\n\n" + "test");
-                return curr;
-            }
-            else {
-//                seen.add(curr);
-                for (PacmanNode neighbor : seen) {
-                    if (!seen.contains(neighbor)) {
-                        queue.offer(neighbor); // if it has never been in the queue.
-                        // neighbor came from curr. won't be overwritten bc it's only ever written once.
+
+            for (int[] direction : edges) {
+                if (curr.row + direction[0] < height && curr.column + direction[1] < width) {
+                    PacmanNode neighborNode = maze[curr.row + direction[0]][curr.column + direction[1]];
+                    if (!visited[neighborNode.row][neighborNode.column] && neighborNode.character != 'X') {
+                        neighborNode.prevNode = curr;
+                        visited[neighborNode.row][neighborNode.column] = true;
+                        queue.add(neighborNode);
                     }
                 }
-                BFSRecursive(curr, seen, queue);
-            }
+            } // retrieves upNode, downNode, leftNode, and rightNode in order.
         }
-        return null;
+        return;
     }
 
-    public static PacmanNode BFSRecursive(PacmanNode curr, Set<PacmanNode> seen, Queue<PacmanNode> queue) {
-        queue.offer(source);
-        while (!queue.isEmpty()) {
-            source.prevNode = curr;
-            curr = queue.poll();
-            source.visited = true;
-            if(source.x+1 <= width) {
-                source.x = curr.x + 1;
-            } else if(source.y+1 <= height) {
-                source.y = curr.y + 1;
-            } else if(source.x + 1 > width && source.y + 1 > height) {
-                source.x = 0;
-                source.y = 0;
+
+
+    public void markPath() {
+        PacmanNode goal = this.maze[row_end][column_end];
+        while (goal.prevNode != null) {
+            if(goal.prevNode.character == 'S') {
+                return;
             }
-            if (curr == target) {
-                System.out.println("\n\n" + "test");
-                return curr;
-            }
-            else {
-//                seen.add(curr);
-                for (PacmanNode neighbor : seen) {
-                    if (!seen.contains(neighbor)) {
-                        queue.offer(neighbor); // if it has never been in the queue.
-                        // neighbor came from curr. won't be overwritten bc it's only ever written once.
-                    }
-                }
-                BFSRecursive(curr, seen, queue);
-            }
+            goal.prevNode.character = '.';
+            goal = goal.prevNode;
         }
-        return null;
+    }
+
+    public void createFile(String outputFile) throws IOException {
+        try (BufferedWriter mazeOutput = new BufferedWriter(new FileWriter(outputFile))) {
+            int count = 0;
+            mazeOutput.write(height + " " + width + "\n");
+            for(int i = 0; i < height; i++) {
+                for(int j = 0; j < width; j++) {
+                    if (maze[i][j].character == '.') {
+                        count += 1;
+                    }
+                    mazeOutput.write(maze[i][j].character);
+                }
+                mazeOutput.write("\n");
+            }
+            System.out.println(count);
+        }
     }
 }
