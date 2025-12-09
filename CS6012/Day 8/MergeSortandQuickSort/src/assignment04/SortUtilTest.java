@@ -1,6 +1,7 @@
 package assignment04;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static assignment04.SortUtil.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +10,7 @@ class SortUtilTest {
     ArrayList<Integer> best = new ArrayList<>();
     ArrayList<Integer> avg = new ArrayList<>();
     ArrayList<Integer> worst = new ArrayList<>();
+    ArrayList<Integer> sameVal = new ArrayList<>();
     int size = 500;
 
     @org.junit.jupiter.api.BeforeEach
@@ -16,6 +18,7 @@ class SortUtilTest {
         best = generateBestCase(size);
         avg = generateAverageCase(size);
         worst = generateWorstCase(size);
+        sameVal = generateSameVal(size);
     }
 
     @org.junit.jupiter.api.Test
@@ -59,6 +62,14 @@ class SortUtilTest {
     }
 
     @org.junit.jupiter.api.Test
+    void mergesortTestFour() {
+        SortUtil.mergesort(sameVal, Integer::compare);
+        for(int i = 1; i < sameVal.size(); i++) {
+            assertEquals(sameVal.get(i), sameVal.get(i - 1));
+        }
+    }
+
+    @org.junit.jupiter.api.Test
     void quicksortTestOne() {
         SortUtil.quicksort(best, Integer::compare);
         for(int i = 1; i < best.size(); i++) {
@@ -81,6 +92,15 @@ class SortUtilTest {
             assertTrue(worst.get(i) > worst.get(i - 1));
         }
     }
+
+    @org.junit.jupiter.api.Test
+    void quicksortTestFour() {
+        SortUtil.quicksort(sameVal, Integer::compare);
+        for(int i = 1; i < sameVal.size(); i++) {
+            assertEquals(sameVal.get(i), sameVal.get(i - 1));
+        }
+    }
+
     @org.junit.jupiter.api.Test
     void partitionTestOne() {
         ArrayList<Integer> arr = new ArrayList<>();

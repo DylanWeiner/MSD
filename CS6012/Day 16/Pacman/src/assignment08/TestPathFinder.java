@@ -1,6 +1,9 @@
 package assignment08;
 
-import java.io.IOException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.*;
 
 public class TestPathFinder {
 
@@ -24,4 +27,37 @@ public class TestPathFinder {
         PathFinder.solveMaze("mazes/unsolvable.txt", "mazes/unsolvableOutput.txt");
         PathFinder.solveMaze("mazes/straight.txt", "mazes/straightOutput.txt");
     }
+
+
 }
+//class TestPathFinderMethods {
+//    PacmanGraph pacmanGraph = new PacmanGraph();
+//
+//    @BeforeEach
+//    void setUp() throws IOException {
+//        pacmanGraph.newRandomPacmanGraph(10, 10);
+//        pacmanGraph.GraphBuilder("mazes/RandomTest.txt", "mazes/RandomTestOutput.txt");
+//        pacmanGraph.BFS();
+//        pacmanGraph.markPath();
+//        pacmanGraph.createFile("mazes/RandomTestOutput.txt");
+//    }
+//
+//    @Test
+//    void graphBuilder() throws IOException {
+//    }
+//
+//    @Test
+//    void BFS() throws IOException {
+//
+//    }
+//
+//    @Test
+//    void markPath() throws IOException {
+//
+//    }
+//
+//    @Test
+//    void createFile() throws IOException {
+//
+//    }
+//}

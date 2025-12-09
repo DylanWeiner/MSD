@@ -1,19 +1,29 @@
 package assignment08;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PacmanGraphTest {
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void graphBuilder() {
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void BFS() {
+    }
 
+    @Test
+    void markPath() {
+    }
+
+    @Test
+    void createFile() {
     }
 }

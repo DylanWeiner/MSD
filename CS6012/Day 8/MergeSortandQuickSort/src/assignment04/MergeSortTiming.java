@@ -44,7 +44,7 @@ public class MergeSortTiming extends TimerTemplate {
 
     public static void main() throws IOException {
         ArrayList<Integer> problemSizes = new ArrayList<>();
-        for(int n = 1000; n <= 4000; n+=20) {
+        for(int n = 1000; n <= 4000; n+=100) {
             problemSizes.add(n);
         }
 
@@ -52,8 +52,6 @@ public class MergeSortTiming extends TimerTemplate {
         for (int i = 0; i < problemSizes.size(); i++) {
             size[i] = problemSizes.get(i);
         }
-
-//        int[] size = {2, 10, 50, 100, 500, 1000, 1500};
 
         var timer = new MergeSortTiming(size, 10);
         var results = timer.run();

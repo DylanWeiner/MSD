@@ -78,9 +78,17 @@ public class SortUtil {
         merger(arr, temp, 0, arr.size()-1, comp);
     }
 
+    public static ArrayList<Integer> generateSameVal(int size) {
+        ArrayList<Integer> arr = new ArrayList<>(size);
+        for (int i = 1; i <= size; i++) {
+            arr.add(3);
+        }
+        return arr;
+    }
+
     public static ArrayList<Integer> generateBestCase(int size) {
         ArrayList<Integer> arr = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
+        for (int i = 1; i <= size; i++) {
             arr.add(i);
         }
         return arr;
@@ -89,7 +97,7 @@ public class SortUtil {
     public static ArrayList<Integer> generateAverageCase(int size) {
         ArrayList<Integer> arr = new ArrayList<>(size);
         Random rand = new Random();
-        for (int i = 0; i < size; i++) {
+        for (int i = 1; i <= size; i++) {
             arr.add(i);
         }
         for (int i = size - 1; i > 0; i--) {
@@ -137,21 +145,22 @@ public class SortUtil {
         T pivotVal = arr.get(pivotIndex);
         swap(arr, pivotIndex, high);
         int left = low;
-        int right = high;
+        int right = high - 1;
 
         while (left < right) {
-            while (comp.compare(arr.get(left), pivotVal) < 0) {
+            while (comp.compare(arr.get(left), pivotVal) <= 0 && left < right) {
                 left++;
             }
-            while (comp.compare(arr.get(right), pivotVal) > 0) {
+            while (comp.compare(arr.get(right), pivotVal) >= 0 && right > left) {
                 right--;
             }
-            if (left < right) {
-                swap(arr, left, right);
-            }
+            swap(arr, left, right);
         }
-//        swap(arr, pivotIndex, high);
-        return left;
+        if(comp.compare(arr.get(high), arr.get(left)) <= 0) {
+            swap(arr, left, high);
+            return left;
+        }
+        return high;
     }
 
     public static <T> int getRandom(ArrayList<T> arr, int low, int high, Comparator<? super T> comp) {

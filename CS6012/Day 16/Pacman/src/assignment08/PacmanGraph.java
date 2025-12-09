@@ -32,6 +32,37 @@ public class PacmanGraph {
         }
     }
 
+    public void newRandomPacmanGraph(int height, int width) throws IOException {
+        this.height = height;
+        this.width = width;
+        this.column_start = 0;
+        this.row_start = 0;
+        this.column_end = height - 1;
+        this.row_end = width - 1;
+        BufferedWriter mazeOutput = new BufferedWriter(new FileWriter("mazes/RandomTest.txt"));
+
+        this.maze[row_start][column_start].character = 'S';
+        maze[row_end][column_end].character = 'G';
+
+        Random random = new Random();
+        char space = ' ';
+        char wall = 'X';
+
+        mazeOutput.write(this.height + " " + this.width + "\n");
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                if (this.maze[i][j].character != 'S' && this.maze[i][j].character != 'G') {
+                    this.maze[i][j].character = random.nextBoolean() ? space : wall;
+                } else {
+                    return;
+                }
+                mazeOutput.write(maze[i][j].character);
+            }
+            mazeOutput.write("\n");
+        }
+        mazeOutput.close();
+    }
+
     public void GraphBuilder(String inputFile, String outputFile) throws IOException {
         try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
             String[] dimensions = br.readLine().split(" ");
@@ -61,7 +92,8 @@ public class PacmanGraph {
         }
     }
 
-    public void BFS() {
+    public void BFS(String inputFile, String outputFile) throws IOException {
+        GraphBuilder(inputFile, outputFile);
         Queue<PacmanNode> queue = new LinkedList<>() {
         };
 //        ArrayList<PacmanNode> directions = new ArrayList<PacmanNode>();
@@ -97,7 +129,8 @@ public class PacmanGraph {
 
 
 
-    public void markPath() {
+    public void markPath(String inputFile, String outputFile) throws IOException {
+        BFS(inputFile, outputFile);
         PacmanNode goal = this.maze[row_end][column_end];
         while (goal.prevNode != null) {
             if(goal.prevNode.character == 'S') {
@@ -108,7 +141,8 @@ public class PacmanGraph {
         }
     }
 
-    public void createFile(String outputFile) throws IOException {
+    public void createFile(String inputFile, String outputFile) throws IOException {
+        markPath(inputFile, outputFile);
         try (BufferedWriter mazeOutput = new BufferedWriter(new FileWriter(outputFile))) {
             int count = 0;
             mazeOutput.write(height + " " + width + "\n");
