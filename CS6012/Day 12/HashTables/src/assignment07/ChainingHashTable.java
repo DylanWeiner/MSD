@@ -82,16 +82,16 @@ public class ChainingHashTable implements Set<String> {
             if(contains(item)) {
                 contained = true;
             }
+            else {
+                return false;
+            }
         }
         return contained;
     }
 
     @Override
     public boolean isEmpty() {
-        if(size == 0) {
-            return true;
-        }
-        return false;
+        return size == 0;
     }
 
     @Override

@@ -6,21 +6,21 @@ import java.util.*;
 import java.util.Iterator;
 
 public class SinglyLinkedList<E> implements List<E> {
-    private class Node {
-        E data = null;
-        Node next = null;
+    private class Node<E> {
+        private E data = null;
+        private Node<E> next = null;
 
-        public Node(E data) {
+        Node(E data) {
             this.data = data;
             this.next = null;
         };
 
-        public Node(E data, Node next) {
+        public Node(E data, Node<E> next) {
             this.data = data;
             this.next = next;
         };
 
-        private Node getNextNode() {
+        private Node<E> getNextNode() {
             return next;
         }
 
@@ -29,8 +29,8 @@ public class SinglyLinkedList<E> implements List<E> {
         }
     }
     private int size;
-    private Node head;
-    private Node tail;
+    private Node<E> head;
+    private Node<E> tail;
 
     public SinglyLinkedList() {
         this.head = null;
@@ -41,14 +41,14 @@ public class SinglyLinkedList<E> implements List<E> {
     @Override
     public void insertFirst(E element) {
         if (head != null) {
-            Node temp = new Node(element, head);
+            Node<E> temp = new Node<>(element, head);
             head = temp;
         }
         else if(tail != null) {
-            head = new Node(element, tail);
+            head = new Node<>(element, tail);
         }
         else {
-            head = new Node(element);
+            head = new Node<>(element);
             head.next = null;
         }
         size++;
@@ -61,15 +61,16 @@ public class SinglyLinkedList<E> implements List<E> {
         }
         if(isEmpty() || index == 0) {
             insertFirst(element);
+            return;
         }
         else {
-            Node prev = head;
-            Node current = head;
+            Node<E> prev = head;
+            Node<E> current = head;
             for (int i = 0; i < index; i++) {
                 prev = current;
                 current = current.next;
             }
-            prev.next = new Node(element, current);
+            prev.next = new Node<>(element, current);
             size++;
         }
     }
@@ -87,7 +88,7 @@ public class SinglyLinkedList<E> implements List<E> {
         if(index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
-        Node n = head;
+        Node<E> n = head;
         for (int i = 0; i < index; i++) {
             n = n.next;
         }
@@ -100,9 +101,10 @@ public class SinglyLinkedList<E> implements List<E> {
             throw new NoSuchElementException();
         }
         if(head.next == null) {
+            E data = head.data;
             head = null;
             size--;
-            return null;
+            return data;
         }
         head = head.next;
         size--;
@@ -118,7 +120,7 @@ public class SinglyLinkedList<E> implements List<E> {
             return deleteFirst();
         }
         else {
-            Node current = head;
+            Node<E> current = head;
             int count = 0;
             while (count < index - 1) {
                 current = current.next;
@@ -133,13 +135,12 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public int indexOf(E element) {
-        int index = 0;
         for(int i = 0; i < size; i++) {
             if(head.data.equals(element)) {
-                index = i;
+                return i;
             }
         }
-        return index;
+        return -1;
     }
 
     @Override
@@ -149,15 +150,12 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public boolean isEmpty() {
-        if (size == 0) {
-            return true;
-        }
-        return false;
+        return size == 0;
     }
 
     @Override
     public void clear() {
-        head = new Node(null, null);
+        head = new Node<>(null, null);
         size = 0;
     }
 
@@ -178,9 +176,9 @@ public class SinglyLinkedList<E> implements List<E> {
 
     private class SinglyLinkedListIterator implements Iterator<E> {
 
-            private Node next = head;
-            private Node current = null;
-            private Node previous = null;
+            private Node<E> next = head;
+            private Node<E> current = null;
+            private Node<E> previous = null;
             private boolean canRemove = false;
 
             @Override
@@ -193,7 +191,6 @@ public class SinglyLinkedList<E> implements List<E> {
                 if(!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                canRemove = true;
 
                 E value = next.data;
                 canRemove = true;
@@ -212,7 +209,7 @@ public class SinglyLinkedList<E> implements List<E> {
                 if(current == head) {
                     deleteFirst();
                 } else if(next != null) {
-                    previous = new Node(next.data, current);
+                    previous = new Node<>(next.data, current);
                 }
             } //Store a reference to the previous node and modify it without starting from the beginning for O(1) implementation.
     }

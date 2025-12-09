@@ -27,6 +27,9 @@ public class WebBrowser {
     }
 
     public URL back() throws NoSuchElementException {
+        if(URLListBackward.isEmpty()) {
+            throw new NoSuchElementException();
+        }
         URLListForward.push(currentURL);
         currentURL = URLListBackward.peek();
         URLListBackward.pop();
@@ -34,6 +37,9 @@ public class WebBrowser {
     }
 
     public URL forward() throws NoSuchElementException {
+        if(URLListForward.isEmpty()) {
+            throw new NoSuchElementException();
+        }
         URLListBackward.push(currentURL);
         currentURL = URLListForward.peek();
         URLListForward.pop();
