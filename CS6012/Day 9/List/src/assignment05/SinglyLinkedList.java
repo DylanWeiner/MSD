@@ -61,7 +61,6 @@ public class SinglyLinkedList<E> implements List<E> {
         }
         if(isEmpty() || index == 0) {
             insertFirst(element);
-            return;
         }
         else {
             Node<E> prev = head;
@@ -135,10 +134,12 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public int indexOf(E element) {
+        Node<E> current = head;
         for(int i = 0; i < size; i++) {
-            if(head.data.equals(element)) {
+            if(current.data.equals(element)) {
                 return i;
             }
+            current = current.next;
         }
         return -1;
     }
