@@ -134,10 +134,10 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
             @Override
             public E next() {
-                canRemove = true;
                 if(!hasNext()) {
                     throw new NoSuchElementException();
                 } // Throws an error if there is no next element.
+                canRemove = true;
                 return set[index++]; // returns value at the next index.
             }
 
@@ -166,9 +166,10 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
             @Override
             public void remove() {
-                if(isEmpty()) {
-                    throw new IllegalStateException();
-                }
+//                if(isEmpty()) {
+//                    canRemove = false;
+//                    throw new IllegalStateException();
+//                }
                 if(canRemove) {
                     BinarySearchSet.this.remove(set[size - 1]);
                     canRemove = false;
