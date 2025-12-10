@@ -78,8 +78,6 @@ public class GrayscaleImage {
         ImageIO.write(outputImage, "png", filename);
     }
 
-//    ///Methods to be filled in by students below
-//
 //    /**
 //     * Get the pixel brightness value at the specified coordinates
 //     * (0,0) is the top left corner of the image, (width -1, height -1) is the bottom right corner
@@ -148,7 +146,6 @@ public class GrayscaleImage {
 //     * @return a GrayScale image with pixel data uniformly rescaled so that its averageBrightness() is 127
 //     */
     public GrayscaleImage normalized(){
-        //STUDENT FILL ME IN WITH A CORRECT IMPLEMENTATION
         double[][] normalizedData = new double[imageData.length][imageData[0].length];
         double scale = 127/averageBrightness();
 
@@ -168,13 +165,14 @@ public class GrayscaleImage {
 //     * @return a new GrayscaleImage that is a mirrored version of the this
 //     */
     public GrayscaleImage mirrored() {
-        //STUDENT: FILL ME IN WITH A CORRECT IMPLEMENTATION
-        double[][] newImage = new double[imageData.length][imageData[0].length];
-
+        double[][] newImage = imageData.clone();
 
         for (int row = 0; row < imageData.length; row++) {
-            for (int col = 0; col < imageData[0].length; col++) {
-                newImage[row][col] = imageData[row][imageData[0].length-col-1];
+            for (int col = 0; col < imageData[0].length/2; col++) {
+                double temp = newImage[row][col];
+
+                newImage[row][col] = newImage[row][newImage[0].length-col-1];
+                newImage[row][newImage[0].length-col-1] = temp;
             }
         }
         return new GrayscaleImage(newImage);
