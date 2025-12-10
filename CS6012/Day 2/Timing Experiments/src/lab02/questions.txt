@@ -1,5 +1,5 @@
 1. On your computer, how many times per second does the millisecond timer update?
-Roughly between 75,000 and 77,000 times.
+1000 times
 
 2. Is it possible to determine how many times per second the nanosecond timer updates? If so, how many? If not, why not?
 Not exactly, we can technically take the averages of how many times the nanosecond timer updated based off the ten seconds the
@@ -19,7 +19,7 @@ It takes 4500 nanoseconds.
 1000 nanoseconds.
 
 7. If you repeat the square root test 100x as many times, does the precision improve?
-No
+Yes
 
 8. How could you improve the results (get a more accurate estimate of elapsed time)?
 Extend the amount of time the experiments run to see if it can assess more accurately over a longer period of time.
