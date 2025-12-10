@@ -105,15 +105,15 @@ public class GrayscaleImage {
             return false;
         }
 
-        if(imageData.length != ((GrayscaleImage)other).imageData.length || imageData[0].length != ((GrayscaleImage)other).imageData[0].length){
+        GrayscaleImage otherImage = (GrayscaleImage)other;
+
+        if(imageData.length != otherImage.imageData.length || imageData[0].length != otherImage.imageData[0].length){
             return false;
         }
 
-        GrayscaleImage otherImage = (GrayscaleImage)other;
-
         for(int row = 0; row < imageData.length; row++){
             for(int col = 0; col < imageData[row].length; col++){
-                if(otherImage.getPixel(row, col) != getPixel(row, col)){
+                if(imageData[row][col] != otherImage.imageData[row][col]){
                     return false;
                 }
             }
@@ -190,10 +190,10 @@ public class GrayscaleImage {
 //     * @throws IllegalArgumentException if the specified rectangle goes outside the bounds of the original image
 //     */
     public GrayscaleImage cropped(int startRow, int startCol, int width, int height){
-        double[][] croppedData = new double[height][width];
         if(startCol + width > imageData[0].length || startRow + height > imageData.length){
             throw new IllegalArgumentException("Falls out of bounds");
         }
+        double[][] croppedData = new double[height][width];
         for (int row = startRow; row < startRow+height; row++) {
             for (int col = startCol; col < startCol+width; col++) {
                 croppedData[row-startRow][col-startCol] = imageData[row][col];
@@ -217,17 +217,18 @@ public class GrayscaleImage {
         int width = imageData[0].length;
         int difference;
         int edges;
-//
+
+        if(height == width){
+            return new GrayscaleImage(imageData);
+        }
         if(height > width) {
             difference = (height - width);
             edges = difference/2;
             return cropped(edges, 0, width, width);
-        } else if(height < width) {
+        } else { // if(height < width)
             difference = (width - height);
             edges = difference/2;
             return cropped(0, edges, height, height);
-        } else {
-            return new GrayscaleImage(imageData);
         }
     }
 }
