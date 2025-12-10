@@ -190,7 +190,7 @@ public class GrayscaleImage {
 //     * @throws IllegalArgumentException if the specified rectangle goes outside the bounds of the original image
 //     */
     public GrayscaleImage cropped(int startRow, int startCol, int width, int height){
-        double[][] croppedData = new double[width][height];
+        double[][] croppedData = new double[height][width];
         if(startCol + width > imageData[0].length || startRow + height > imageData.length){
             throw new IllegalArgumentException("Falls out of bounds");
         }
@@ -199,8 +199,7 @@ public class GrayscaleImage {
                 croppedData[row-startRow][col-startCol] = imageData[row][col];
             }
         }
-        GrayscaleImage croppedImage  = new GrayscaleImage(croppedData);
-        return croppedImage;
+        return new GrayscaleImage(croppedData);
     }
 
 //    /**
