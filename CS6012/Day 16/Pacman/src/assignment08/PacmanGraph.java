@@ -16,7 +16,7 @@ public class PacmanGraph {
         PacmanNode[][] nodes;
     }
 
-    private class PacmanNode {
+    private static class PacmanNode {
         char character; // character of the node
         boolean visited = false; // tracks if we visited each node.
         int column;
@@ -107,7 +107,7 @@ public class PacmanGraph {
 
         while (!queue.isEmpty()) {
             PacmanNode curr = queue.poll();
-            System.out.println("Visiting " + curr.character + " at " + curr.row + " " + curr.column);
+//            System.out.println("Visiting " + curr.character + " at " + curr.row + " " + curr.column);
             if (curr.character == 'G') {
                 return;
 //                return true;
@@ -126,8 +126,6 @@ public class PacmanGraph {
         }
         return;
     }
-
-
 
     public void markPath(String inputFile, String outputFile) throws IOException {
         BFS(inputFile, outputFile);
