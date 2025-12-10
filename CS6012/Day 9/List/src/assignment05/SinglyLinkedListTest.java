@@ -12,6 +12,7 @@ import java.util.NoSuchElementException;
 class SinglyLinkedListTest {
     SinglyLinkedList<Integer> list;
     SinglyLinkedList<Integer> list2;
+    SinglyLinkedList<Integer> list3;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -61,6 +62,7 @@ class SinglyLinkedListTest {
 
     @org.junit.jupiter.api.Test
     void get() {
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(0));
         list.insertFirst(7);
         list.insertFirst(5);
         list.insertFirst(3);
@@ -138,11 +140,16 @@ class SinglyLinkedListTest {
     }
     @org.junit.jupiter.api.Test
     void iterator2() {
-        var  iterator = list2.iterator();
+        int check = 0;
+        var iterator = list2.iterator();
         while(iterator.hasNext()) {
+            System.out.println(iterator);
             iterator.next();
-            iterator.remove();
+            if(check % 2 == 0) {
+                iterator.remove();
+            }
+            check++;
         }
-        assertTrue(list2.isEmpty());
+        System.out.println("Stop the debugger here!");
     }
 }

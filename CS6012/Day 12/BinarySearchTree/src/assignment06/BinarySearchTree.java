@@ -207,7 +207,7 @@ public class BinarySearchTree<E extends Comparable<? super E>> implements Sorted
             }
         }
 //        System.out.println(decCount);
-        System.out.println(size);
+//        System.out.println(size);
         return result;
     }
 

@@ -151,6 +151,10 @@ class BinarySearchSetTest {
         emptySet.add(3);
         emptySet.add(7);
         assertEquals(7, emptySet.last());
+        for(int i = 8; i <= 108; i++) {
+            emptySet.add(i);
+        }
+        assertEquals(108, emptySet.last());
     }
 
     @Test

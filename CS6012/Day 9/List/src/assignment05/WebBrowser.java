@@ -4,19 +4,21 @@ import java.net.URL;
 import java.util.NoSuchElementException;
 
 public class WebBrowser {
-    private LinkedListStack<URL> URLListForward;
-    private LinkedListStack<URL> URLListBackward;
-    SinglyLinkedList<URL> history;
-    private URL currentURL;
+    private LinkedListStack<URL> URLListForward = new LinkedListStack<>();
+    private LinkedListStack<URL> URLListBackward = new LinkedListStack<>();
+    SinglyLinkedList<URL> history =  new SinglyLinkedList<>();
+    private URL currentURL = null;
 
-    public WebBrowser() {
-        URLListForward = new LinkedListStack<>();
-        URLListBackward = new LinkedListStack<>();
-        history = new SinglyLinkedList<>();
-    }
+    public WebBrowser() {}
 
     public WebBrowser(SinglyLinkedList<URL> history) {
-        history = this.history;
+        if(history == null || history.isEmpty()) {
+            return;
+        }
+        currentURL = history.getFirst();
+        for(int i = history.size() - 1; i > 0; i--) {
+            URLListBackward.push(history.get(i));
+        }
     }
 
     public void visit(URL webpage) {

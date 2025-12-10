@@ -32,7 +32,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
     @Override
     public E first() throws NoSuchElementException {
-        if(size == 0) { // returns null for first value of empty arrays
+        if(size <= 0) { // returns null for first value of empty arrays
             throw new NoSuchElementException();
         }
         return set[0];
@@ -40,7 +40,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
     @Override
     public E last() throws NoSuchElementException {
-        if(size == 0) { // returns null for last value of empty arrays
+        if(size <= 0) { // returns null for last value of empty arrays
             throw new NoSuchElementException();
         }
         return set[size - 1];
@@ -59,13 +59,13 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
         int insertIndex = BinarySearch(element);
 
-        if (insertIndex > -1){
+        if (insertIndex >= 0){
             if(size == set.length) {
                 doubleArray();
             }
 
-            for (int i = size -1; i >= insertIndex; i--) {
-                set[i+1] = set[i];
+            for (int i = size ; i > insertIndex; i--) {
+                set[i] = set[i-1];
             }
             set[insertIndex] = element;
             size++;
@@ -125,6 +125,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
     public Iterator<E> iterator() {
         return new ListIterator<>() {
             private int index = 0;
+            private boolean canRemove = false;
 
             @Override
             public boolean hasNext() {
@@ -133,6 +134,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
             @Override
             public E next() {
+                canRemove = true;
                 if(!hasNext()) {
                     throw new NoSuchElementException();
                 } // Throws an error if there is no next element.
@@ -167,7 +169,14 @@ public class BinarySearchSet<E> implements SortedSet<E> {
                 if(isEmpty()) {
                     throw new IllegalStateException();
                 }
-                BinarySearchSet.this.remove(set[size - 1]);
+                if(canRemove) {
+                    BinarySearchSet.this.remove(set[size - 1]);
+                    canRemove = false;
+                    size--;
+                }
+                else {
+                    throw new IllegalStateException();
+                }
             }
 
             @Override
@@ -184,17 +193,19 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 
     @Override
     public boolean remove(E element) throws NoSuchElementException {
-        int index;
-            index = BinarySearch(element); // Grabs desired index of value you wish to remove
+        int index = BinarySearch(element); // Grabs desired index of value you wish to remove
+
         if(index >= 0) {
             return false;
         }
-            for (int i = Math.abs(index + 1); i < size-1; i++) {
-                set[i] = set[i + 1]; // moves other values over to fill the gap
-            }
-            set[size-1] = null;
-            size--;
-            return true;
+
+
+        for (int i = Math.abs(index + 1); i < size-1; i++) {
+            set[i] = set[i + 1]; // moves other values over to fill the gap
+        }
+        set[size-1] = null;
+        size--;
+        return true;
     }
 
     @Override

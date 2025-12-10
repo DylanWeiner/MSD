@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,6 +45,7 @@ class WebBrowserTest {
 
     @Test
     void forward() {
+        assertThrows(NoSuchElementException.class, () -> data.forward());
         System.out.println(data.back());
         System.out.println(data.back());
         System.out.println(data.forward());

@@ -77,14 +77,14 @@ public class SinglyLinkedList<E> implements List<E> {
     @Override
     public E getFirst() throws NoSuchElementException {
         if(isEmpty()) {
-            throw new IndexOutOfBoundsException();
+            throw new NoSuchElementException();
         }
         return head.data;
     }
 
     @Override
     public E get(int index) throws IndexOutOfBoundsException {
-        if(index < 0 || index > size) {
+        if(isEmpty() || index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
         Node<E> n = head;
@@ -96,23 +96,23 @@ public class SinglyLinkedList<E> implements List<E> {
 
     @Override
     public E deleteFirst() throws NoSuchElementException {
-        if(isEmpty()) {
+        if(isEmpty() || size == 0) {
             throw new NoSuchElementException();
         }
-        if(head.next == null) {
-            E data = head.data;
-            head = null;
-            size--;
-            return data;
-        }
+        E data = head.data;
+//        if(head.next == null) {
+//            head = null;
+//            size--;
+//            return data;
+//        }
         head = head.next;
         size--;
-        return head.data;
+        return data;
     }
 
     @Override
     public E delete(int index) throws IndexOutOfBoundsException {
-        if(isEmpty()) {
+        if(isEmpty() || index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
         if(index == 0) {
@@ -163,9 +163,10 @@ public class SinglyLinkedList<E> implements List<E> {
     @Override
     public Object[] toArray() {
         Object[] arr = new Object[size];
+        Node<E> current = head;
         for(int i = 0; i < size; i++) {
-            arr[i] = head.data;
-            head = head.next;
+            arr[i] = current.data;
+            current = current.next;
         }
         return arr;
     }
@@ -209,10 +210,12 @@ public class SinglyLinkedList<E> implements List<E> {
                 }
                 if(current == head) {
                     deleteFirst();
+                    canRemove = false;
                 } else if(next != null) {
-                    previous = new Node<>(next.data, current);
+                    previous.next = current.next;
+                    size--;
+                    canRemove = false;
                 }
             } //Store a reference to the previous node and modify it without starting from the beginning for O(1) implementation.
     }
-
 }
