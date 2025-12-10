@@ -87,7 +87,9 @@ public class GrayscaleImage {
 //     * @throws IllegalArgumentException if x, y are not within the image width/height
 //     */
     public double getPixel(int x, int y){
-        if(x < 0 || y < 0 || x >= imageData.length || y >= imageData[0].length){
+        int imageWidth = imageData[0].length;
+        int imageHeight = imageData.length;
+        if(x < 0 || y < 0 || x >= imageWidth || y >= imageHeight){
             throw new IllegalArgumentException("value(s) out of bounds");
         }
         return imageData[y][x];
@@ -151,7 +153,7 @@ public class GrayscaleImage {
 
         for (int row = 0; row < imageData.length; row++) {
             for (int col = 0; col < imageData[0].length; col++) {
-                normalizedData[row][col] = imageData[row][col] * scale;
+                normalizedData[row][col] = (imageData[row][col] * scale);
             }
         }
         return new GrayscaleImage(normalizedData);
@@ -190,7 +192,7 @@ public class GrayscaleImage {
 //     * @throws IllegalArgumentException if the specified rectangle goes outside the bounds of the original image
 //     */
     public GrayscaleImage cropped(int startRow, int startCol, int width, int height){
-        if(startCol + width > imageData[0].length || startRow + height > imageData.length){
+        if(width <= 0 || height <= 0 || startRow < 0 || startCol < 0 || startCol + width > imageData[0].length || startRow + height > imageData.length){
             throw new IllegalArgumentException("Falls out of bounds");
         }
         double[][] croppedData = new double[height][width];
