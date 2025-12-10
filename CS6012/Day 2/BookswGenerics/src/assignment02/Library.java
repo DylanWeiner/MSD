@@ -246,7 +246,7 @@ public class Library<Type> {
      */
     public ArrayList<LibraryBook<Type>> getOverdueList(int month, int day, int year) {
         ArrayList<LibraryBook<Type>> overdueList = new ArrayList<>();
-        GregorianCalendar todaysDate = new GregorianCalendar(month, day, year);
+        GregorianCalendar todaysDate = new GregorianCalendar(year, month, day);
 
         Comparator<LibraryBook<Type>> comparator = new OrderByDueDate();
 
