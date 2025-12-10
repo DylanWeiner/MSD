@@ -249,11 +249,12 @@ class BinarySearchSetTest {
         iterator.next();
         iterator.remove();  // remove 5 instead of 3
         assertEquals(2, set.size());
-        assertFalse(set.contains(3));        // Test removing without calling next
+        assertFalse(set.contains(1));        // Test removing without calling next
         iterator = set.iterator();
-        iterator.remove();
-        iterator.remove();
         assertThrows(IllegalStateException.class, iterator::remove);
+        iterator.next();
+        iterator.remove();
+        assertFalse(set.contains(2));
     }
 
     @Test
