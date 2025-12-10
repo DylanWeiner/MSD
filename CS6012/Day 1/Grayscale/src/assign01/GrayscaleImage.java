@@ -191,8 +191,8 @@ public class GrayscaleImage {
 //     */
     public GrayscaleImage cropped(int startRow, int startCol, int width, int height){
         double[][] croppedData = new double[width][height];
-        if(width <= 0 || height <= 0){
-            throw new IllegalArgumentException("width and height must be positive numbers");
+        if(startCol + width > imageData[0].length || startRow + height > imageData.length){
+            throw new IllegalArgumentException("Falls out of bounds");
         }
         for (int row = startRow; row < startRow+height; row++) {
             for (int col = startCol; col < startCol+width; col++) {
