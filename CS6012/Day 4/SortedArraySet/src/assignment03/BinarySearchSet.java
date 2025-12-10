@@ -171,7 +171,7 @@ public class BinarySearchSet<E> implements SortedSet<E> {
 //                    throw new IllegalStateException();
 //                }
                 if(canRemove) {
-                    BinarySearchSet.this.remove(set[size - 1]);
+                    BinarySearchSet.this.remove(set[--index]);
                     canRemove = false;
                     size--;
                 }
