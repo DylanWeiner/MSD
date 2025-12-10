@@ -251,7 +251,7 @@ public class Library<Type> {
         Comparator<LibraryBook<Type>> comparator = new OrderByDueDate();
 
         for(LibraryBook<Type> book : library) {
-            if(book.checkedOut && book.getDueDate().compareTo(todaysDate) > 0){
+            if(book.checkedOut && book.getDueDate().before(todaysDate)) {
                 overdueList.add(book);
             }
         }
