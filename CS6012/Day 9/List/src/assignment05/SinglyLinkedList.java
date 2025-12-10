@@ -210,12 +210,11 @@ public class SinglyLinkedList<E> implements List<E> {
                 }
                 if(current == head) {
                     deleteFirst();
-                    canRemove = false;
                 } else if(next != null) {
                     previous.next = current.next;
                     size--;
-                    canRemove = false;
                 }
-            } //Store a reference to the previous node and modify it without starting from the beginning for O(1) implementation.
+                canRemove = false;
+            } // Store a reference to the previous node and modify it without starting from the beginning for O(1) implementation.
     }
 }

@@ -8,6 +8,8 @@ import java.util.*;
 public class ArrayListAddition extends TimerTemplate {
     ArrayList<Integer> set = new ArrayList<>();
     ArrayList<Integer> findMe = new ArrayList<>();
+    int randomVal = 0;
+
 
     public ArrayListAddition(int[] problemSizes, int timesToLoop) {
         super(problemSizes, timesToLoop);
@@ -15,13 +17,16 @@ public class ArrayListAddition extends TimerTemplate {
 
     @Override
     protected void setup(int n) {
-        for (int size = 0; size < n; size++) {
-            for (int i = 1; i <= size; i++) {
-                set.add(i);
-            }
+        set.clear();
+        for (int i = 0; i < n; i++) {
+            set.add(i);
         }
         Collections.shuffle(set);
-        for (int i = 1; i <= this.timesToLoop; i++) {
+        int[] loops = new int[timesToLoop];
+        for (int i = 0; i < timesToLoop; i++) {
+            set.add(i);
+        }
+        for (int i = 1; i <= timesToLoop; i++) {
             findMe.add(set.get(i));
         }
         Collections.shuffle(set);
@@ -29,23 +34,26 @@ public class ArrayListAddition extends TimerTemplate {
 
     @Override
     protected void timingIteration(int n) {
-        set.contains(findMe.get(n)); // We passed in timesToLoop as n to use to index findMe
+        randomVal = findMe.get(n);
+        set.contains(randomVal); // We passed in timesToLoop as n to use to index findMe
+
     }
 
     @Override
     protected void compensationIteration(int n) {
+        randomVal = findMe.get(n);
     }
 
     public static void main() throws IOException {
-//        System.out.println("running");
-        int[] problemSize = new int[11];
-        int index = 0;
-        for (int i = 4; i <= 14; i++) {
-            problemSize[index] = (int) (Math.pow(2, i));
-            index++;
+        System.out.println("running");
+        int[] problemSize = new int[10];
+//        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            problemSize[i] = (int) (Math.pow(2, i) * 50);
+//            index++;
         }
 
-        var timer = new ArrayListAddition(problemSize, 10);
+        var timer = new ArrayListAddition(problemSize, 5000);
         var results = timer.run();
 
         String fileName = "data.csv";
@@ -54,12 +62,11 @@ public class ArrayListAddition extends TimerTemplate {
 
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
-            writer.write("Time(ns)" + COMMA_DELIMITER +  "N" + NEW_LINE_SEPARATOR);
+            writer.write("N" + COMMA_DELIMITER +  "Time(ns)" + NEW_LINE_SEPARATOR);
             for (var result : results) {
                 writer.write(result.n() + COMMA_DELIMITER + result.avgNanoSecs() + NEW_LINE_SEPARATOR);
             }
             writer.flush();
-            writer.close();
         }
     }
 }
