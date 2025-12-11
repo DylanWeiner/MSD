@@ -10,14 +10,6 @@ class ArrayListPQueueTest {
     }
 
     @org.junit.jupiter.api.Test
-    void percolateDown() {
-    }
-
-    @org.junit.jupiter.api.Test
-    void percolateUp() {
-    }
-
-    @org.junit.jupiter.api.Test
     void add() {
         queue.add(9);
         queue.add(8);
@@ -42,6 +34,12 @@ class ArrayListPQueueTest {
         queue.add(100);
         queue.add(115);
         assertEquals(13,queue.removeMin());
+        assertEquals(16,queue.removeMin());
+        assertEquals(31,queue.removeMin());
+        assertEquals(41,queue.removeMin());
+        assertEquals(51,queue.removeMin());
+        assertEquals(100,queue.removeMin());
+        assertEquals(115,queue.removeMin());
     }
 
     @org.junit.jupiter.api.Test

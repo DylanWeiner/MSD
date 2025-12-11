@@ -32,7 +32,9 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
             if(left.compareTo(arrayList.get(minIndex)) < 0) {
                 minIndex = leftChild;
             }
-        } else if(rightChild < arrayList.size()) {
+        }
+
+        if(rightChild < arrayList.size()) {
             E right = arrayList.get(rightChild);
             if(right.compareTo(arrayList.get(minIndex)) < 0) {
                 minIndex = rightChild;
@@ -41,7 +43,7 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
         return minIndex;
     }
 
-    public void percolateDown(int index) {
+    private void percolateDown(int index) {
 //        System.out.println("current size: " + arrayList.size());
 
         int minIndex = MinFinder(index);
@@ -51,7 +53,7 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
         }
     }
 
-    public void percolateUp(int index) {
+    private void percolateUp(int index) {
         while(index > 0 && arrayList.get((index - 1) / 2).compareTo(arrayList.get(index)) > 0) {
             System.out.println(("currParent:"+ (index - 1) / 2));
             swap(arrayList, index, (index - 1) / 2);
@@ -70,18 +72,22 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
         if(arrayList.isEmpty()) {
             return null;
         }
-
         if(arrayList.size() == 1) {
             return arrayList.removeFirst();
         }
-//        else if(arrayList.size() > 1) {
+
         E removedValue = arrayList.getFirst();
-        swap(arrayList, 0, arrayList.size()-1);
-//            arrayList.removeFirst();
-//            arrayList.set(0, arrayList.getLast());
+
+        if(arrayList.size() > 1){
+            swap(arrayList, 0, arrayList.size()-1);
             arrayList.removeLast();
             percolateDown(0);
-            return removedValue;
+        }
+        else {
+            arrayList.removeFirst();
+        }
+        return removedValue;
+
     }
 
     @Override
