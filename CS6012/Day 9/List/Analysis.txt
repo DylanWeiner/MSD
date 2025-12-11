@@ -10,19 +10,19 @@ focus each task.
 
 About how many hours did you spend completing the programming and testing portion of this assignment? Evaluate your programming partner.
 Sophia was a great programming partner and was very team oriented, assisting me on deliberating the best path forward even when we were both struggling to
-understand how to proceed.
+understand how to proceed. I could not say for certain how much time we spent on it.
 
 Do you plan to work with this person again?
 I would work with this person again.
 
 Compare the running time of the push method. What is the growth rate of the method's running time for each stack class, and why?
-Both of these show a runtime of O(N) because it is always adding the element to the first position.
+Both of these show a runtime of O(1) because it is always adding the element to the first position.
 
 Compare the running time of the pop method. What is the growth rate of the method's running time for each stack class, and why?
-Both of these show a runtime of O(N) because it is always removing the element to the first position.
+Both of these show a runtime of O(1) because it is always removing the element from the first position.
 
 Compare the running time of the peek method. What is the growth rate of the method's running time for each stack class, and why?
-Both of these show a runtime of O(N) because it is always checking the element at the first position.
+Both of these show a runtime of O(1) because it is always checking the element at the first position.
 
 Based on your timing experiments, which stack class do you think is more efficient for using in your WebBrowser application? Why?
 The Array Stack because it is more optimized since it can pull information from memory, and it can retrieve the surrounding values whereas the Linked List cannot
