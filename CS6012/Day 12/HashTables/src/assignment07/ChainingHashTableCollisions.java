@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
-public class ChainingHashTableTiming extends TimerTemplate {
+public class ChainingHashTableCollisions extends TimerTemplate {
     int size = (int) (Math.pow(2, 19));
 
     /**
@@ -14,18 +14,18 @@ public class ChainingHashTableTiming extends TimerTemplate {
      * @param problemSizes array of N's to use
      * @param timesToLoop  number of times to repeat the tests
      */
-    public ChainingHashTableTiming(int[] problemSizes, int timesToLoop) {
+    public ChainingHashTableCollisions(int[] problemSizes, int timesToLoop) {
         super(problemSizes, timesToLoop);
     }
     private final int Capacity = 100000;
     // for analysis use enum for testFunc to separate good, mediocre, and bad
     // Use another hashmap to store n values and strings (HashMap<Integer, ArrayList<String>>
     // We can use hashmaps to track collisions.
-    private static final GoodHashFunctor GoodHashFunctor = new GoodHashFunctor();
-    private static final BadHashFunctor BadHashFunctor = new BadHashFunctor();
-    private static final MediocreHashFunctor MediocreHashFunctor = new MediocreHashFunctor();
+    static HashMap<Integer, Integer> goodCollisions = new HashMap<>();
+    static HashMap<Integer, Integer> mediocreCollisions = new HashMap<>();
+    static HashMap<Integer, Integer> badCollisions = new HashMap<>();
 
-    HashMap<Integer, String> N_Items = new HashMap<>();
+    HashMap<Integer, LinkedList<String>> N_Items = new HashMap<>();
     private final int wordLength = 1000;
     private final Random rand = new Random();
 
@@ -41,52 +41,69 @@ public class ChainingHashTableTiming extends TimerTemplate {
 
     @Override
     protected void setup(int n) {
+        switch(hashFunctors) {
+            case BAD:
+                instance = new ChainingHashTable(Capacity, new BadHashFunctor());
+                break;
+            case MEDIOCRE:
+                instance = new ChainingHashTable(Capacity, new MediocreHashFunctor());
+                break;
+            case GOOD:
+                instance = new ChainingHashTable(Capacity, new GoodHashFunctor());
+                break;
+        }
+
         if(N_Items.containsKey(n)) {
             return;
         }
+        N_Items.put(n, new LinkedList<>());
 
-        String n_str = "";
-
-        while(n_str.length() < n) {
-            n_str += rand.nextInt(Character.MAX_VALUE);
+        while(N_Items.get(n).size() < n) {
+            String current = "";
+            for(int i = 0; i < wordLength; i++) {
+                current += rand.nextInt(Character.MAX_VALUE);
+            }
+            N_Items.get(n).add(current);
         }
-        N_Items.put(n, n_str);
     }
 
     @Override
     protected void timingIteration(int n) {
+        instance.addAll(N_Items.get(n));
         switch(hashFunctors) {
             case BAD:
-                BadHashFunctor.hash(N_Items.get(n));
-                break;
-            case MEDIOCRE:
-                MediocreHashFunctor.hash(N_Items.get(n));
-                break;
-            case GOOD:
-                GoodHashFunctor.hash(N_Items.get(n));
-                break;
+              badCollisions.put(n, instance.collisions());
+              break;
+          case MEDIOCRE:
+              mediocreCollisions.put(n, instance.collisions());
+              break;
+          case GOOD:
+              goodCollisions.put(n, instance.collisions());
+              break;
         }
     }
 
     @Override
     protected void compensationIteration(int n) {
+        N_Items.get(n);
+
         switch(hashFunctors) {
             case BAD:
-                N_Items.get(n);
+                badCollisions.put(-1, instance.collisions());
                 break;
             case MEDIOCRE:
-                N_Items.get(n);
+                mediocreCollisions.put(-1, instance.collisions());
                 break;
             case GOOD:
-                N_Items.get(n);
+                goodCollisions.put(-1, instance.collisions());
                 break;
         }
     }
 
     public static void main() throws IOException {
         ArrayList<Integer> problemSizes = new ArrayList<>();
-        for (int n = 7; n < 18; n++) {
-            problemSizes.add((int) Math.pow(2, n));
+        for(int n = 7; n < 18; n++) {
+            problemSizes.add((int) Math.pow(2,n));
         }
 
         int[] size = new int[problemSizes.size()];
@@ -94,13 +111,13 @@ public class ChainingHashTableTiming extends TimerTemplate {
             size[i] = problemSizes.get(i);
         }
 
-        var timer = new ChainingHashTableTiming(size, 1);
+        var timer = new ChainingHashTableCollisions(size, 1);
 
         Result[] goodTime = new Result[size.length];
         Result[] mediocreTime = new Result[size.length];
         Result[] badTime = new Result[size.length];
 
-        for (HashType hashType : HashType.values()) {
+        for(HashType hashType : HashType.values()) {
             hashFunctors = hashType;
 
             switch (hashFunctors) {
@@ -116,25 +133,26 @@ public class ChainingHashTableTiming extends TimerTemplate {
             }
         }
 
-        String fileName = "HashFunctorTiming.csv";
         String COMMA_DELIMITER = ",";
         String NEW_LINE_SEPARATOR = "\n";
-        BufferedWriter writerTime = new BufferedWriter(new FileWriter(fileName));
+
+        String fileName2 = "HashFunctorCollisions.csv";
+        BufferedWriter writerColl = new BufferedWriter(new FileWriter(fileName2));
 
         System.out.println("Function Timing:");
-        String headers = "N, Good, Mediocre, Bad" + NEW_LINE_SEPARATOR;
-        writerTime.write(headers);
+        String headers2 = "N, Good, Mediocre, Bad" + NEW_LINE_SEPARATOR;
+        writerColl.write(headers2);
 
-        for (int i = 0; i < goodTime.length; i++) {
-            writerTime.write(size[i]
+        for(int i = 0; i < goodTime.length; i++) {
+            writerColl.write(size[i]
                     + COMMA_DELIMITER
-                    + goodTime[i].avgNanoSecs()
+                    + goodCollisions.get(size[i])
                     + COMMA_DELIMITER
-                    + mediocreTime[i].avgNanoSecs()
+                    + mediocreCollisions.get(size[i])
                     + COMMA_DELIMITER
-                    + badTime[i].avgNanoSecs()
+                    + badCollisions.get(size[i])
                     + NEW_LINE_SEPARATOR);
         }
-        writerTime.close();
+        writerColl.close();
     }
 }

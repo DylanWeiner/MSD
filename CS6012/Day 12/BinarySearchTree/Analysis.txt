@@ -5,21 +5,21 @@ percolated up or down the tree. This impacts the runtime of the methods because 
 information ever gets to be inserted in the middle of branches or replace the root as the new root value. It can also impact
 how easily information is removed (i.e. removing values from most to least will be substantially slower than removing values
 from lowest to highest or even in a random order. The same rule applies for contains. Add will see decreased speed when values
-are inserted from least to most as compared to most to least or a random order.
+are inserted from least to most as compared to most to least or a random order. This is due to how the tree is balanced.
 
 Design and conduct an experiment to illustrate the effect of building an N-item BST by inserting the N items in sorted order
 versus inserting the N items in a random order. Carefully describe your experiment, so that anyone reading this document could
 replicate your results.
 For this experiment, I created a list that contains values from 0 to 2^10, then 0 to 2^11 and so on until 0 to 2^15. After,
-I shuffled it in one case and haad it in order from least to greatest in the other case and in both cases inserted the values
+I shuffled it in one case and had it in order from least to greatest in the other case: in both cases I then inserted the values
 to a Binary Search Tree and timed the amount of time in nanoseconds it took to insert all the values and wrote them to a file
 to have the comparison graphed.
 
 Plot the results of your experiment. Since the organization of your plot(s) is not specified here, the labels and titles of
 your plots(s), as well as your interpretation of the plots, are critical.
 When inserted in order, I found that the inserted values worked far slower than when they were inserted in a random order. This
-is because every value meant the tree would be traversed again from the beginning when taken in order, but a random order
-meant it would often only traverse a few levels before finding the necessary position.
+is because every value meant the tree would essentially be a Linked List because it would only have one branch that originates at the
+root when taken in order, but a random order meant it would traverse the tree and its various branches far more efficiently.
 
 Design and conduct an experiment to illustrate the differing performance in a BST with a balance requirement and a BST that
 is allowed to be unbalanced. Use Java's TreeSet as an example of the former and your BinarySearchTree as an example of the
@@ -33,14 +33,13 @@ is far more optimized and even has an overall smaller Big O runtime when compare
 with a similar runtime but approaching an N of roughly 10^4, there was an exponential increase in the runtime of the contains
 method for the Unbalanced BST.
 
-
 Discuss whether a BST is a good data structure for representing a dictionary. If you think that it is, explain why. If you
 think that it is not, discuss other data structure(s) that you think would be better. (Keep in mind that for a typical
 dictionary, insertions and deletions of words are infrequent compared to word searches.)
-A BST would be good for a dictionary since BSTs are optimized for finding values. This means that the purpose of a dictionary
-(searching for words) would have its needs perfectly met by using a BST.
+A Balanced BST would be good for a dictionary since BSTs are optimized for finding values. This means that the purpose of a dictionary
+(searching for words) would have its needs perfectly met by using a BST. A Hashmap would also be an effective way to store the data.
 
 Many dictionaries are in alphabetical order. What problem will it create for a dictionary BST if it is constructed by
 inserting words in alphabetical order? What can you do to fix the problem?
-This will make it so every instance in which a word is added triggers a full traversal of the BST. A good solution would be to
-add them in the reverse of alphabetical order or simply inserting them from a random order.
+This will make it so every instance in which a word is added triggers a full traversal of the BST and it will essentially be a Linked List
+since the first word will end up as the root. A good solution would be to add them from a random order or to use a Balanced BST.

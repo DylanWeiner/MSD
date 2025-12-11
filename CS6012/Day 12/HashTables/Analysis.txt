@@ -7,7 +7,7 @@ Explain the hashing function you used for MediocreHashFunctor. Be sure to discus
 (i.e., result in some collisions).
 For the Mediocre Hash Functor, I simply took the ASCII value of every character and added them all together to use the sum of
 the ASCII values as the unique identifier. However, this still led to collisions as the same characters in a different order
-(Such as the words Cat and Act) would trigger a collision.
+(Such as the words cat and act) would trigger a collision.
 
 Explain the hashing function you used for GoodHashFunctor. Be sure to discuss why you expected it to perform well
 (i.e., result in few or no collisions).
@@ -21,13 +21,13 @@ here, the labels and titles of your plot(s), as well as, your interpretation of 
 this experiment is to create two plots: one that shows the number of collisions incurred by each hash function for a variety
 of hash table sizes, and one that shows the actual running time required by various operations using each hash function for
 a variety of hash table sizes.
-The design of my experiment took a set of strings whose characters were random values and assigning them unique values using
-the Good, Mediocre, and Bad Hash Functors. I then recorded the outcome of the total time it took them and the number of
-collisions each method produced.
+For the design of my experiment I took a set of strings whose characters were random values and assigned them unique values
+using the Good, Mediocre, and Bad Hash Functors. I then recorded the outcome of the total time it took them to calculate each
+variable's unique identifier.
 
 What is the cost of each of your three hash functions (in Big-O notation)? Note that the problem size (N) for your hash
 functions is the length of the String, and has nothing to do with the hash table itself. Did each of your hash functions
 perform as you expected (i.e., do they result in the expected number of collisions)?
-Each function was approximately O(NlgN) however, the good functor took, for the most part, more time than both the mediocre
-and bad hash functors. This is about what I expected since have a better method to make unique identifiers would also consume
-substantially more time.
+Each function was approximately O(N) however, the good functor took, for the most part, more time than both the mediocre
+and bad hash functors. This is about what I expected since having a better method to make unique identifiers would also
+consume more time.
