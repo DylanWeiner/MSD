@@ -1,9 +1,6 @@
 package lab06;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-
-import static java.util.Collections.min;
 import static java.util.Collections.swap;
 
 public class ArrayListPQueue<E extends Comparable<? super E>> implements PriorityQueue<E> {
@@ -54,25 +51,11 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
         }
     }
 
-    private int MaxFinder(int index) {
-        int parentIndex = 2*index-1;
-        int maxIndex = index;
-        if(parentIndex < 0) {
-            E itemVal = arrayList.get(index);
-        } else if(parentIndex < arrayList.size()) {
-            E parent = arrayList.get(parentIndex);
-            if(parent.compareTo(arrayList.get(maxIndex)) < 0) {
-                maxIndex = parentIndex;
-            }
-        }
-        return maxIndex;
-    }
-
     public void percolateUp(int index) {
-        int maxIndex = MaxFinder(index);
-        if(arrayList.get(index).compareTo(arrayList.get(maxIndex)) > 0) {
-            swap(arrayList, index, maxIndex);
-            percolateUp(maxIndex);
+        while(index > 0 && arrayList.get((index - 1) / 2).compareTo(arrayList.get(index)) > 0) {
+            System.out.println(("currParent:"+ (index - 1) / 2));
+            swap(arrayList, index, (index - 1) / 2);
+            index = (index - 1) / 2;
         }
     }
 
@@ -89,10 +72,10 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
         }
 
         if(arrayList.size() == 1) {
-            return arrayList.remove(0);
+            return arrayList.removeFirst();
         }
 //        else if(arrayList.size() > 1) {
-            E removedValue = arrayList.getFirst();
+        E removedValue = arrayList.getFirst();
         swap(arrayList, 0, arrayList.size()-1);
 //            arrayList.removeFirst();
 //            arrayList.set(0, arrayList.getLast());
@@ -103,9 +86,6 @@ public class ArrayListPQueue<E extends Comparable<? super E>> implements Priorit
 
     @Override
     public boolean isEmpty() {
-        if(arrayList.isEmpty()) {
-            return true;
-        }
-        return false;
+        return arrayList.isEmpty();
     }
 }
