@@ -32,20 +32,20 @@ public class MergeSortTiming extends TimerTemplate {
 
     @Override
     protected void timingIteration(int n) {
-        setThreshold(n);
+        setThreshold(0);
         SortUtil.mergesort((ArrayList<Integer>) avg.clone(), Integer::compare);
     }
 
     @Override
     protected void compensationIteration(int n) {
         ArrayList<Integer> avgClone = (ArrayList<Integer>) avg.clone();
-        setThreshold(n);
+        setThreshold(0);
     }
 
     public static void main() throws IOException {
         ArrayList<Integer> problemSizes = new ArrayList<>();
-        for(int n = 1000; n <= 4000; n+=100) {
-            problemSizes.add(n);
+        for(int n = 5; n < 15; n++) {
+            problemSizes.add((int) Math.pow(2, n));
         }
 
         int[] size = new int[problemSizes.size()];
@@ -53,10 +53,10 @@ public class MergeSortTiming extends TimerTemplate {
             size[i] = problemSizes.get(i);
         }
 
-        var timer = new MergeSortTiming(size, 10);
+        var timer = new MergeSortTiming(size, 50000);
         var results = timer.run();
 
-        String fileName = "MergeSortBest.csv";
+        String fileName = "MergeSortT.csv";
         String COMMA_DELIMITER = ",";
         String NEW_LINE_SEPARATOR = "\n";
 

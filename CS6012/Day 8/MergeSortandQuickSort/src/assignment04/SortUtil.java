@@ -9,7 +9,7 @@ import java.util.Random;
 import static java.util.Collections.swap;
 
 public class SortUtil {
-    private static int threshold_ = 5;
+    private static int threshold_ = 0;
     private static int strat = 0;
 
     public static <T> void insertionSort(ArrayList<T> arr, int low, int high, Comparator<? super T> comp) { // add a begin and an end a parameter to pass.
@@ -60,7 +60,7 @@ public class SortUtil {
     }
 
     private static <T> void merger(ArrayList<T> arr, ArrayList<T> temp, int left, int right, Comparator<? super T> comp) {
-        if (right - left + 1 <= threshold_) {
+        if (right - left <= threshold_) {
             insertionSort(arr, left, right, comp);
             return;
         }

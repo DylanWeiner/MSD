@@ -19,10 +19,10 @@ Yes
 
 Why or why not?
 QuickSort showed O(NlgN) growth which is roughly what we had expected from calculating the Big O behavior. This function likely
-finds a value closer to the median t very quickly, this will have a Big O of 2N since it would be N(1+1/2+1/4+1/8+etc)
-until it essentially hits 2. So the Big O runtime is O(N). Although ours is not fully optimized, it certainly exhibits very
-similar behavior. MergeSort had O(NlgN) which was what we had expected. The while loop runs until it runs out of one half of
-the sort algorithm. This would be O(NlgN), The same happens in the for loop that follows the while loop. Since we copy all N
-values from left and right into out, O(NlgN) is runtime for merging both arrays in every scenario. After, in the second method
-we will merge our array which once again does O(NlgN) work on the halves which exhibits logarithmic behavior. Insertion Sort has
+finds a value closer to the median t very quickly, this will have a Big O of NlgN since it uses a divide and conquer strategy.
+So it is able to efficiently break into smaller subgroups in the best case scenario.
+MergeSort had O(NlgN) which was what we had expected. The while loop runs until it runs out of one half of the sort
+algorithm. This would be O(NlgN), The same happens in the for loop that follows the while loop. Since we copy all N values
+from left and right into out, O(NlgN) is runtime for merging both arrays in every scenario. After, in the second method we
+will merge our array which once again does O(NlgN) work on the halves which exhibits logarithmic behavior. Insertion Sort has
 a better Big O runtime. We expected MergeSort to be worse asymptotically but remain consistent in every scenario.

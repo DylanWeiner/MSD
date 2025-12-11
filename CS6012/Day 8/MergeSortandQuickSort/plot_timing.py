@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 def main():
-    filename = "QuickSortData.csv" #change me if desired
+    filename = "MergeSortData.csv" #change me if desired
     with open(filename, 'r') as f:
         lines = f.readlines()
         headers = lines[0].split(",")
@@ -21,7 +21,7 @@ def main():
 
         plt.xlabel(headers[0])
         plt.ylabel("Time(ns)") #change me
-        plt.title("QuickSort for Different Thresholds") #change me
+        plt.title("MergeSort for Different Thresholds") #change me
         plt.legend(headers[1:]) # label the lines
         plt.savefig('Value_Contained.png') #change me
 
