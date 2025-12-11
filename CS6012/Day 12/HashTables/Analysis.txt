@@ -28,6 +28,6 @@ variable's unique identifier.
 What is the cost of each of your three hash functions (in Big-O notation)? Note that the problem size (N) for your hash
 functions is the length of the String, and has nothing to do with the hash table itself. Did each of your hash functions
 perform as you expected (i.e., do they result in the expected number of collisions)?
-Each function was approximately O(N) however, the good functor took, for the most part, more time than both the mediocre
-and bad hash functors. This is about what I expected since having a better method to make unique identifiers would also
-consume more time.
+Each function was approximately O(N) however, the good functor took more time than both the mediocre and bad hash functors.
+Especially since the bad hash functor was O(1). This is about what I expected since having a better method to make unique
+identifiers would also consume more time.
