@@ -17,12 +17,13 @@ Navigator because I felt as though I struggle with implementing concepts that I'
 "dog", "ant"}))
 This is a bad test because it is not clearly indicated how strings are sorted. If there were a capital letter or words with
 varying lengths that differ from their alphabetical value, there would be much more information to accurately draw a conclusion
-on how strings are ordered. But since these are three three letter words and one four letter word, both in all lowercase we
+on how strings are ordered. But since these are three 3-letter words and one 4-letter word, both in all lowercase we
 cannot accurately infer if length, ASCII values, or any other factor is the determining factor for our sorting algorithm.
 
 
 6. Explain how you could change the test to make it "valid" and explain how you could change the specification so that this is
 considered a "good" test
-You could add one more element to ensure it is selecting the true middle value or you can make it so even numbered indexed
-arrays return two values rather than one. A better spec would be comparing strings by length and having a test that has words
-of varying lengths that defy their alphabetical orders to accurately demonstrate what is being sorted.
+A better spec would be comparing strings by length and having a test that has words of varying lengths that defy their
+alphabetical orders to accurately demonstrate what is being sorted. This would also leave less room for errors as it would
+more accurately test the method. The test should also be clearly marked so that we know what exactly it is the test is
+searching for.
