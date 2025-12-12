@@ -1,17 +1,12 @@
 1. If you had backed the sorted set with a Java List instead of a basic array, summarize the main points in which your
 implementation would have differed. Do you expect that using a Java List would have more or less efficient and why?
 (Consider efficiency both in running time and in program development time.)
-Using a Java List instead of a basic array would have drastically reduced the necessary steps to implement when adding and
-removing values since doing so in a list requires me to change the pointer reference and leave the other values in their current
-positions rather than moving them by the number of indexes of the values we removed. It also would have made it so looking for
-the first and last value were dependent on ignoring the head and tail values of the list and would require creating a head and
-tail to avoid any issues when removing the first and last values of the List. It would have been much less efficient since
-Lists do not use values placed next to each other but rather tie a pointer to the next value from the initial value which means
-the CPU will need to go back into memory every time it wants to pull another value.
+Java Lists resizes automatically so it would account for the size itself and I would not have to adjust it in my add and remove methods.
+there also would be less programming in general due to Java List's inclusion of an add and remove method, removing the necessity of making
+one myself. While it would decrease development time, it would also decrease the efficiency of the code.
 
 2. What do you expect the Big-O behavior of BinarySearchSet's contains method to be and why?
-It should be O(N) since it is just checking one more value every time a new value is added, making the true or false return
-fairly fast and straightforward.
+It should be lgN since it is always sorted and it is relying on binary search and therefore only reading half the tree.
 
 3. Plot the running time of BinarySearchSet's contains method, using the timing techniques demonstrated in previous labs. Be
 sure to use a decent iteration count to get a reasonable average of running times. Include your plot in your analysis document.
@@ -27,4 +22,4 @@ remove() in your total. In the worst-case, how much time does it take to locate 
 answer using Big-oh)?
 Add should be O(N) as well because they are already sorted so adding a value to the correct index should be about as linear as
 finding an object in the array but less optimal due to the extra step to the method. In the Worst Case Scenario it should
-take O(NlgN).
+take O(lgN).

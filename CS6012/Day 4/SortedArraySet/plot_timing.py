@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 def main():
-    filename = "additionData.csv" #change me if desired
+    filename = "data.csv" #change me if desired
     with open(filename, 'r') as f:
         lines = f.readlines()
         headers = lines[0].split(",")
@@ -21,10 +21,10 @@ def main():
 
         plt.xlabel(headers[0])
         plt.ylabel("Time(ns)") #change me
-        plt.title("Amount of Time Adding a New Value in an Array of Size N") #change me
+        plt.title("Amount of Time Finding a Value in an Array of Size N") #change me
         # plt.xscale('log')
         plt.legend(headers[1:]) # label the lines
-        plt.savefig('Value_Added.png') #change me
+        plt.savefig('Value_Contained.png') #change me
 
         plt.show()
         plt.close()

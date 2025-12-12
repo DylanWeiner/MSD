@@ -1,0 +1,28 @@
+Construction
+
+Perform an experiment to compare the time to construct a tree with N segments using a worst case input using the "bulk
+construction" constructor compared with inserting the segments one at a time into an initially empty tree. As an example,
+consider a bunch of vertical segments. What is the "worst case" order to insert them? Plot the runtimes of the 2 methods for
+building the tree. Do your experiments match the Big O growth rates you expected?
+
+The worst case order is to insert them from nearest to furthest because you will essentially just end up with a Linked List
+and the values will be in the least favorable order since the tree reads it from furthest to nearest. The experiments match
+the Big O growth rate we expected. For an optimized BSP Tree we saw O(N) growth and for the worst case we observed O(NlgN).
+
+Collision Detection
+Design and conduct an experiment to determine the effectiveness of the collision detection algorithm you implemented. Compare
+the optimized collision method you implemented with the following approach:
+
+```
+query = // pick a segment to test with, you decide how
+boolean collisionFound = false;
+tree.traverseFarToNear(x, y, //they don't matter
+(segment) -> {
+	if(segment.intersects(query)){
+		collisionFound = true;
+	}
+}
+```
+
+which will visit all nodes. Does our optimized collision detection routine run in the big O you expected? Be sure to describe
+the details of your experiment.
