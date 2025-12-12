@@ -3,6 +3,7 @@ package assignment09;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 // By Dylan Weiner
 
@@ -157,17 +158,13 @@ public class BSPTree {
     }
 
     public Segment naiveCollision(Segment query) {
-        return naiveCollisionRecursive(query, root);
-    }
-
-    private Segment naiveCollisionRecursive(Segment query, Node current) {
-        AtomicBoolean collisionFound = new AtomicBoolean(false);
-        traverseFarToNear(0, 0,  //they don't matter
-        (segment) -> {
-            if(current.value.intersects(query)){
-                collisionFound.set(true);
-            }
-        });
-        return collisionFound.get() ? current.value : null;
+        AtomicReference<Segment> foundSegment = new AtomicReference<>(null);
+        traverseFarToNear(0, 0,  // coordinates don't matter
+                (segment) -> {
+                    if(segment.intersects(query)) {  // ← Fixed: check 'segment', not 'current.value'
+                        foundSegment.set(segment);   // ← Fixed: store the Segment, not boolean
+                    }
+                }
+        );      return foundSegment.get();
     }
 }

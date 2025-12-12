@@ -40,7 +40,7 @@ def main():
 
     plt.xlabel("N (input size)")
     plt.ylabel("Time (ns)")
-    plt.xscale('log')
+    plt.yscale('log')
     plt.title("Naive vs Optimized Collisions")
 
     plt.legend()

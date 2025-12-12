@@ -23,7 +23,7 @@ public class CollisionTiming extends TimerTemplate {
 
     private static Segment COLLIDE_ME = new Segment(0, 15, 100, 20);
 
-    HashMap<Integer, Segment> N_Items = new HashMap<>();
+    ArrayList<Segment> N_Items = new ArrayList<>();
     private final Random rand = new Random();
 
     private static BSPTree bspTree = new BSPTree();
@@ -39,12 +39,14 @@ public class CollisionTiming extends TimerTemplate {
     protected void setup(int n) {
         bspTree = new BSPTree();
 
-        N_Items = new HashMap<>();
+        N_Items.clear();
 
         for (int i = 0; i < n; i++) {
             Segment s = new Segment(i, 0, i, 10);
-            N_Items.put(i, s);
+            N_Items.add(s);
         }
+
+        bspTree.bulkBuild(N_Items);
     }
 
     @Override
