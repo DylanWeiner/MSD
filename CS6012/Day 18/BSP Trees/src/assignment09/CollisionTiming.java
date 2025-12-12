@@ -24,7 +24,6 @@ public class CollisionTiming extends TimerTemplate {
     private static Segment COLLIDE_ME = new Segment(0, 15, 100, 20);
 
     ArrayList<Segment> N_Items = new ArrayList<>();
-    private final Random rand = new Random();
 
     private static BSPTree bspTree = new BSPTree();
 
@@ -38,15 +37,13 @@ public class CollisionTiming extends TimerTemplate {
     @Override
     protected void setup(int n) {
         bspTree = new BSPTree();
-
         N_Items.clear();
 
         for (int i = 0; i < n; i++) {
             Segment s = new Segment(i, 0, i, 10);
             N_Items.add(s);
         }
-
-        bspTree.bulkBuild(N_Items);
+        bspTree = new BSPTree(N_Items);
     }
 
     @Override
@@ -82,7 +79,7 @@ public class CollisionTiming extends TimerTemplate {
             size[i] = problemSizes.get(i);
         }
 
-        var timer = new CollisionTiming(size, 1);
+        var timer = new CollisionTiming(size, 100);
 
         Result[] optimizedTime = new Result[size.length];
         Result[] naiveTime = new Result[size.length];

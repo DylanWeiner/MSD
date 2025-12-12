@@ -12,3 +12,4 @@ Design and conduct an experiment to determine the effectiveness of the collision
 the optimized collision method you implemented with the provided approach which will visit all nodes. Does our optimized
 collision detection routine run in the big O you expected? Be sure to describe the details of your experiment.
 
+The optimized collision exhibited O(lgN) whereas the naive collision exhibited O(NlgN
