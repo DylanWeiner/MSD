@@ -1,9 +1,8 @@
 package assignment09;
 
-import org.w3c.dom.Node;
-
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 // By Dylan Weiner
 
@@ -155,5 +154,20 @@ public class BSPTree {
         // if the start side or end side is negative it means the camera can't see it but multiplying the start and end point
         // and seeing if it is <= 0 will let us know it is still there so if this is <= 0, we can put another collision check
         // in the if statement so we still collide w walls we can't see.
+    }
+
+    public Segment naiveCollision(Segment query) {
+        return naiveCollisionRecursive(query, root);
+    }
+
+    private Segment naiveCollisionRecursive(Segment query, Node current) {
+        AtomicBoolean collisionFound = new AtomicBoolean(false);
+        traverseFarToNear(0, 0,  //they don't matter
+        (segment) -> {
+            if(current.value.intersects(query)){
+                collisionFound.set(true);
+            }
+        });
+        return collisionFound.get() ? current.value : null;
     }
 }
