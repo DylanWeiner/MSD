@@ -5,11 +5,16 @@ building the tree. Do your experiments match the Big O growth rates you expected
 
 The worst case order is to insert them from nearest to furthest because you will essentially just end up with a Linked List
 and the values will be in the least favorable order since the tree reads it from furthest to nearest. The experiments match
-the Big O growth rate we expected. For an optimized BSP Tree we saw O(N) growth and for the worst case we observed O(NlgN).
+the Big O growth rate we expected. For an optimized BSP Tree we saw O(NlgN) growth and for the worst case we observed O(N^2).
 
 
 Design and conduct an experiment to determine the effectiveness of the collision detection algorithm you implemented. Compare
 the optimized collision method you implemented with the provided approach which will visit all nodes. Does our optimized
 collision detection routine run in the big O you expected? Be sure to describe the details of your experiment.
 
-The optimized collision exhibited O(lgN) whereas the naive collision exhibited O(NlgN
+The optimized collision exhibited O(lgN) whereas the naive collision exhibited O(N), which is a much greater runtime. The
+optimized collision detection routine runs in the big O I had expected. I created a BSP Tree containing varying amounts of
+values and made a single segment further away from my other segments. I made the "colliding segment" a segement that would
+not collide so that the collision detection would need to travel the to the furthest possible point to accurately demonstrate
+the distinction between the optimized and naive methods. I then recorded the time it took for each algorithm to search through
+the BSP for any collisions.
