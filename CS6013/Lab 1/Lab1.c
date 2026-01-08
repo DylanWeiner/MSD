@@ -58,35 +58,46 @@
 
 uint8_t* arg_position( unsigned long arg, int byte_size) {
     uint8_t val;
-    unsigned long mask = 0x11;
+    unsigned long mask = 0xFF;
     uint8_t *allVals = malloc(byte_size);
     for(int i = 0; i < byte_size; i++) {
-        val = mask << i * 2;
+        val = mask&&(arg >> i * 8);
         allVals[i] = val;
     }
     return allVals;
 } 
 
 uint8_t* list_sort(uint8_t allVals[], int byte_size) {
-    for(int i = 1; i < byte_size-1; i++) {
-        for(int j = 0; j < byte_size-1; j++) {
-            if(allVals[j] > allVals[i]) {
-                uint8_t temp = allVals[j];
-                allVals[j] = allVals[i];
+    for(int i = 0; i < byte_size-1; i++) {
+        printf("0x%X", allVals[i]);
+        printf("\n");
+        int min = i;
+        for(int j = i+1; j < byte_size; j++) {
+            if(allVals[j] < allVals[min]) {
+                min = j;
+            }
+            if(min != i) {
+                uint8_t temp = allVals[min];
+                allVals[min] = allVals[i];
                 allVals[i] = temp;
             }
         }
+        // printf("0x%X", allVals[i]);
+        // printf("\n");
     }
+    printf("\n");
     return allVals;
 }
 
 unsigned long byte_sort( unsigned long arg ) {
     unsigned long sorted = 0x0;
 
-    uint8_t *allVals = list_sort(arg_position(arg, sizeof(arg/2)), sizeof(arg/2));
+    uint8_t *allVals = list_sort(arg_position(arg, sizeof(arg)), sizeof(arg));
 
     for(int i = 0; i < sizeof(arg); i++) {
-        sorted = (sorted >> i)&&allVals[i];
+        printf("0x%X", allVals[i]);
+        printf("\n");
+        sorted |= (((unsigned long) allVals[i]) << i * 8);
     }
     return sorted;
 }
@@ -119,7 +130,7 @@ uint8_t* nibble_position( unsigned long arg, int byte_size) {
 } 
 
 uint8_t* nibble_list_sort(uint8_t smallVals[], int byte_size) {
-    for(int i = 1; i < byte_size-1; i++) {
+    for(int i = 0; i < byte_size-1; i++) {
         for(int j = 0; j < byte_size-1; j++) {
             if(smallVals[j] > smallVals[i]) {
                 uint8_t temp = smallVals[j];
@@ -240,6 +251,7 @@ void draw_me() {
 *********************************************************************/
 
 int main() {
-    unsigned long bytes = 0x0403deadbeef0201;
+    // unsigned long bytes = 0x0403deadbeef0201;
+    unsigned long bytes = 0xffffffffffffffff;
     printf("%lx", byte_sort(bytes));
 }
