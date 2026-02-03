@@ -1,0 +1,61 @@
+Hz
+	
+
+Kilo-
+	1000
+Mega-
+	10000
+Giga-
+	100000
+Tera-
+	1000000
+
+elf (in terms of Unix programs)
+	
+
+Thrashing
+	An issue in workload scheduling where there are constant context switches which result in a lack of any real work being done.
+
+Virtual
+    Memory
+        Address Space
+
+    Address
+
+    Machine
+
+Time Sharing
+
+Digital (Discrete) vs Analog
+
+Kernel vs OS
+	The OS is just another program, if you go into any piece of it, it's relatively straight forward, it is simply a substantial number of pieces which makes it seem more complex. The Kernel is a part of the operating system that deals with the low level hardware of the machine.
+
+Von Neumann
+	An architecture style that follows the idea that the CPU and Ram should be nested separately.
+
+Integrated Circuit (IC)
+	A bunch of circuits combined to perform multiple tasks at the same time.
+
+State Machine (FSA)
+
+
+Hardware (or program) privilege level
+
+Context Switch
+	Where one process is set aside and we switch to the context of another process.
+
+Lazy loading (of program, of memory, etc)
+
+PID - Process ID
+
+DMA - direct memory access
+
+MMU / TLB
+
+Daemon
+	A daemon is a process that runs in the background of another process, they can be started by orphaning processes.
+
+Symbol (with respect to Code, object files, assembly)
+
+Shared Library
