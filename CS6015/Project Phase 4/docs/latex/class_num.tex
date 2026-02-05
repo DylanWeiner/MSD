@@ -1,0 +1,136 @@
+\doxysection{Num Class Reference}
+\hypertarget{class_num}{}\label{class_num}\index{Num@{Num}}
+Inheritance diagram for Num:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_num}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_num_a9fce58e650a99ae50f4140ed9c87ec9f}\label{class_num_a9fce58e650a99ae50f4140ed9c87ec9f} 
+{\bfseries Num} (int val)
+\begin{DoxyCompactList}\small\item\em Sets \doxylink{class_num}{Num} value. \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{class_num_a07316c2897aadb9257b8de74dbfdcc03}{equals}} (\doxymbox{\hyperlink{class_expr}{Expr}} \texorpdfstring{$\ast$}{*}e) override
+\begin{DoxyCompactList}\small\item\em Compares Nums. \end{DoxyCompactList}\item 
+int \doxymbox{\hyperlink{class_num_a0c55f8227dd834ec1961f745fce2d75e}{interp}} () override
+\begin{DoxyCompactList}\small\item\em Checks if the two values are the same. \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{class_num_a24a51278e76d4b01b457fb5f521bcc38}{has\+\_\+variable}} () override
+\begin{DoxyCompactList}\small\item\em Checks if a \doxylink{class_num}{Num} has a variable in it but returns false bc a \doxylink{class_num}{Num} is always an int. \end{DoxyCompactList}\item 
+\doxymbox{\hyperlink{class_expr}{Expr}} \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{class_num_aab5a3d6d3123b31168996fb7ae7a15f4}{subst}} (std::\+string name, \doxymbox{\hyperlink{class_expr}{Expr}} \texorpdfstring{$\ast$}{*}new\+Val) override
+\begin{DoxyCompactList}\small\item\em Substitutes a provided value with an alternative value. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{class_num_a9dcf9454e71003e8bf1532acda6e0c58}{print\+Exp}} (std::\+ostream \&ot) override
+\begin{DoxyCompactList}\small\item\em Prints a provided number. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_expr}{Expr}}}
+\begin{DoxyCompactItemize}
+\item 
+std::\+string \doxymbox{\hyperlink{class_expr_af59d863d3f507e998bf6ad48aa80cd03}{to\+\_\+string\+\_\+p}} ()
+\begin{DoxyCompactList}\small\item\em Sets a starting precedence level. \end{DoxyCompactList}\item 
+void {\bfseries pretty\+\_\+print} (std::\+ostream \&ot)
+\begin{DoxyCompactList}\small\item\em Prints values in an easily readable format. \end{DoxyCompactList}\item 
+virtual void \doxymbox{\hyperlink{class_expr_a491b64b622b44628981d7fbd55a4ac9c}{pretty\+\_\+print\+\_\+at}} (std::\+ostream \&ot, precedence\+\_\+t prec)
+\begin{DoxyCompactList}\small\item\em prints non overridden classes in a way that is compatible with pretty print. \end{DoxyCompactList}\item 
+std::\+string \doxymbox{\hyperlink{class_expr_a6ad7c18234f22d96d6917089b5bd7caa}{to\+\_\+pretty\+\_\+string}} ()
+\begin{DoxyCompactList}\small\item\em Outputs out pretty print as a string. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_num_ab0654582066deb3adbbd64cf7190a7b7}\label{class_num_ab0654582066deb3adbbd64cf7190a7b7} 
+int {\bfseries val}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{class_num_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_num_a07316c2897aadb9257b8de74dbfdcc03}\index{Num@{Num}!equals@{equals}}
+\index{equals@{equals}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily \label{class_num_a07316c2897aadb9257b8de74dbfdcc03} 
+bool Num::\+equals (\begin{DoxyParamCaption}\item[{\doxymbox{\hyperlink{class_expr}{Expr}} \texorpdfstring{$\ast$}{*}}]{e}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Compares Nums. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em other} & is the value to be compared \\
+\hline
+{\em Returns} & false if there is a null value. \\
+\hline
+\end{DoxyParams}
+Returns false if there is a null value.
+
+Implements \doxymbox{\hyperlink{class_expr}{Expr}}.
+
+\Hypertarget{class_num_a24a51278e76d4b01b457fb5f521bcc38}\index{Num@{Num}!has\_variable@{has\_variable}}
+\index{has\_variable@{has\_variable}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{has\_variable()}{has\_variable()}}
+{\footnotesize\ttfamily \label{class_num_a24a51278e76d4b01b457fb5f521bcc38} 
+bool Num::\+has\+\_\+variable (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Checks if a \doxylink{class_num}{Num} has a variable in it but returns false bc a \doxylink{class_num}{Num} is always an int. 
+
+
+
+Implements \doxymbox{\hyperlink{class_expr}{Expr}}.
+
+\Hypertarget{class_num_a0c55f8227dd834ec1961f745fce2d75e}\index{Num@{Num}!interp@{interp}}
+\index{interp@{interp}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{interp()}{interp()}}
+{\footnotesize\ttfamily \label{class_num_a0c55f8227dd834ec1961f745fce2d75e} 
+int Num::\+interp (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Checks if the two values are the same. 
+
+Takes a \doxylink{class_num}{Num} and turns it into a readable format 
+
+Implements \doxymbox{\hyperlink{class_expr}{Expr}}.
+
+\Hypertarget{class_num_a9dcf9454e71003e8bf1532acda6e0c58}\index{Num@{Num}!printExp@{printExp}}
+\index{printExp@{printExp}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{printExp()}{printExp()}}
+{\footnotesize\ttfamily \label{class_num_a9dcf9454e71003e8bf1532acda6e0c58} 
+void Num::\+print\+Exp (\begin{DoxyParamCaption}\item[{std::\+ostream \&}]{ot}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Prints a provided number. 
+
+
+
+Implements \doxymbox{\hyperlink{class_expr}{Expr}}.
+
+\Hypertarget{class_num_aab5a3d6d3123b31168996fb7ae7a15f4}\index{Num@{Num}!subst@{subst}}
+\index{subst@{subst}!Num@{Num}}
+\doxysubsubsection{\texorpdfstring{subst()}{subst()}}
+{\footnotesize\ttfamily \label{class_num_aab5a3d6d3123b31168996fb7ae7a15f4} 
+\doxymbox{\hyperlink{class_expr}{Expr}} \texorpdfstring{$\ast$}{*} Num::\+subst (\begin{DoxyParamCaption}\item[{std::\+string}]{name}{, }\item[{\doxymbox{\hyperlink{class_expr}{Expr}} \texorpdfstring{$\ast$}{*}}]{new\+Val}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Substitutes a provided value with an alternative value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & is the val we desire to substitute \\
+\hline
+{\em new\+Val} & is the value we will be replacing name with. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \doxymbox{\hyperlink{class_expr}{Expr}}.
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+expr.\+h\item 
+expr.\+cpp\end{DoxyCompactItemize}

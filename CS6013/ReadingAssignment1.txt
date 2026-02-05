@@ -1,5 +1,5 @@
 Hz
-	
+	Hz, or hertz, symbolize the number of cycles per second. Each cycle symbolizes a process being performed in the system.
 
 Kilo-
 	1000
@@ -11,22 +11,19 @@ Tera-
 	1000000
 
 elf (in terms of Unix programs)
-	
+	elf instructs the assembler to package the machine code into a structured format when working in assembly.
 
 Thrashing
 	An issue in workload scheduling where there are constant context switches which result in a lack of any real work being done.
 
-Virtual
-    Memory
-        Address Space
-
-    Address
-
-    Machine
+Virtual Memory
+		Virtual Memory address spaces are the virtualization of memory which simulates, to the system, the illusion of having a contiguous range of addresses and having all of the memory available allotted for the current process. However, in reality, the storage is segmented into 4 KB segments and placed wherever there is memory at any given moment. The actual addresses are pointers to a physical location on the RAM which currently contains the desired information. A Virtual Memory machine accounts for a shortage of physical memory by paging information from the RAM to disk storage and vice versa.
 
 Time Sharing
+	A technique in which the OS enables multiple tasks to run concurrently via allocated "time slices" or very small segments of time in which all of the active processes are on rotation using the processor to run.
 
 Digital (Discrete) vs Analog
+	Digital systems use binary signals, meaning each piece of data is always either on or off with no in between. Analog systems rely on continuous signals, similar to an analog clock, in which the hand for the second, minute, and hour hand still exist even without an energy source. This is simpler but increases risk of noise.
 
 Kernel vs OS
 	The OS is just another program, if you go into any piece of it, it's relatively straight forward, it is simply a substantial number of pieces which makes it seem more complex. The Kernel is a part of the operating system that deals with the low level hardware of the machine.
@@ -38,24 +35,31 @@ Integrated Circuit (IC)
 	A bunch of circuits combined to perform multiple tasks at the same time.
 
 State Machine (FSA)
-
+	A system on components of the computer, such as the keyboard or the display, which constantly checking for and displaying updated inputs.
 
 Hardware (or program) privilege level
+	These are the rings of privilege used when running a process. For full control over the OS and I/O operations, we use the Kernel (ring 0). For most applications and operations that are not as trusted, either due to potential malicious applications or due to code that is not as thoroughly tested and guaranteed not to crash the OS, we have User Mode (ring 3). 
 
 Context Switch
 	Where one process is set aside and we switch to the context of another process.
 
 Lazy loading (of program, of memory, etc)
+	A technique of deferring the loading of non-essential components of an application or page until they are actively called upon and paged in.
 
 PID - Process ID
+	A Process identification number, which is assigned to every active process by the OS in order to keep track of all of our processes.
 
 DMA - direct memory access
+	The system that permits other hardware elements of a computer to access the RAM in order to offload work for the CPU, but this system still has its restrictions.
 
 MMU / TLB
+	The Memory Management Unit is a part of the CPU that takes the virtual memory addresses and retrieves their physical location using the adress. The Translation Lookaside Buffer is the cache of the MMU which pulls parts of memory around memory recently accessed keeps the physical location address to reduce the amount of time a process will take.	
 
 Daemon
 	A daemon is a process that runs in the background of another process, they can be started by orphaning processes.
 
 Symbol (with respect to Code, object files, assembly)
+	A symbol is something that represents a piece of information, such as a variable.
 
 Shared Library
+	Code that multiple files try to reference.

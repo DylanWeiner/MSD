@@ -24,6 +24,9 @@ test: msdscript #This is used to run the executable that would be made
 	
 help: msdscript
 	./msdscript --help
+	
+doc: msdscript
+	doxygen
 
 .PHONY: clean msdscript test help
 

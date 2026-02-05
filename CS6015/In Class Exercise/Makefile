@@ -26,7 +26,7 @@ help: msdscript
 	./msdscript --help
 	
 doc: msdscript
-	cd doc && doxygen
+	doxygen
 
 .PHONY: clean msdscript test help doc
 

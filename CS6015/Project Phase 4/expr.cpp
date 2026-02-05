@@ -3,49 +3,82 @@
 #include <string>
 #include <sstream>
 
-precedence_t prevPrec = prec_start;
+precedence_t prevPrec = prec_start; /// Sets a starting precedence level.
 
+/**
+* \brief Sets Expressions to strings.
+ */
 std::string Expr::to_string_p() {
     std::stringstream st("");
     this->printExp(st);
     return st.str();
 }
 
+/**
+* \brief prints non overridden classes in a way that is compatible with pretty print.
+ */
 void Expr::pretty_print_at(std::ostream &ot, precedence_t prec) {
     printExp(ot);
 }
 
+/**
+* \brief Prints values in an easily readable format.
+ */
 void Expr::pretty_print(std::ostream &ot) {
     pretty_print_at(ot, prec_none);
 }
 
+/**
+* \brief Outputs out pretty print as a string.
+ *\param st is an output string that gets modified by pretty print.
+ */
 std::string Expr::to_pretty_string() {
     std::stringstream st("");
     this->pretty_print(st);
     return st.str();
 }
 
+/**
+* \brief Sets VarExpr value.
+ */
 VarExpr::VarExpr(std::string val) {
     this->val = val;
     
-} // Sets Num value.
+}
+
+/**
+* \brief Compares VarExprs
+ * \param other is the value to be compared
+ * \param Returns false if there is a null value.
+ */
 
 bool VarExpr::equals(Expr* e) {
     VarExpr *other = dynamic_cast<VarExpr*>(e);
     if(other == nullptr) {
         return false;
-    } //  Returns false if there is a null value.
+    } ///Checks if the two values are the same.
     return val == other->val;
-} // Checks if the two values are the same.
+} /// Checks if the two values are the same.
 
+/**
+* \brief Takes a VarExpr and turns it into a readable format
+ */
 int VarExpr::interp() {
     throw std::runtime_error("no value for variable");
 }
 
+/**
+* \brief Checks if a Num has a variable in it but returns true because a VarExpr cannot be an int.
+ */
 bool VarExpr::has_variable() {
     return true;
 }
 
+/**
+* \brief Substitutes a provided value with an alternative value.
+ * \param name is the val we desire to substitute
+ * \param newVal is the value we will be replacing name with.
+ */
 Expr* VarExpr::subst(std::string name, Expr* newVal) {
     if(name == val) {
         return newVal;
@@ -53,71 +86,135 @@ Expr* VarExpr::subst(std::string name, Expr* newVal) {
     return new VarExpr(name);
 }
 
+/**
+* \brief Prints a provided VarExpr.
+ */
 void VarExpr::printExp(std::ostream &ot) {
     ot << val;
 }
 
+/**
+* \brief Sets Num value.
+ */
 Num::Num(int val) {
     this->val = val;
-} // Sets Num value.
+}
 
+/**
+* \brief Compares Nums
+ * \param other is the value to be compared
+ * \param Returns false if there is a null value.
+ */
 bool Num::equals(Expr* e) {
     Num *other = dynamic_cast<Num*>(e);
     if(other == nullptr) {
         return false;
-    } //  Returns false if there is a null value.
+    } ///  Returns false if there is a null value.
     return val == other->val;
-} // Checks if the two values are the same.
+} /// Checks if the two values are the same.
 
+/**
+* \brief Takes a Num and turns it into a readable format
+ */
 int Num::interp() {
     return this->val;
 }
 
+/**
+* \brief Checks if a Num has a variable in it but returns false bc a Num is always an int.
+ */
 bool Num::has_variable() {
     return false;
 }
 
+/**
+* \brief Substitutes a provided value with an alternative value.
+ * \param name is the val we desire to substitute
+ * \param newVal is the value we will be replacing name with.
+ */
 Expr* Num::subst(std::string name, Expr* newVal) {
     return new Num(val);
 }
 
+/**
+* \brief Prints a provided number.
+ */
 void Num::printExp(std::ostream &ot) {
     ot << std::to_string(val);
 }
 
+/**
+* \brief Sets Num values.
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
 Add::Add(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
     this->rhs = rhs;
-}  // Sets Num values.
+}
 
+/**
+* \brief Compares Addition equations
+ * \param other is the value to be compared
+ * \param Returns false if there is a null value.
+ */
 bool Add::equals(Expr* e) {
     Add *other = dynamic_cast<Add*>(e);
     if(other == nullptr) {
         return false;
     }
     return lhs->equals(other->lhs) && rhs->equals(other->rhs);
-} // Checks if left and right value of the equations are the same.
+} /// Checks if left and right value of the equations are the same.
 
+/**
+* \brief Takes an Addition equation and turns it into a readable format
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
 int Add::interp() {
     return (this->lhs->interp() + this->rhs->interp());
 }
 
+/**
+* \brief Checks if the nested values of an addition have a variable.
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
 bool Add::has_variable() {
     return this->lhs->has_variable() || this->rhs->has_variable();
 }
 
+/**
+* \brief Substitutes a provided value with an alternative value.
+ * \param name is the val we desire to substitute
+ * \param newVal is the value we will be replacing name with.
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
 Expr* Add::subst(std::string name, Expr* newVal) {
     return new Add(lhs->subst(name, newVal), rhs->subst(name, newVal));
-}
+} /// Uses recursion to substitute nested values.
 
+/**
+* \brief Prints a provided addition set.
+ * \param lhs represents the lefthand side.
+ * \param rhs represents the righthand side.
+ */
 void Add::printExp(std::ostream &ot) {
     ot << "(";
         this->lhs->printExp(ot);
     ot << "+";
         this->rhs->printExp(ot);
     ot << ")";
-}
+} /// Uses recursion to substitute nested values.
 
+/**
+* \brief Prints a provided addition set in a way that is easily readable.
+ * \param prec is the precedence level addition takes
+ * \param prevPrec is the precedence level from the preceding value we read.
+ * \param lhs represents the lefthand side.
+ * \param rhs represents the righthand side.
+ */
 void Add::pretty_print_at(std::ostream &ot, precedence_t prec) {
     if(prevPrec >= prec_add) {
         ot << "(";
@@ -129,34 +226,65 @@ void Add::pretty_print_at(std::ostream &ot, precedence_t prec) {
 
     if(prevPrec >= prec_add) {
         ot << ")";
-    }
+    } /// Only places both parentheses if their is a greater precedence preceding this precedence.
 }
 
+/**
+* \brief Sets Num values.
+  * \param lhs is our lefthand side
+  * \param rhs is our righthand side
+  */
 Mult::Mult(Expr *lhs, Expr *rhs) {
     this->lhs = lhs;
     this->rhs = rhs;
-} // Sets Num values.
+}
 
+/**
+* \brief Compares Multiplication equations
+ * \param other is the value to be compared
+ * \param lhs represents the lefthand side.
+ * \param rhs represents the righthand side.
+ */
 bool Mult::equals(Expr* e) {
     Mult *other = dynamic_cast<Mult*>(e);
     if(other == nullptr) {
         return false;
-    }
+    } /// Returns false if there's a null value.
     return lhs->equals(other->lhs) && rhs->equals(other->rhs);
-} // Checks if left and right value of the equations are the same.
+} /// Checks if left and right value of the equations are the same.
 
+/**
+* \brief Takes a Multiplication equation and turns it into a readable format
+ */
 int Mult::interp() {
     return (lhs->interp() * rhs->interp());
 }
 
+/**
+* \brief Checks if the nested values of a multiplication have a variable.
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
 bool Mult::has_variable() {
     return this->lhs->has_variable() || this->rhs->has_variable();
 }
 
+/**
+* \brief Substitutes a provided value with an alternative value.
+ * \param name is the val we desire to substitute
+ * \param newVal is the value we will be replacing name with.
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
 Expr* Mult::subst(std::string name, Expr* newVal) {
     return new Mult(lhs->subst(name, newVal), rhs->subst(name, newVal));
 }
 
+/**
+* \brief Prints a provided addition set.
+ * \param lhs represents the lefthand side.
+ * \param rhs represents the righthand side.
+ */
 void Mult::printExp(std::ostream &ot) {
     ot << "(";
         this->lhs->printExp(ot);
@@ -165,6 +293,11 @@ void Mult::printExp(std::ostream &ot) {
     ot << ")";
 }
 
+/**
+* \brief Prints a provided multiplication set in a way that is easily readable.
+ * \param prec is the precedence level addition takes
+ * \param prevPrec is the precedence level from the preceding value we read.
+ */
 void Mult::pretty_print_at(std::ostream &ot, precedence_t prec) {
     if(prec >= prec_mult) {
         ot << "(";
@@ -176,7 +309,7 @@ void Mult::pretty_print_at(std::ostream &ot, precedence_t prec) {
     
     if(prec >= prec_mult) {
         ot << ")";
-    }
+    } /// Only places both parentheses if their is a greater precedence preceding this precedence.
 }
 
 TEST_CASE("Num Equals", "Tests for Comparison") {

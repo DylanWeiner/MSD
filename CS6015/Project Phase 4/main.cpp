@@ -5,6 +5,6 @@
 #include "cmdline.h"
 
 int main(int argc, char **argv) {
-  use_arguments(argc, argv);
+  use_arguments(argc, argv); /// Reads arguments from the commandline into the use_arguments method.
   return 0;
 }
