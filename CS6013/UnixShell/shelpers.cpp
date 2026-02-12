@@ -183,12 +183,15 @@ vector<Command> getCommands( const vector<string> & tokens )
             // cout << command.argv[last];
             
             if(cmdNumber == 0 && tokens[j] == "<") {
-                dup2(STDOUT_FILENO, 3);
+                command.inputFd = open(tokens[j+1].c_str(), O_RDONLY, 0644);
+               // dup2(STDOUT_FILENO, 3);
+                perror("dup2 is failing");
             }
 
             else if(cmdNumber == last - 1 && tokens[j] == ">") {
-                int fd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                dup2(STDOUT_FILENO, fd);
+                command.outputFd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                //dup2(fd, STDOUT_FILENO);
+                perror("dup2 is failing");
             }
             
 
@@ -278,6 +281,17 @@ void runCommands( const vector<Command> & allCommands ) {
                 exit(EXIT_FAILURE);
             }
             if(pID == 0) { // This marks the child process.
+                for(int j = 0; j < allCommands[i].argv.size(); j++) {
+                    const char * token = allCommands[i].argv[j];
+                if( strcmp( token, "<" ) ) {
+                    dup2(allCommands[i].inputFd, 3);
+                }
+                if( strcmp( token, ">" ) ) {
+                    dup2(allCommands[i].outputFd, STDOUT_FILENO);
+                }
+            }
+                
+                
                 execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data()));
                 perror("\nexecvp failed!");
                 close(fds[1]);
