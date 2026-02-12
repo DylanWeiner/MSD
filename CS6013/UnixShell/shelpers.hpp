@@ -18,7 +18,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <vector>
-#include <Kernel/kern/assert.h>
+#include <cassert>
+// #include <Kernel/kern/assert.h>
 
 //////////////////////////////////////////////////////////////////////////////////
 // A struct to contain a command line program information.
@@ -60,4 +61,5 @@ std::vector< std::string > tokenize( const std::string & command_line_string );
 // Prints out the contents of a Command structure.  Useful for debugging.
 std::ostream& operator<<( std::ostream& outs, const Command& c );
 
-
+// Runs all commands passed in.
+void runCommands( const std::vector<Command> & allCommands );

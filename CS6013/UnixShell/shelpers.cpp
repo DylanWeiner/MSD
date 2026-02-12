@@ -150,6 +150,7 @@ vector<Command> getCommands( const vector<string> & tokens )
 
    int first = 0;
    int last = find( tokens.begin(), tokens.end(), "|" ) - tokens.begin();
+   int fds[2];
 
    bool error = false;
 
@@ -176,15 +177,45 @@ vector<Command> getCommands( const vector<string> & tokens )
       command.background = false;
 	
       for( int j = first + 1; j < last; ++j ) {
+        
 
          if( tokens[j] == ">" || tokens[j] == "<" ) {
+            // cout << command.argv[last];
+            
+            if(cmdNumber == 0 && tokens[j] == "<") {
+                dup2(STDOUT_FILENO, 3);
+            }
+
+            else if(cmdNumber == last - 1 && tokens[j] == ">") {
+                int fd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+                dup2(STDOUT_FILENO, fd);
+            }
+            
+
+            // command.argv.push_back(strdup(tokens[j].c_str()));
+
+            // cout << command.argv[j];
+            // int fd = open(command.argv[j], O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            // if (fd < 0) {
+            //     perror("Opening file failed.");
+            //     exit(1);
+            // }
+            // if(cmdNumber == 0) {
+            //     dup2(fd, STDOUT_FILENO);
+            //     close(fd);
+            // }
+
+            // if(cmdNumber == commands.size()-1) {
+            //     dup2(3, STDOUT_FILENO);
+            // }
             // Handle I/O redirection tokens
             //
             // Note, that only the FIRST command can take input redirection
             // (all others get input from a pipe)
             // Only the LAST command can have output redirection!
-         
-            assert( false );
+            // else {
+            //     assert( false );
+            // }
          }
          else if( tokens[j] == "&" ){
             // Fill this in if you choose to do the optional "background command" part.
@@ -199,11 +230,15 @@ vector<Command> getCommands( const vector<string> & tokens )
       if( !error ) {
 
          if( cmdNumber > 0 ){
-            // There are multiple commands.  Open a pipe and
-            // connect the ends to the fd's for the commands!
-
+            for(int i = 0; i < command.argv.size(); i++) { // Allows for parsing arguments within the command.
+            const char * token = command.argv[i];
+                if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
+                    perror("pipe error");
+                    exit(EXIT_FAILURE);
+                }
+            }
             assert( false );
-         }
+        }
 
          // Exec wants argv to have a nullptr at the end!
          command.argv.push_back( nullptr );
@@ -233,3 +268,29 @@ vector<Command> getCommands( const vector<string> & tokens )
    return commands;
 
 } // end getCommands()
+
+void runCommands( const vector<Command> & allCommands ) {
+    int fds[2];
+    for(int i = 0; i < allCommands.size(); i++) {
+            pid_t pID = fork();
+            if(pID < 0) { // This means something is wrong when trying to fork.
+                perror("\nfork error");
+                exit(EXIT_FAILURE);
+            }
+            if(pID == 0) { // This marks the child process.
+                execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data()));
+                perror("\nexecvp failed!");
+                close(fds[1]);
+            }
+            else {
+                int status;
+                waitpid(pID, &status, 0);
+
+                if (WIFEXITED(status)) {
+                    printf("\nParent: Child exited with status %d\n", WEXITSTATUS(status));
+                } else {
+                    printf("\nParent: Child terminated abnormally\n");
+                }
+            }
+        }
+}
