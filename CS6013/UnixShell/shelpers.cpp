@@ -183,42 +183,25 @@ vector<Command> getCommands( const vector<string> & tokens )
             // cout << command.argv[last];
             
             if(cmdNumber == 0 && tokens[j] == "<") {
-                command.inputFd = open(tokens[j+1].c_str(), O_RDONLY, 0644);
-               // dup2(STDOUT_FILENO, 3);
-                perror("dup2 is failing");
+                if((command.inputFd = open(tokens[j+1].c_str(), O_RDONLY, 0644)) < 0) {
+                    perror("File is not opening");
+                }
             }
 
-            else if(cmdNumber == last - 1 && tokens[j] == ">") {
-                command.outputFd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
-                //dup2(fd, STDOUT_FILENO);
-                perror("dup2 is failing");
+            else if(cmdNumber == commands.size()-1 && tokens[j] == ">") {
+                if((command.outputFd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR, 0644)) < 0) {
+                    perror("File is not opening");
+                }
+                j++;
             }
-            
-
-            // command.argv.push_back(strdup(tokens[j].c_str()));
-
-            // cout << command.argv[j];
-            // int fd = open(command.argv[j], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            // if (fd < 0) {
-            //     perror("Opening file failed.");
-            //     exit(1);
-            // }
-            // if(cmdNumber == 0) {
-            //     dup2(fd, STDOUT_FILENO);
-            //     close(fd);
-            // }
-
-            // if(cmdNumber == commands.size()-1) {
-            //     dup2(3, STDOUT_FILENO);
-            // }
             // Handle I/O redirection tokens
             //
             // Note, that only the FIRST command can take input redirection
             // (all others get input from a pipe)
             // Only the LAST command can have output redirection!
-            // else {
-            //     assert( false );
-            // }
+            else {
+                assert( false );
+            }
          }
          else if( tokens[j] == "&" ){
             // Fill this in if you choose to do the optional "background command" part.
@@ -233,14 +216,16 @@ vector<Command> getCommands( const vector<string> & tokens )
       if( !error ) {
 
          if( cmdNumber > 0 ){
-            for(int i = 0; i < command.argv.size(); i++) { // Allows for parsing arguments within the command.
-            const char * token = command.argv[i];
-                if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
-                    perror("pipe error");
-                    exit(EXIT_FAILURE);
-                }
+            if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
+                perror("pipe error");
+                exit(EXIT_FAILURE);
             }
-            assert( false );
+            // cout << "FDS: " << fds[0] << ", " << fds[1] << "\n";
+            // cout << command.inputFd << ", " << commands[cmdNumber - 1].outputFd << "\n";
+            command.inputFd = fds[0];
+            commands[cmdNumber - 1].outputFd = fds[1];
+            // cout << command.inputFd << ", " << commands[cmdNumber - 1].outputFd << "\n";
+            
         }
 
          // Exec wants argv to have a nullptr at the end!
@@ -256,7 +241,8 @@ vector<Command> getCommands( const vector<string> & tokens )
    } // end for( cmdNumber = 0 to commands.size )
 
    if( error ){
-
+        close(fds[0]);
+        close(fds[1]);
       // Close any file descriptors you opened in this function and return the appropriate data!
 
       // Note, an error can happen while parsing any command. However, the "commands" vector is
@@ -273,7 +259,7 @@ vector<Command> getCommands( const vector<string> & tokens )
 } // end getCommands()
 
 void runCommands( const vector<Command> & allCommands ) {
-    int fds[2];
+    // int fds[2];
     for(int i = 0; i < allCommands.size(); i++) {
             pid_t pID = fork();
             if(pID < 0) { // This means something is wrong when trying to fork.
@@ -281,20 +267,27 @@ void runCommands( const vector<Command> & allCommands ) {
                 exit(EXIT_FAILURE);
             }
             if(pID == 0) { // This marks the child process.
-                for(int j = 0; j < allCommands[i].argv.size(); j++) {
-                    const char * token = allCommands[i].argv[j];
-                if( strcmp( token, "<" ) ) {
-                    dup2(allCommands[i].inputFd, 3);
+                if(allCommands[i].inputFd != STDIN_FILENO) {
+                    if(dup2(allCommands[i].inputFd, 3) < 0) {
+                        perror("dup2 is failing");
+                    }
+                    close(allCommands[i].inputFd);
                 }
-                if( strcmp( token, ">" ) ) {
-                    dup2(allCommands[i].outputFd, STDOUT_FILENO);
+                else if(allCommands[i].outputFd != STDOUT_FILENO) {
+                    if(dup2(allCommands[i].outputFd, STDOUT_FILENO) < 0) {
+                        perror("dup2 is failing");
+                    }
+                    close(allCommands[i].outputFd);
                 }
-            }
+                else { //if(allCommands.size() > 1) {
+                //     close(allCommands[i].outputFd);
+                    // close(fds[0]);
+                }
                 
-                
-                execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data()));
-                perror("\nexecvp failed!");
-                close(fds[1]);
+                if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0)
+                    perror("\nexecvp failed!");
+                exit(EXIT_SUCCESS);
+                // close(fds[1]);
             }
             else {
                 int status;
@@ -305,6 +298,7 @@ void runCommands( const vector<Command> & allCommands ) {
                 } else {
                     printf("\nParent: Child terminated abnormally\n");
                 }
+                break;
             }
         }
 }
