@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 //
 // Author: Ben Jones (I think) with a lot of clean up by J. Davison de St. Germain
-//
+// Dylan finished the code (Again kinda crazy)
 // Date:   2019?
 //         Jan 2022 - Cleanup
 //

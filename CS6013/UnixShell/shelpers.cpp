@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 //
 // Author: Ben Jones (I think) with a lot of clean up by J. Davison de St. Germain
-//
+// Dylan finished the code (Can't believe they left code half finished)
 // Date:   2019?
 //         Jan 2022 - Cleanup
 //
@@ -144,18 +144,18 @@ ostream& operator<<( ostream& outs, const Command& c )
 // at the end.  Note, most of the gaps contain "assert( false )".
 //
 
-vector<Command> getCommands( const vector<string> & tokens )
-{
-   vector<Command> commands( count( tokens.begin(), tokens.end(), "|") + 1 ); // 1 + num |'s commands
+vector<Command> getCommands( const vector<string> & tokens ) {
+    vector<Command> commands( count( tokens.begin(), tokens.end(), "|") + 1 ); // 1 + num |'s commands
 
-   int first = 0;
-   int last = find( tokens.begin(), tokens.end(), "|" ) - tokens.begin();
-   int fds[2];
+    int first = 0;
+    int last = find( tokens.begin(), tokens.end(), "|" ) - tokens.begin();
+    int fds[2] = {-1, -1};
 
-   bool error = false;
+    bool error = false;
 
-   for( int cmdNumber = 0; cmdNumber < commands.size(); ++cmdNumber ){
-      const string & token = tokens[ first ];
+    for( int cmdNumber = 0; cmdNumber < commands.size(); ++cmdNumber ){
+        
+        const string & token = tokens[ first ];
 
       if( token == "&" || token == "<" || token == ">" || token == "|" ) {
          error = true;
@@ -214,19 +214,31 @@ vector<Command> getCommands( const vector<string> & tokens )
       }
 
       if( !error ) {
-
-         if( cmdNumber > 0 ){
-            if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
-                perror("pipe error");
-                exit(EXIT_FAILURE);
-            }
-            // cout << "FDS: " << fds[0] << ", " << fds[1] << "\n";
-            // cout << command.inputFd << ", " << commands[cmdNumber - 1].outputFd << "\n";
-            command.inputFd = fds[0];
-            commands[cmdNumber - 1].outputFd = fds[1];
-            // cout << command.inputFd << ", " << commands[cmdNumber - 1].outputFd << "\n";
+        int previousPipe = STDIN_FILENO;
             
-        }
+            if(cmdNumber < commands.size()-1) {
+                if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
+                    perror("pipe error");
+                    exit(EXIT_FAILURE);
+                }
+                command.inputFd = previousPipe;
+                command.outputFd = fds[1];
+                previousPipe = fds[0];
+            }
+            else {
+                command.inputFd  = previousPipe;
+                command.outputFd = STDOUT_FILENO;
+            }
+
+            if( cmdNumber > 0 ){
+                if (pipe(fds) < 0) {
+                    perror("pipe error");
+                    exit(EXIT_FAILURE);
+                }
+                command.inputFd = fds[0];
+                commands[cmdNumber - 1].outputFd = fds[1];
+                commands[cmdNumber].outputFd = STDOUT_FILENO;
+            }
 
          // Exec wants argv to have a nullptr at the end!
          command.argv.push_back( nullptr );
@@ -236,13 +248,22 @@ vector<Command> getCommands( const vector<string> & tokens )
 
          if( first < tokens.size() ){
             last = find( tokens.begin() + first, tokens.end(), "|" ) - tokens.begin();
-         }
+        }
+        if(strcmp(commands[cmdNumber+1].execName.c_str(), nullptr)) {
+            error = true;
+        }
       } // end if !error
    } // end for( cmdNumber = 0 to commands.size )
 
-   if( error ){
-        close(fds[0]);
-        close(fds[1]);
+//    close(fds[0]);
+//     close(fds[1]);
+    if( error ){
+        if(fds[0] >= 0) {
+            close(fds[0]);
+        }
+        if(fds[1] >= 0) {
+            close(fds[1]);
+        }
       // Close any file descriptors you opened in this function and return the appropriate data!
 
       // Note, an error can happen while parsing any command. However, the "commands" vector is
@@ -259,46 +280,38 @@ vector<Command> getCommands( const vector<string> & tokens )
 } // end getCommands()
 
 void runCommands( const vector<Command> & allCommands ) {
-    // int fds[2];
     for(int i = 0; i < allCommands.size(); i++) {
             pid_t pID = fork();
+            vector<pid_t> childPids;
             if(pID < 0) { // This means something is wrong when trying to fork.
                 perror("\nfork error");
                 exit(EXIT_FAILURE);
             }
             if(pID == 0) { // This marks the child process.
+                
                 if(allCommands[i].inputFd != STDIN_FILENO) {
-                    if(dup2(allCommands[i].inputFd, 3) < 0) {
-                        perror("dup2 is failing");
+                    if(dup2(allCommands[i].inputFd, STDIN_FILENO) < 0) {
+                        perror("dup2 is failing input");
                     }
                     close(allCommands[i].inputFd);
                 }
-                else if(allCommands[i].outputFd != STDOUT_FILENO) {
+                if(allCommands[i].outputFd != STDOUT_FILENO) {
                     if(dup2(allCommands[i].outputFd, STDOUT_FILENO) < 0) {
-                        perror("dup2 is failing");
+                        perror("dup2 is failing output");
                     }
                     close(allCommands[i].outputFd);
-                }
-                else { //if(allCommands.size() > 1) {
-                //     close(allCommands[i].outputFd);
-                    // close(fds[0]);
                 }
                 
                 if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0)
                     perror("\nexecvp failed!");
                 exit(EXIT_SUCCESS);
-                // close(fds[1]);
             }
             else {
+                childPids.push_back(pID);
+            }
+            for (pid_t pid : childPids) {
                 int status;
-                waitpid(pID, &status, 0);
-
-                if (WIFEXITED(status)) {
-                    printf("\nParent: Child exited with status %d\n", WEXITSTATUS(status));
-                } else {
-                    printf("\nParent: Child terminated abnormally\n");
-                }
-                break;
+                waitpid(pid, &status, 0);
             }
         }
 }

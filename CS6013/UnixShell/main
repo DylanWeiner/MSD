@@ -1,0 +1,13 @@
+#include <iostream>
+#include "shelpers.hpp"
+
+using namespace std;
+int main(int argc, char **argv) {
+    vector<string> allLineInputs;
+    string lineInput;
+    cout << "$";
+    cin >> lineInput;
+    allLineInputs.push_back(lineInput);
+    getCommands(allLineInputs);
+    return 0;
+}

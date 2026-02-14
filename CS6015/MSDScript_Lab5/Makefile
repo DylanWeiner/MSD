@@ -1,32 +1,19 @@
-CXX=c++
-CFLAGS = -std=c++17
-HEADERS = headers/cmdline.h headers/catch.h headers/expr.h headers/namespace.hpp
-CXXSOURCE = cmdline.cpp expr.cpp main.cpp namespace.cpp
-OBJS = cmdline.o expr.o main.o
+CXX      = c++
+CFLAGS   = -std=c++17
+LIB_DIR  = Library_MSDScript
+LIB_NAME = my_library
 
-msdscript: $(OBJS) #This makes the executable out of the .o files
-	$(CXX) $(OBJS) -o msdscript
+OBJS     = main.o
 
-# main.o
+LDFLAGS  = -L$(LIB_DIR) -l$(LIB_NAME)
 
-# cmdline.o
+msdscript: $(OBJS)
+	$(CXX) $(LDFLAGS) $^ -o $@
 
-# expr.o
+%.o: %.cpp
+	$(CXX) $(CFLAGS) -c $< -o $@
 
-*.o: *.cpp
-	$(CXX) $(CFLAGS) -I./headers $< -o $@
-
-clean: #This removes all of the .o files
+clean:
 	rm -f *.o msdscript
 
-test: msdscript #This is used to run the executable that would be made
-	./msdscript --test
-	
-help: msdscript
-	./msdscript --help
-	
-doc: msdscript
-	doxygen
-
-.PHONY: clean msdscript test help doc
-
+.PHONY: clean
