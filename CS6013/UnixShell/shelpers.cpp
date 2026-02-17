@@ -153,6 +153,8 @@ vector<Command> getCommands( const vector<string> & tokens ) {
     int fds[2] = {-1, -1};
 
     bool error = false;
+    vector<int> openedFds;
+    int previousPipe = STDIN_FILENO;
 
     for( int cmdNumber = 0; cmdNumber < commands.size(); ++cmdNumber ){
         
@@ -214,56 +216,43 @@ vector<Command> getCommands( const vector<string> & tokens ) {
       }
 
       if( !error ) {
-        int previousPipe = STDIN_FILENO;
-            
-            if(cmdNumber < commands.size()-1) {
-                if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
+        command.inputFd = previousPipe;
+
+        if (cmdNumber < commands.size() - 1) {
+            if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
                     perror("pipe error");
-                    exit(EXIT_FAILURE);
+                    error = true;
+                    break;
                 }
-                command.inputFd = previousPipe; // Sets input FD to the previous pipe's fds[0].
-                command.outputFd = fds[1]; // Sets output FD to fds[1].
-                previousPipe = fds[0]; // Saves new previous pipe.
-            }
-            else {
-                command.inputFd  = previousPipe;
-                command.outputFd = STDOUT_FILENO;
-            }
+            openedFds.push_back(fds[0]);
+            openedFds.push_back(fds[1]);
 
-            if( cmdNumber > 0 ){ // triggers when there is more than 1 command.
-                if (pipe(fds) < 0) {
-                    perror("pipe error");
-                    exit(EXIT_FAILURE);
-                }
-                command.inputFd = fds[0];
-                commands[cmdNumber - 1].outputFd = fds[1];
-                commands[cmdNumber].outputFd = STDOUT_FILENO; // Sets input and out of each end of the pipe to link each command.
-            }
+            command.outputFd = fds[1];
+            previousPipe = fds[0]; // for next command
+        }
+        else {
+            command.outputFd = STDOUT_FILENO;
+        }
 
-         // Exec wants argv to have a nullptr at the end!
-         command.argv.push_back( nullptr );
+        // Exec wants argv to have a nullptr at the end!
+        command.argv.push_back( nullptr );
 
-         // Find the next pipe character
-         first = last + 1;
+        // Find the next pipe character
+        first = last + 1;
 
-         if( first < tokens.size() ){
+        if( first < tokens.size() ){
             last = find( tokens.begin() + first, tokens.end(), "|" ) - tokens.begin();
         }
         
-      } // end if !error
-      if(cmdNumber == commands.size()-1) {
-            error = true;
-        } // enters error statement once all commands have been parsed to prevent preemptive pipe closure.
+        } // end if !error
    } // end for( cmdNumber = 0 to commands.size )
 
-    if( error ){
-        if(fds[0] >= 0) {
-            close(fds[0]);
+    if (error) {
+        for (int fd : openedFds) {
+            if (fd >= 0) close(fd);
         }
-        if(fds[1] >= 0) {
-            close(fds[1]);
-        }
-   }
+        perror("File Descriptor Read Error");
+    }
 
    return commands;
 
@@ -272,46 +261,59 @@ vector<Command> getCommands( const vector<string> & tokens ) {
 void runCommands( const vector<Command> & allCommands ) {
     vector<pid_t> childPids;
     for(int i = 0; i < allCommands.size(); i++) {
-            pid_t pID = fork(); // Forks and saves process id for future verification.
-            if(pID < 0) { // This means something is wrong when trying to fork.
-                perror("\nfork error");
-                exit(EXIT_FAILURE); // Exits if fork fails.
+        pid_t pID = fork(); // Forks and saves process id for future verification.
+        if(pID < 0) { // This means something is wrong when trying to fork.
+            perror("\nfork error");
+            exit(EXIT_FAILURE); // Exits if fork fails.
+        }
+        if(pID == 0) { // This marks the child process.
+            if(allCommands[i].inputFd != STDIN_FILENO) {
+                if(dup2(allCommands[i].inputFd, STDIN_FILENO) < 0) {
+                    perror("dup2 is failing input");
+                close(allCommands[i].inputFd);
+                } // Makes sure process swap occurs when stdin does not match the desired input.
             }
-            if(pID == 0) { // This marks the child process.
-                if(allCommands[i].inputFd != STDIN_FILENO) {
-                    if(dup2(allCommands[i].inputFd, STDIN_FILENO) < 0) {
-                        perror("dup2 is failing input");
-                    } // Makes sure process swap occurs when stdin does not match the desired input.
-                }
-                else if(allCommands[i].outputFd != STDOUT_FILENO) {
-                    if((dup2(allCommands[i].outputFd, STDOUT_FILENO)) == -1) {
-                        perror("dup2 is failing output");
-                    } // Makes sure process swap occurs when stdout does not match the desired output.
-                }
-
-                if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) // Attempts to execute code in child process.
-                    perror("\nexecvp Failed!");
-                exit(EXIT_SUCCESS);
+            if(allCommands[i].outputFd != STDOUT_FILENO) {
+                if((dup2(allCommands[i].outputFd, STDOUT_FILENO)) < 0) {
+                    perror("dup2 is failing output");
+                close(allCommands[i].outputFd);
+                } // Makes sure process swap occurs when stdout does not match the desired output.
             }
-            else {
-                if(allCommands[i].background == false) // Only adds child Pids to waitlist if they are foreground processes.
-                    childPids.push_back(pID); // Saves all child processes to ensure they are all run.
-                if(allCommands[i].execName == "cd") {
-                    if(allCommands[i].argv.size() == 2) {
-                        const char* home = getenv("HOME"); // Creates home directory environment.
-                        chdir(home); // Takes us to home directory.
+            for(int j = 0; j < allCommands.size(); j++) {
+                if(i != j) {
+                    if (allCommands[j].inputFd != STDIN_FILENO)
+                        close(allCommands[j].inputFd);
+                    if (allCommands[j].outputFd != STDOUT_FILENO)
+                        close(allCommands[j].outputFd);
+                }
+            }
+            if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) // Attempts to execute code in child process.
+                perror("\nexecvp Failed!");
+            exit(EXIT_SUCCESS);
+        }
+        else {
+            // if(allCommands[i].background == false) // Only adds child Pids to waitlist if they
+            childPids.push_back(pID); // Saves all child processes to ensure they are all run.
+            if(allCommands[i].inputFd != STDIN_FILENO) 
+                close(allCommands[i].inputFd);
+            if(allCommands[i].outputFd != STDOUT_FILENO) 
+                close(allCommands[i].outputFd);
+            if(allCommands[i].execName == "cd") {
+                if(allCommands[i].argv.size() == 2) {
+                    const char* home = getenv("HOME"); // Creates home directory environment.
+                    chdir(home); // Takes us to home directory.
+                }
+                else {
+                    const char* newDir = allCommands[i].argv[1];
+                    if(chdir(newDir) != 0) { // Tries to take us to specified path.
+                        perror("File Error"); // Errors out if file does not exist.
                     }
-                    else {
-                        const char* newDir = allCommands[i].argv[1];
-                        if(chdir(newDir) != 0) { // Tries to take us to specified path.
-                            perror("File Error"); // Errors out if file does not exist.
-                        }
-                    }
                 }
-            }
-            for (pid_t pid : childPids) {
-                int status;
-                waitpid(pid, &status, 0); // Waits to return to parent until every child is done.
             }
         }
+    }
+    for (pid_t pid : childPids) {
+        int status;
+        waitpid(pid, &status, 0); // Waits to return to parent until every child is done.
+    }
 }
