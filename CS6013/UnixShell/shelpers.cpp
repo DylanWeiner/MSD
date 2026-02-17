@@ -270,9 +270,9 @@ vector<Command> getCommands( const vector<string> & tokens ) {
 } // end getCommands()
 
 void runCommands( const vector<Command> & allCommands ) {
+    vector<pid_t> childPids;
     for(int i = 0; i < allCommands.size(); i++) {
             pid_t pID = fork(); // Forks and saves process id for future verification.
-            vector<pid_t> childPids;
             if(pID < 0) { // This means something is wrong when trying to fork.
                 perror("\nfork error");
                 exit(EXIT_FAILURE); // Exits if fork fails.
@@ -289,24 +289,13 @@ void runCommands( const vector<Command> & allCommands ) {
                     } // Makes sure process swap occurs when stdout does not match the desired output.
                 }
 
-                
-                if(allCommands[i].background == false) {
-                    if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) // Attempts to execute code in child process.
-                        perror("\nexecvp Failed!");
-                    exit(EXIT_SUCCESS);
-                }
-                else {
-                    char * bin = "bin/";
-                    const char* command = strcat(bin, allCommands[i].argv[0]);
-                    if(execl(command, allCommands[i].argv[0], (char *)NULL) < 0)
-                        perror("\nexecl Failed");
-                    else
-                        cout << "This is running in the background!\n";
-                    exit(EXIT_SUCCESS);
-                }
+                if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) // Attempts to execute code in child process.
+                    perror("\nexecvp Failed!");
+                exit(EXIT_SUCCESS);
             }
             else {
-                childPids.push_back(pID); // Saves all child processes to ensure they are all run.
+                if(allCommands[i].background == false) // Only adds child Pids to waitlist if they are foreground processes.
+                    childPids.push_back(pID); // Saves all child processes to ensure they are all run.
                 if(allCommands[i].execName == "cd") {
                     if(allCommands[i].argv.size() == 2) {
                         const char* home = getenv("HOME"); // Creates home directory environment.
