@@ -1,4 +1,5 @@
 #include "shelpers.hpp"
+#include <filesystem>
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -24,8 +25,8 @@ using namespace std;
 // cat < shelpers.cpp | nl
 // cat shelpers.cpp | nl
 // cat shelpers.cpp | nl | head -50 | tail -10
-// cat shelpers.cpp | nl | head -50 | tail -10 > ten_lines.txt 
-//
+// cat& shelpers.cpp | nl | head -50 | tail -10 > ten_lines.txt 
+// 
 // - The following two commands are equivalent.  [data.txt is sent into nl and the
 //   output is saved to numbered_data.txt.]
 //
@@ -180,18 +181,18 @@ vector<Command> getCommands( const vector<string> & tokens ) {
         
 
          if( tokens[j] == ">" || tokens[j] == "<" ) {
-            // cout << command.argv[last];
+            // cout << command.argv[j];
             
             if(cmdNumber == 0 && tokens[j] == "<") {
                 if((command.inputFd = open(tokens[j+1].c_str(), O_RDONLY, 0644)) < 0) {
                     perror("File is not opening");
-                }
+                } // Writes command output to preceding value's output.
             }
 
             else if(cmdNumber == commands.size()-1 && tokens[j] == ">") {
                 if((command.outputFd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR, 0644)) < 0) {
                     perror("File is not opening");
-                }
+                } // Writes command output to new file.
                 j++;
             }
             // Handle I/O redirection tokens
@@ -204,8 +205,7 @@ vector<Command> getCommands( const vector<string> & tokens ) {
             }
          }
          else if( tokens[j] == "&" ){
-            // Fill this in if you choose to do the optional "background command" part.
-            assert(false);
+            command.background = true;
          }
          else {
             // Otherwise this is a normal command line argument! Add to argv.
@@ -221,23 +221,23 @@ vector<Command> getCommands( const vector<string> & tokens ) {
                     perror("pipe error");
                     exit(EXIT_FAILURE);
                 }
-                command.inputFd = previousPipe;
-                command.outputFd = fds[1];
-                previousPipe = fds[0];
+                command.inputFd = previousPipe; // Sets input FD to the previous pipe's fds[0].
+                command.outputFd = fds[1]; // Sets output FD to fds[1].
+                previousPipe = fds[0]; // Saves new previous pipe.
             }
             else {
                 command.inputFd  = previousPipe;
                 command.outputFd = STDOUT_FILENO;
             }
 
-            if( cmdNumber > 0 ){
+            if( cmdNumber > 0 ){ // triggers when there is more than 1 command.
                 if (pipe(fds) < 0) {
                     perror("pipe error");
                     exit(EXIT_FAILURE);
                 }
                 command.inputFd = fds[0];
                 commands[cmdNumber - 1].outputFd = fds[1];
-                commands[cmdNumber].outputFd = STDOUT_FILENO;
+                commands[cmdNumber].outputFd = STDOUT_FILENO; // Sets input and out of each end of the pipe to link each command.
             }
 
          // Exec wants argv to have a nullptr at the end!
@@ -253,11 +253,9 @@ vector<Command> getCommands( const vector<string> & tokens ) {
       } // end if !error
       if(cmdNumber == commands.size()-1) {
             error = true;
-        }
+        } // enters error statement once all commands have been parsed to prevent preemptive pipe closure.
    } // end for( cmdNumber = 0 to commands.size )
 
-//    close(fds[0]);
-//     close(fds[1]);
     if( error ){
         if(fds[0] >= 0) {
             close(fds[0]);
@@ -265,15 +263,6 @@ vector<Command> getCommands( const vector<string> & tokens ) {
         if(fds[1] >= 0) {
             close(fds[1]);
         }
-      // Close any file descriptors you opened in this function and return the appropriate data!
-
-      // Note, an error can happen while parsing any command. However, the "commands" vector is
-      // pre-populated with a set of "empty" commands and filled in as we go.  Because
-      // of this, a "command" name can be blank (the default for a command struct that has not
-      // yet been filled in).  (Note, it has not been filled in yet because the processing
-      // has not gotten to it when the error (in a previous command) occurred.
-
-    //   assert(false);
    }
 
    return commands;
@@ -282,37 +271,58 @@ vector<Command> getCommands( const vector<string> & tokens ) {
 
 void runCommands( const vector<Command> & allCommands ) {
     for(int i = 0; i < allCommands.size(); i++) {
-            pid_t pID = fork();
+            pid_t pID = fork(); // Forks and saves process id for future verification.
             vector<pid_t> childPids;
             if(pID < 0) { // This means something is wrong when trying to fork.
                 perror("\nfork error");
-                exit(EXIT_FAILURE);
+                exit(EXIT_FAILURE); // Exits if fork fails.
             }
             if(pID == 0) { // This marks the child process.
-                
                 if(allCommands[i].inputFd != STDIN_FILENO) {
                     if(dup2(allCommands[i].inputFd, STDIN_FILENO) < 0) {
                         perror("dup2 is failing input");
-                    }
-                    // close(allCommands[i].inputFd);
+                    } // Makes sure process swap occurs when stdin does not match the desired input.
                 }
                 else if(allCommands[i].outputFd != STDOUT_FILENO) {
                     if((dup2(allCommands[i].outputFd, STDOUT_FILENO)) == -1) {
                         perror("dup2 is failing output");
-                    }
-                    // close(allCommands[i].outputFd);
+                    } // Makes sure process swap occurs when stdout does not match the desired output.
                 }
+
                 
-                if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0)
-                    perror("\nexecvp failed!");
-                exit(EXIT_SUCCESS);
+                if(allCommands[i].background == false) {
+                    if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) // Attempts to execute code in child process.
+                        perror("\nexecvp Failed!");
+                    exit(EXIT_SUCCESS);
+                }
+                else {
+                    char * bin = "bin/";
+                    const char* command = strcat(bin, allCommands[i].argv[0]);
+                    if(execl(command, allCommands[i].argv[0], (char *)NULL) < 0)
+                        perror("\nexecl Failed");
+                    else
+                        cout << "This is running in the background!\n";
+                    exit(EXIT_SUCCESS);
+                }
             }
             else {
-                childPids.push_back(pID);
+                childPids.push_back(pID); // Saves all child processes to ensure they are all run.
+                if(allCommands[i].execName == "cd") {
+                    if(allCommands[i].argv.size() == 2) {
+                        const char* home = getenv("HOME"); // Creates home directory environment.
+                        chdir(home); // Takes us to home directory.
+                    }
+                    else {
+                        const char* newDir = allCommands[i].argv[1];
+                        if(chdir(newDir) != 0) { // Tries to take us to specified path.
+                            perror("File Error"); // Errors out if file does not exist.
+                        }
+                    }
+                }
             }
             for (pid_t pid : childPids) {
                 int status;
-                waitpid(pid, &status, 0);
+                waitpid(pid, &status, 0); // Waits to return to parent until every child is done.
             }
         }
 }
