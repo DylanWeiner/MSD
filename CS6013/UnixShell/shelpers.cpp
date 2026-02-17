@@ -249,10 +249,11 @@ vector<Command> getCommands( const vector<string> & tokens ) {
          if( first < tokens.size() ){
             last = find( tokens.begin() + first, tokens.end(), "|" ) - tokens.begin();
         }
-        if(strcmp(commands[cmdNumber+1].execName.c_str(), nullptr)) {
+        
+      } // end if !error
+      if(cmdNumber == commands.size()-1) {
             error = true;
         }
-      } // end if !error
    } // end for( cmdNumber = 0 to commands.size )
 
 //    close(fds[0]);
@@ -272,7 +273,7 @@ vector<Command> getCommands( const vector<string> & tokens ) {
       // yet been filled in).  (Note, it has not been filled in yet because the processing
       // has not gotten to it when the error (in a previous command) occurred.
 
-      assert(false);
+    //   assert(false);
    }
 
    return commands;
@@ -293,13 +294,13 @@ void runCommands( const vector<Command> & allCommands ) {
                     if(dup2(allCommands[i].inputFd, STDIN_FILENO) < 0) {
                         perror("dup2 is failing input");
                     }
-                    close(allCommands[i].inputFd);
+                    // close(allCommands[i].inputFd);
                 }
-                if(allCommands[i].outputFd != STDOUT_FILENO) {
-                    if(dup2(allCommands[i].outputFd, STDOUT_FILENO) < 0) {
+                else if(allCommands[i].outputFd != STDOUT_FILENO) {
+                    if((dup2(allCommands[i].outputFd, STDOUT_FILENO)) == -1) {
                         perror("dup2 is failing output");
                     }
-                    close(allCommands[i].outputFd);
+                    // close(allCommands[i].outputFd);
                 }
                 
                 if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0)
