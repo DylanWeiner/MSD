@@ -25,7 +25,7 @@ using namespace std;
 // cat < shelpers.cpp | nl
 // cat shelpers.cpp | nl
 // cat shelpers.cpp | nl | head -50 | tail -10
-// cat& shelpers.cpp | nl | head -50 | tail -10 > ten_lines.txt 
+// cat shelpers.cpp | nl | head -50 | tail -10 > ten_lines.txt 
 // 
 // - The following two commands are equivalent.  [data.txt is sent into nl and the
 //   output is saved to numbered_data.txt.]
@@ -186,15 +186,22 @@ vector<Command> getCommands( const vector<string> & tokens ) {
             // cout << command.argv[j];
             
             if(cmdNumber == 0 && tokens[j] == "<") {
-                if((command.inputFd = open(tokens[j+1].c_str(), O_RDONLY, 0644)) < 0) {
-                    perror("File is not opening");
+                int fd = open(tokens[j+1].c_str(), O_RDONLY, 0644);
+                if(fd >= 0) {
+                    if((command.inputFd = fd) < 0)
+                        perror("File is not opening");
+                    openedFds.push_back(fd);
                 } // Writes command output to preceding value's output.
             }
 
             else if(cmdNumber == commands.size()-1 && tokens[j] == ">") {
-                if((command.outputFd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR, 0644)) < 0) {
-                    perror("File is not opening");
-                } // Writes command output to new file.
+                int fd = open(tokens[j+1].c_str(), O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH, 0644);
+                if(fd >= 0) {
+                    if((command.outputFd = fd) < 0) {
+                        perror("File is not opening");
+                    } // Writes command output to new file.
+                    openedFds.push_back(fd);
+                }
                 j++;
             }
             // Handle I/O redirection tokens
@@ -229,9 +236,6 @@ vector<Command> getCommands( const vector<string> & tokens ) {
 
             command.outputFd = fds[1];
             previousPipe = fds[0]; // for next command
-        }
-        else {
-            command.outputFd = STDOUT_FILENO;
         }
 
         // Exec wants argv to have a nullptr at the end!
@@ -281,18 +285,19 @@ void runCommands( const vector<Command> & allCommands ) {
             }
             for(int j = 0; j < allCommands.size(); j++) {
                 if(i != j) {
-                    if (allCommands[j].inputFd != STDIN_FILENO)
+                    if(allCommands[j].inputFd != STDIN_FILENO && allCommands[j].inputFd >= 0)
                         close(allCommands[j].inputFd);
-                    if (allCommands[j].outputFd != STDOUT_FILENO)
+                    if(allCommands[j].outputFd != STDOUT_FILENO && allCommands[j].outputFd >= 0)
                         close(allCommands[j].outputFd);
                 }
             }
-            if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) // Attempts to execute code in child process.
+            if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) { // Attempts to execute code in child process.
+                // cout << (allCommands[i].argv) << "/n";
                 perror("\nexecvp Failed!");
+            }
             exit(EXIT_SUCCESS);
         }
         else {
-            // if(allCommands[i].background == false) // Only adds child Pids to waitlist if they
             childPids.push_back(pID); // Saves all child processes to ensure they are all run.
             if(allCommands[i].inputFd != STDIN_FILENO) 
                 close(allCommands[i].inputFd);

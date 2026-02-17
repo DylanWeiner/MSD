@@ -1,0 +1,10 @@
+    37	//
+    38	// - The following line is an error (input redirection at end of line).
+    39	//   It should fail gracefully (ie, 1) without doing anything, 2) cleaning
+    40	//   up any file descriptors that were opened, 3) giving an appropriate
+    41	//   message to the user).
+    42	//
+    43	// cat shelpers.cpp | nl | head -50 | tail -10 > ten_lines.txt < abc
+    44	// 
+      	
+    45	////////////////////////////////////////////////////////////////////////
