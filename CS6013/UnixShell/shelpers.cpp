@@ -264,6 +264,8 @@ vector<Command> getCommands( const vector<string> & tokens ) {
 
 void runCommands( const vector<Command> & allCommands ) {
     vector<pid_t> childPids;
+    vector<pid_t> backgroundChildPids;
+    bool isBackground = !allCommands.empty() && allCommands.back().background;
     for(int i = 0; i < allCommands.size(); i++) {
         pid_t pID = fork(); // Forks and saves process id for future verification.
         if(pID < 0) { // This means something is wrong when trying to fork.
@@ -292,12 +294,12 @@ void runCommands( const vector<Command> & allCommands ) {
                 }
             }
             if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) { // Attempts to execute code in child process.
-                // cout << (allCommands[i].argv) << "/n";
                 perror("\nexecvp Failed!");
             }
             exit(EXIT_SUCCESS);
         }
         else {
+            
             childPids.push_back(pID); // Saves all child processes to ensure they are all run.
             if(allCommands[i].inputFd != STDIN_FILENO) 
                 close(allCommands[i].inputFd);
@@ -316,9 +318,20 @@ void runCommands( const vector<Command> & allCommands ) {
                 }
             }
         }
+        
     }
-    for (pid_t pid : childPids) {
-        int status;
-        waitpid(pid, &status, 0); // Waits to return to parent until every child is done.
+    //if pid is background
+    //add to backgroundpids
+    if(!isBackground) {
+        for (pid_t pid : childPids) {
+            int status;
+            waitpid(pid, &status, 0); // Waits to return to parent until every child is done.
+        }
+    }
+    else {
+        for (pid_t pid : childPids) {
+            backgroundChildPids.push_back(pid);
+            cout << "\nBackground process has started...\n";
+        }
     }
 }
