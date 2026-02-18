@@ -17,13 +17,14 @@ int main() {
     string lineInput;
     vector<Command> allCommands;
     cout << "$ ";
+    
     while(getline(cin, lineInput)) { // Collects the line passed into the shell
+        int status;
+        pid_t done;
         cout << "$ ";
         vector<string> tokens = tokenize(lineInput); // used to mark each token in the line passed into the command shell.
         allCommands = getCommands(tokens); // Converts tokens into a readable format for parsing a vector of commands.
         runCommands(allCommands);
-        int status;
-        pid_t done;
         while((done = waitpid(-1, &status, WNOHANG)) > 0) {
             cout << "\n" << done << " done";
         }

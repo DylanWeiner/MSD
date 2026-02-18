@@ -331,7 +331,7 @@ void runCommands( const vector<Command> & allCommands ) {
     else {
         for (pid_t pid : childPids) {
             backgroundChildPids.push_back(pid);
-            cout << "\nBackground process has started...\n";
+            cout << "Background process " << pid << " has started...\n";
         }
     }
 }
