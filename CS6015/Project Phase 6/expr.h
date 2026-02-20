@@ -1,5 +1,7 @@
+#include <string>
+#include <sstream>
 #include <iostream>
-#include <ostream>
+// #include <fstream>
 
 typedef enum {
   prec_none,      // = 0
@@ -17,7 +19,7 @@ public:
     virtual void printExp(std::ostream &ot) = 0;
     std::string to_string_p();
     void pretty_print(std::ostream &ot);
-    virtual void pretty_print_at(std::ostream &ot, precedence_t prec);
+    virtual void pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) = 0;
     std::string to_pretty_string();
 };
 
@@ -30,6 +32,7 @@ public:
     bool has_variable() override;
     Expr* subst(std::string name, Expr* newVal) override;
     void printExp(std::ostream &ot) override;
+    void pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) override;
 };
 
 class VarExpr : public Expr {
@@ -41,6 +44,8 @@ public:
     bool has_variable() override;
     Expr* subst(std::string name, Expr* newVal) override;
     void printExp(std::ostream &ot) override;
+    void pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) override;
+
 };
 
 class Add : public Expr {
@@ -53,7 +58,7 @@ public:
     bool has_variable() override;
     Expr* subst(std::string name, Expr* newVal) override;
     void printExp(std::ostream &ot) override;
-    void pretty_print_at(std::ostream &ot, precedence_t prec) override;
+    void pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) override;
 };
 
 class Mult : public Expr {
@@ -66,5 +71,19 @@ public:
     bool has_variable() override;
     Expr* subst(std::string name, Expr* newVal) override;
     void printExp(std::ostream &ot) override;
-    void pretty_print_at(std::ostream &ot, precedence_t prec) override;
+    void pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) override;
+};
+
+class LetExpr : public Expr {
+public:
+    std::string var;
+    Expr *rhs;
+    Expr *body;
+    LetExpr(std::string var, Expr *rhs, Expr *body);
+    bool equals(Expr *e) override;
+    int interp() override;
+    bool has_variable() override;
+    Expr* subst(std::string name, Expr* newVal) override;
+    void printExp(std::ostream &ot) override;
+    void pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) override;
 };

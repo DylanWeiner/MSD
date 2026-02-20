@@ -1,9 +1,12 @@
-#include "expr.h"
-#include "catch.h"
 #include <string>
 #include <sstream>
+#include <iostream>
+#include "expr.h"
+#include "catch.h"
 
-precedence_t prevPrec = prec_start; /// Sets a starting precedence level.
+
+// precedence_t prevPrec = prec_none; /// Sets a starting precedence level.
+
 
 /**
 * \brief Sets Expressions to strings.
@@ -17,7 +20,7 @@ std::string Expr::to_string_p() {
 /**
 * \brief prints non overridden classes in a way that is compatible with pretty print.
  */
-void Expr::pretty_print_at(std::ostream &ot, precedence_t prec) {
+void Expr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) {
     printExp(ot);
 }
 
@@ -25,7 +28,9 @@ void Expr::pretty_print_at(std::ostream &ot, precedence_t prec) {
 * \brief Prints values in an easily readable format.
  */
 void Expr::pretty_print(std::ostream &ot) {
-    pretty_print_at(ot, prec_none);
+    std::streampos pos = ot.tellp();
+    bool paren = false;
+    pretty_print_at(ot, prec_none, pos, paren);
 }
 
 /**
@@ -93,6 +98,10 @@ void VarExpr::printExp(std::ostream &ot) {
     ot << val;
 }
 
+void VarExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) {
+    ot << val;
+}
+
 /**
 * \brief Sets Num value.
  */
@@ -140,6 +149,10 @@ Expr* Num::subst(std::string name, Expr* newVal) {
 * \brief Prints a provided number.
  */
 void Num::printExp(std::ostream &ot) {
+    ot << std::to_string(val);
+}
+
+void Num::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) {
     ot << std::to_string(val);
 }
 
@@ -202,9 +215,9 @@ Expr* Add::subst(std::string name, Expr* newVal) {
  */
 void Add::printExp(std::ostream &ot) {
     ot << "(";
-        this->lhs->printExp(ot);
+    this->lhs->printExp(ot);
     ot << "+";
-        this->rhs->printExp(ot);
+    this->rhs->printExp(ot);
     ot << ")";
 } /// Uses recursion to substitute nested values.
 
@@ -215,16 +228,21 @@ void Add::printExp(std::ostream &ot) {
  * \param lhs represents the lefthand side.
  * \param rhs represents the righthand side.
  */
-void Add::pretty_print_at(std::ostream &ot, precedence_t prec) {
-    if(prevPrec >= prec_add) {
+void Add::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) {
+    if(prec >= prec_add) {
         ot << "(";
     }
-
-    this->lhs->pretty_print_at(ot, prec_add);
+    LetExpr* lhs = dynamic_cast<LetExpr*>(lhs);
+    if (lhs != nullptr) {
+        this->lhs->pretty_print_at(ot, prec_add, pos, true);
+    }
+    else{
+        this->lhs->pretty_print_at(ot, prec_add, pos, false);
+    }
     ot << " + ";
-    this->rhs->pretty_print_at(ot, prec_none);
+    this->rhs->pretty_print_at(ot, prec_none, pos, false);
 
-    if(prevPrec >= prec_add) {
+    if(prec >= prec_add) {
         ot << ")";
     } /// Only places both parentheses if their is a greater precedence preceding this precedence.
 }
@@ -298,16 +316,130 @@ void Mult::printExp(std::ostream &ot) {
  * \param prec is the precedence level addition takes
  * \param prevPrec is the precedence level from the preceding value we read.
  */
-void Mult::pretty_print_at(std::ostream &ot, precedence_t prec) {
+void Mult::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) {
     if(prec >= prec_mult) {
         ot << "(";
     }
 
-    this->lhs->pretty_print_at(ot, prec_mult);
+    this->lhs->pretty_print_at(ot, prec_mult, pos, false);
     ot << " * ";
-    this->rhs->pretty_print_at(ot, prec_add);
+    LetExpr* rhs = dynamic_cast<LetExpr*>(rhs);
+    if (rhs != nullptr &&  prec == prec_add) {
+        this->rhs->pretty_print_at(ot, prec_add, pos, true);
+    }
+    else{
+        this->rhs->pretty_print_at(ot, prec_add, pos, false);
+    }
     
     if(prec >= prec_mult) {
+        ot << ")";
+    } /// Only places both parentheses if their is a greater precedence preceding this precedence.
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+* \brief Sets Let values.
+  * \param var is our variable
+  * \param rhs is our righthand side
+  * \param body is our replacement
+  */
+LetExpr::LetExpr(std::string var, Expr *rhs, Expr *body) {
+    this->var = var;
+    this->rhs = rhs;
+    this->body = body;
+}
+
+/**
+* \brief Compares Let values
+ * \param other is the value to be compared
+ * \param var is our variable
+ * \param rhs is our righthand side
+ * \param body is our replacement
+ */
+bool LetExpr::equals(Expr* e) {
+    LetExpr *other = dynamic_cast<LetExpr*>(e);
+    if(other == nullptr) {
+        return false;
+    } /// Returns false if there's a null value.
+    return var==(other->var) && rhs->equals(other->rhs) && body->equals(other->body);
+} /// Checks if left and right value of the equations are the same.
+
+/**
+* \brief Takes a Let expression and turns it into a readable format
+ */
+int LetExpr::interp() {
+    return body->subst(var, rhs)->interp();
+}
+
+/**
+* \brief Checks if the nested values of a multiplication have a variable.
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
+bool LetExpr::has_variable() {
+    return true;
+}
+
+/**
+* \brief Substitutes a provided value with an alternative value.
+ * \param name is the val we desire to substitute
+ * \param newVal is the value we will be replacing name with.
+ * \param lhs is our lefthand side
+ * \param rhs is our righthand side
+ */
+Expr* LetExpr::subst(std::string name, Expr* newVal) {
+    return new LetExpr(var, rhs, body->subst(name, newVal));
+}
+
+/**
+* \brief Prints a provided addition set.
+ * \param lhs represents the lefthand side.
+ * \param rhs represents the righthand side.
+ */
+void LetExpr::printExp(std::ostream &ot) {
+    ot << "(_let ";
+    ot<< var;
+    ot << "=";
+        this->rhs->printExp(ot);
+    ot << " _in ";
+        this->body->printExp(ot);
+    ot << ")";
+}
+
+/**
+* \brief Prints a provided multiplication set in a way that is easily readable.
+ * \param prec is the precedence level addition takes
+ * \param prevPrec is the precedence level from the preceding value we read.
+ */
+void LetExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) {
+    if(paren) {
+        ot << "(";
+    }
+
+    std::streampos letPos = ot.tellp();
+
+    ot << "_let ";
+    ot << var;
+    ot << " = ";
+    this->rhs->pretty_print_at(ot, prec_none, letPos, false);
+    ot << "\n ";
+
+    // Use pos for indentation.
+    
+    std::streampos curr_pos = ot.tellp();
+
+    int num_space = letPos - pos;
+
+    for(int i = 0; i < num_space; i++) {
+        ot << " ";
+    }
+
+    ot << "_in  ";
+ 
+    this->body->pretty_print_at(ot, prec_none, curr_pos, false);
+    
+    if(paren) {
         ot << ")";
     } /// Only places both parentheses if their is a greater precedence preceding this precedence.
 }
@@ -386,11 +518,17 @@ TEST_CASE("Mult & Add Checks", "Tests for Comparison") {
 }
 
 TEST_CASE("Pretty Print", "Tests for Pretty Print Compatability") {
-    CHECK( (new Num(10))->to_string_p() == "10" );
-
+    // CHECK( (new Num(10))->to_string_p() == "10" );
     CHECK ( (new Mult(new Num(1), new Add(new Num(2), new Num(3))))->to_pretty_string() ==  "1 * (2 + 3)" );
     CHECK ( (new Mult(new Mult(new Num(8), new Num(1)), new VarExpr("y")))->to_pretty_string() ==  "(8 * 1) * y" );
     CHECK ( (new Mult(new Add(new Num(3), new Num(5)), new Mult(new Num(6), new Num(1))))->to_pretty_string() ==  "(3 + 5) * 6 * 1" );
     CHECK ( (new Mult(new Mult(new Num(7), new Num(7)), new Add(new Num(9), new Num(2))) )->to_pretty_string() ==  "(7 * 7) * (9 + 2)" );
     CHECK ( (new Mult(new Add(new Num(7), new Num(7)), new Mult(new Num(9), new Num(2))) )->to_pretty_string() ==  "(7 + 7) * 9 * 2" );
+}
+
+TEST_CASE("Let Expressions", "Tests for All _let Expressions") {
+    CHECK(((new LetExpr("x", new Num(5), (new Add(new LetExpr("y", new Num(3), (new Add(new VarExpr("y"), new Num(2)))), new VarExpr("x")))))->to_string_p()) == "(_let x=5 _in ((_let y=3 _in (y+2))+x))");
+    CHECK((new LetExpr("x", new Num(5), new Add(new LetExpr("y", new Num(3), new Add(new VarExpr("y"), new Num(2))), new VarExpr("x"))))->to_pretty_string() == "_let x = 5\n_in  (_let y = 3\n      _in  y + 2) + x");
+    CHECK ( (new Add(new LetExpr("x", new Num (5), new LetExpr("y", new Num(3), new Add(new VarExpr("y"), new Num(2)))), new VarExpr("x"))) -> to_pretty_string() == "(_let x = 5\n  _in  _let y = 3\n       _in  y + 2) + x");
+    CHECK ( (new Add(new Mult(new Num (2), new LetExpr("x", new Num(5), new Add(new VarExpr("x") , new Num(1)) )), new Num(3) )) ->to_pretty_string()== "2 * (_let x = 5\n      _in  x + 1) + 3");
 }

@@ -1,8 +1,8 @@
 CXX=c++
 CFLAGS = -std=c++17
-HEADERS = cmdline.h catch.h expr.h
-CXXSOURCE = cmdline.cpp expr.cpp main.cpp
-OBJS = cmdline.o expr.o main.o
+HEADERS = cmdline.h catch.h expr.h parse.hpp
+CXXSOURCE = cmdline.cpp expr.cpp main.cpp parse.cpp
+OBJS = cmdline.o expr.o main.o parse.o
 
 msdscript: $(OBJS) #This makes the executable out of the .o files
 	$(CXX) $(OBJS) -o msdscript
@@ -21,6 +21,15 @@ clean: #This removes all of the .o files
 
 test: msdscript #This is used to run the executable that would be made
 	./msdscript --test
+
+interp: msdscript
+	./msdscript --interp
+
+print: msdscript
+	./msdscript --print
+
+pretty-print: msdscript
+	./msdscript --pretty-print
 	
 help: msdscript
 	./msdscript --help
