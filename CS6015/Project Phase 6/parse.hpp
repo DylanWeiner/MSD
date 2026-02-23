@@ -22,3 +22,9 @@ Expr* parse_str(std::string str);
 static void consume(std::istream &inn, char expected);
 
 static void skip_whitespace(std::istream &inn);
+
+std::string parse_keyword(std::istream &in);
+
+Expr *parse_let(std::istream &inn);
+
+Expr *parse_var(std::istream &inn);
