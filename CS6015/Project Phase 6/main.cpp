@@ -21,26 +21,19 @@ int main(int argc, char **argv) {
   if(action == do_interp) {
     Expr *e = parse_expr(std::cin); /// Parses user input.
 
-    std::cout << "Expression: ";
-    e->printExp(std::cout);
-    std::cout << "\n";
     std::cout << "Value: " << e->interp() << "\n";
   }
   else if(action == do_print) {
     Expr *e = parse_expr(std::cin); /// Parses user input.
 
-    std::cout << "Expression: ";
+    std::cout << "Expression: \n";
     e->printExp(std::cout);
     std::cout << "\n";
-    // e->printExp(std::cout);
-    // std::cout << "\n";
   }
   else if(action == do_pretty_print) {
     Expr *e = parse_expr(std::cin); /// Parses user input.
 
-    std::cout << "Expression: ";
-    // e->printExp(std::cout);
-    // std::cout << "\n";
+    std::cout << "Expression: \n";
     e->pretty_print(std::cout);
     std::cout << "\n";
   }
