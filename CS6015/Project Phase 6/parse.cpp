@@ -12,7 +12,7 @@ Expr *parse_expr(std::istream &inn) {
     if (c == '+') {
         consume(inn, '+');
         Expr *rhs = parse_expr(inn);
-        return new Add(e, rhs);
+        return new AddExpr(e, rhs);
     }
      else
         return e;
@@ -35,7 +35,7 @@ Expr *parse_num(std::istream &inn) {
             break;
     }
     
-    return new Num(n);
+    return new NumExpr(n);
 }
 
 Expr *parse_addend(std::istream &inn) {
@@ -49,7 +49,7 @@ Expr *parse_addend(std::istream &inn) {
     if( c == '*') {
         consume(inn, '*');
         Expr *rhs = parse_addend(inn);
-        return new Mult(e, rhs);
+        return new MultExpr(e, rhs);
     } else {
         return e;
     }

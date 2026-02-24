@@ -23,10 +23,10 @@ public:
     std::string to_pretty_string();
 };
 
-class Num : public Expr {
+class NumExpr : public Expr {
 public:
     int val;
-    Num(int val);
+    NumExpr(int val);
     bool equals(Expr *e) override;
     int interp() override;
     bool has_variable() override;
@@ -48,11 +48,11 @@ public:
 
 };
 
-class Add : public Expr {
+class AddExpr : public Expr {
 public:
     Expr *lhs;
     Expr *rhs;
-    Add(Expr *lhs, Expr *rhs);
+    AddExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *e) override;
     int interp() override;
     bool has_variable() override;
@@ -61,11 +61,11 @@ public:
     void pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) override;
 };
 
-class Mult : public Expr {
+class MultExpr : public Expr {
 public:
     Expr *lhs;
     Expr *rhs;
-    Mult(Expr *lhs, Expr *rhs);
+    MultExpr(Expr *lhs, Expr *rhs);
     bool equals(Expr *e) override;
     int interp() override;
     bool has_variable() override;
