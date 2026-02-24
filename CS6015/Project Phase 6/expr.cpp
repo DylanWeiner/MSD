@@ -369,6 +369,7 @@ bool LetExpr::equals(Expr* e) {
 * \brief Takes a Let expression and turns it into a readable format
  */
 int LetExpr::interp() {
+    // int n = rhs->interp();
     return body->subst(var, rhs)->interp();
 }
 

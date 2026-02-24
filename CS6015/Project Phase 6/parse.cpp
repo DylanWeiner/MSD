@@ -22,10 +22,16 @@ Expr *parse_num(std::istream &inn) {
     int n = 0;
 
     skip_whitespace(inn);
+    bool isNeg = false;
+    int c = inn.peek();
+
+    if(c == '-') {
+            consume(inn, '-');
+            isNeg = true;
+        }  // if number is negative
     
     while (1) {
         int c = inn.peek();
-
         if (isdigit(c))
         {
             consume(inn, c);
@@ -33,6 +39,10 @@ Expr *parse_num(std::istream &inn) {
         }
         else
             break;
+    }
+
+    if (isNeg) {
+        n *= -1;
     }
     
     return new NumExpr(n);
@@ -59,8 +69,8 @@ Expr *parse_multicand(std::istream &inn) {
     skip_whitespace(inn);
 
 	int c = inn.peek();
-	if ((c == '-') || isdigit(c))
-		return parse_num(inn); // if number is negative
+	if (c == '-' || isdigit(c))
+		return parse_num(inn);
      // else if c == '_', parse the keyword _let.
     else if (c == '(') {
 		consume(inn, '(');
@@ -140,12 +150,12 @@ Expr *parse_var(std::istream &in){
     return new VarExpr(variable);
 }
 
-std::string parse_keyword(std::istream &in) {
+std::string parse_keyword(std::istream &inn) {
     std::string keyword = "";
     while (1) {
-        int c = in.peek();
+        int c = inn.peek();
         if (isalpha(c)) {
-          consume(in, c);
+          consume(inn, c);
           keyword += static_cast<char>(c); 
         } else
           break;
@@ -169,12 +179,10 @@ Expr *parse_let(std::istream &inn) {
     if(!isalpha(c)) {
         throw std::runtime_error("incorrect _let variable");
     }
+    
+    oldVal = static_cast<char>(c);
 
     consume(inn, c);
-    skip_whitespace(inn);
-
-    c = inn.peek();
-    oldVal = static_cast<char>(c);
 
     skip_whitespace(inn);
     c = inn.peek();
