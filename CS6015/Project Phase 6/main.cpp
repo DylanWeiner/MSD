@@ -1,14 +1,9 @@
-//#define CATCH_CONFIG_MAIN
-//#include "catch.h"
-// #define CATCH_CONFIG_RUNNER
-// #ifndef expr_h
 #include "catch.h"
 #include "cmdline.h"
 #include "parse.hpp"
-// #define expr_h
-// #endif
 
 int main(int argc, char **argv) {
+
   int action = use_arguments(argc, argv); /// Reads arguments from the commandline into the use_arguments method.
 
   if(action == do_interp) {
@@ -30,9 +25,7 @@ int main(int argc, char **argv) {
     e->pretty_print(std::cout);
     std::cout << "\n";
   }
-  else if(action == do_nothing) {
+  else { // if(action == do_nothing) {
     return 0;
   }
-
-  return 0;
 }
