@@ -33,7 +33,7 @@ public:
     void* getAddress();
     size_t getSize();
     size_t getCapacity();
-    void insert(void* address, size_t size);
+    void insert(void* address, size_t sizeOfAllocation);
     void remove(void* address);
     
 private:

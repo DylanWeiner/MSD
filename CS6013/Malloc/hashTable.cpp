@@ -25,13 +25,27 @@ hashTable::~hashTable() {
     munmap(addressTable, numBytes); // Deallocate memory for the hash table
 }
 
-void hashTable::insert(void* address, size_t size) {
-    this->addressTable->address[0] = address;
-    this->addressTable->size = size;
+void hashTable::insert(void* address, size_t sizeOfAllocation) {
+    if(this->addressTable->size >= this->capacity) {
+        this->addressTable->grow(); // Grow the hash table if the size exceeds the capacity
+    }
+    for(int i = 0; i < this->capacity; i++) {
+        if (this->addressTable->address[i] == nullptr) {
+            this->addressTable->address[i] = address; // Insert the address into the hash table
+            break;
+        }
+    }
+    this->addressTable->size++; // Increment the size of the hash table
 }
 
 void hashTable::remove(void* address) {
-    // Implementation for removing an entry from the hash table
+    for(int i = 0; i < this->capacity; i++) {
+        if (this->addressTable->address[i] == address) {
+            this->addressTable->address[i] = nullptr; // Remove the address from the hash table
+            break;
+        }
+    }
+     this->addressTable->size--; // Decrement the size of the hash table
 }
 
 void* hashTable::getAddress() {
@@ -45,4 +59,3 @@ size_t hashTable::getSize() {
 size_t hashTable::getCapacity() {
     return this->addressTable->capacity;
 }
-
