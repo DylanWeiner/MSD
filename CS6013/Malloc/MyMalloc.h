@@ -9,9 +9,6 @@ public:
     void* malloc(size_t bytesToAllocate);
     void* allocate(size_t bytesToAllocate);
     void deallocate(void*  ptr);
-    void* insert();
-    void remove();
 private:
-    void* find();
-    void*  grow();
+    
 };
