@@ -1,8 +1,9 @@
 #include "hashTable.h"
+#include <iostream>
 
 hashTable::hashTable() { 
-    this->capacity = capacity; // Initial capacity
-    this->addressTable->size = addressTable->size; // Initial size
+    this->capacity = 100; // Initial capacity
+    this->addressTable->size = 0; // Initial size
     for(int i = 0; i < capacity; i++) {
         this->addressTable->address[i] = nullptr;
     }
@@ -26,11 +27,16 @@ hashTable::~hashTable() {
 }
 
 void hashTable::insert(void* address, size_t sizeOfAllocation) {
+    std::cout << "Enters insert" << std::endl;
     if(this->addressTable->size >= this->capacity) {
+        std::cout << "grows capacity" << std::endl;
         this->addressTable->grow(); // Grow the hash table if the size exceeds the capacity
     }
+    std::cout << "Checked insert size" << std::endl;
     for(int i = 0; i < this->capacity; i++) {
+        std::cout << "Enters insert for loop: " << i << std::endl;
         if (this->addressTable->address[i] == nullptr) {
+            std::cout << "Enters insert if statement" << std::endl;
             this->addressTable->address[i] = address; // Insert the address into the hash table
             break;
         }
@@ -48,8 +54,8 @@ void hashTable::remove(void* address) {
      this->addressTable->size--; // Decrement the size of the hash table
 }
 
-void* hashTable::getAddress() {
-    return this->addressTable->address;
+void* hashTable::getAddress(int location) {
+    return this->addressTable->address[location];
 }
 
 size_t hashTable::getSize() {

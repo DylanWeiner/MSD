@@ -4,7 +4,7 @@
 struct hTable {
     void* address[100];
     size_t size;
-    size_t capacity = 100;
+    size_t capacity;
 
     int find(void* desiredAddress) {
         for(int i = 0; i < size; i++) {
@@ -19,7 +19,7 @@ struct hTable {
     hTable grow() {
         hTable newTable;
         newTable.capacity = capacity * 2;
-        newTable.address[newTable.capacity];
+        // newTable.address[newTable.capacity];
         newTable.size = size;
         for(int i = 0; i < size; i++) {
             newTable.address[i] = address[i];
@@ -29,8 +29,10 @@ struct hTable {
 };
 
 class hashTable {
+hashTable();
+~hashTable();
 public:
-    void* getAddress();
+    void* getAddress(int location);
     size_t getSize();
     size_t getCapacity();
     void insert(void* address, size_t sizeOfAllocation);

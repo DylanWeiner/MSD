@@ -4,23 +4,14 @@
 
 #include "MyMalloc.h"
 
-std::unordered_map<void*, size_t> allocatedBlocks; // Hash table to keep track of addresses and the associated size of memory allocated to that address
-
-void* MyMalloc::malloc(size_t bytesToAllocate) {
-    
-}
-
 void* MyMalloc::allocate(size_t bytesToAllocate) {
-    void* ptr = malloc(bytesToAllocate);
-    allocatedBlocks[ptr] = bytesToAllocate;
+    void* ptr = mmap(nullptr, bytesToAllocate, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0); // Allocate memory using mmap
+    std::cout << "Successful mmap()" << std::endl;
+    allocatedBlocks->insert(ptr, bytesToAllocate);
+    std::cout << "Successful insert" << std::endl;
     return ptr;
 }
 
 void MyMalloc::deallocate(void*  ptr) {
-    auto it = allocatedBlocks.find(ptr);
-    if (it != allocatedBlocks.end()) {
-        free(ptr);
-        allocatedBlocks.erase(it);
-    }
+    allocatedBlocks->remove(ptr);
 }
-
