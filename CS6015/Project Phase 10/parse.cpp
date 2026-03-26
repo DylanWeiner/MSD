@@ -75,10 +75,21 @@ Expr *parse_addend(std::istream &inn) {
 }
 
 Expr *parse_multicand(std::istream &inn) {
+    Expr * e = parse_inner(inn);
+    while (inn.peek() == '(') {
+        consume(inn, '(');
+        Expr * actual_arg = parse_expr(inn);
+        consume(inn, ')');
+        Expr * rhs = new CallExpr(e, actual_arg);
+    }
+    return e;
+}
+
+Expr *parse_inner(std::istream &inn) {
     skip_whitespace(inn);
 
 	int c = inn.peek();
-    std::cout << "Top c: " << static_cast<char>(c) << std::endl;
+    // std::cout << "Top c: " << static_cast<char>(c) << std::endl;
 	if (c == '-' || isdigit(c))
 		return parse_num(inn);
      // else if c == '_', parse the keyword _let.
@@ -99,27 +110,18 @@ Expr *parse_multicand(std::istream &inn) {
         consume(inn, '_');
 
         std::string keyword = parse_keyword(inn);
-        std::cout << "keyword: " << keyword << std::endl;
+        // std::cout << "keyword: " << keyword << std::endl;
         if(keyword == "let") {
             return parse_let(inn);
-        }
-        else if(keyword == "true") {
+        } else if(keyword == "true") {
             return new BoolExpr(true);
-        }
-        else if(keyword == "false") {
+        } else if(keyword == "false") {
             return new BoolExpr(false);
-        }
-        else if(keyword == "if") {
+        } else if(keyword == "if") {
             return parse_if(inn);
-        }
-        else if(keyword == "fun") {
-            std::cout << "parsing fun" << std::endl;
+        } else if(keyword == "fun") {
             return parse_fun(inn);
-        }
-        // else if(keyword == "in" || keyword == "then" || keyword == "else") {
-        //     return nullptr;
-        // }
-        else {
+        } else {
             throw std::runtime_error("invalid input keyword");
         }
     }
@@ -175,15 +177,10 @@ Expr *parse_let(std::istream &inn) {
     if(!isalpha(c)) {
         throw std::runtime_error("incorrect _let variable");
     }
-    // std::cout << "c: " << static_cast<char>(c) << std::endl;
-    // VarExpr * var_name = dynamic_cast<VarExpr*>(parse_var(inn));
 
-    while(isalpha(c)) {
-        oldVal += static_cast<char>(c); 
-        consume(inn, c);
-        c = inn.peek();
-    }
+    oldVal = parse_keyword(inn);
 
+    // std::cout << "keyword: " << oldVal << std::endl;
     skip_whitespace(inn);
     c = inn.peek();
 
@@ -195,13 +192,9 @@ Expr *parse_let(std::istream &inn) {
     skip_whitespace(inn);
     c = inn.peek();
 
-    std::cout << "c: " << static_cast<char>(c) << std::endl;
-
     rhs = parse_expr(inn);
-    std::cout << "rhs: " << rhs->to_string_p() << std::endl;
     skip_whitespace(inn);
     c = inn.peek();
-    std::cout << "Before _let followup error c: " << static_cast<char>(c) << std::endl;
     
     if(c != '_') {
         throw std::runtime_error("incorrect _let followup");
@@ -237,6 +230,7 @@ Expr *parse_if(std::istream &inn) {
 
     if_keyword = parse_keyword(inn);
     skip_whitespace(inn);
+    
     lhs = parse_expr(inn);
     skip_whitespace(inn);
 
@@ -262,11 +256,8 @@ Expr *parse_if(std::istream &inn) {
 
 Expr *parse_fun(std::istream &inn) {
     int c = 0;
-    std::string fun_keyword = "";
     std::string arg = "";
     Expr * body;
-
-    // std::cout << "fun_keyword: " << fun_keyword << std::endl;
 
     skip_whitespace(inn);
     c = inn.peek();
@@ -277,6 +268,7 @@ Expr *parse_fun(std::istream &inn) {
     skip_whitespace(inn);
 
     arg = parse_keyword(inn);
+    // std::cout << arg << std::endl;
     skip_whitespace(inn);
     c = inn.peek();
 
@@ -287,12 +279,7 @@ Expr *parse_fun(std::istream &inn) {
     consume(inn, ')');
     skip_whitespace(inn);
 
-    c = inn.peek();
-    std::cout << "Pre Body c: " << static_cast<char>(c) << std::endl;
-
-    std::cout << "arg: " << arg << std::endl;
-    body = parse_expr(inn); // There is an error right here!!!
-    std::cout << "body: " << body->to_string_p() << std::endl;
+    body = parse_expr(inn);
 
     return new FunExpr(arg, body);
 }

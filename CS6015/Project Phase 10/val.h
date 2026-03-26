@@ -7,7 +7,8 @@ public:
     virtual Expr* to_expr() = 0;
     virtual Val* add_to(Val *other_val) = 0;
     virtual Val* mult_with(Val *other_val) = 0;
-    virtual std::string num_to_string() = 0;
+    virtual void printExp(std::ostream &ot) = 0;
+    std::string to_string();
     virtual bool is_true() = 0;
     virtual Val *call(Val *actual_arg) = 0;
 };
@@ -20,9 +21,9 @@ public:
     Expr* to_expr() override;
     Val* add_to(Val *other_val) override;
     Val* mult_with(Val *other_val) override;
-    std::string num_to_string() override;
     bool is_true() override;
     Val *call(Val *actual_arg) override;
+    void printExp(std::ostream &ot) override;
 };
 
 class BoolVal : public Val {
@@ -33,9 +34,9 @@ public:
     Expr* to_expr() override;
     Val* add_to(Val *other_val) override;
     Val* mult_with(Val *other_val) override;
-    std::string num_to_string() override;
     bool is_true() override;
     Val *call(Val *actual_arg) override;
+    void printExp(std::ostream &ot) override;
 };
 
 class FunVal : public Val {
@@ -47,7 +48,7 @@ public:
     Expr* to_expr() override;
     Val* add_to(Val *other_val) override;
     Val* mult_with(Val *other_val) override;
-    std::string num_to_string() override;
     bool is_true() override;
     Val *call(Val *actual_arg) override;
+    void printExp(std::ostream &ot) override;
 };

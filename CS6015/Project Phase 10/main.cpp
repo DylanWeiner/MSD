@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
     if(action == do_interp) {
       Expr *e = parse_expr(std::cin); /// Parses user input.
 
-      std::cout << e->interp()->num_to_string() << "\n";
+      std::cout << e->interp()->to_string() << "\n";
     }
     else if(action == do_print) {
       Expr *e = parse_expr(std::cin); /// Parses user input.

@@ -32,3 +32,5 @@ Expr *parse_var(std::istream &inn);
 Expr *parse_if(std::istream &inn);
 
 Expr *parse_fun(std::istream &inn);
+
+Expr *parse_inner(std::istream &inn);

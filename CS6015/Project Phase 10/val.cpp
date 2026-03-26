@@ -1,6 +1,12 @@
 #include "val.h"
 #include "expr.h"
 
+std::string Val::to_string() {
+    std::stringstream st("");
+    this->printExp(st);
+    return st.str();
+}
+
 NumVal::NumVal(int val) {
     this->val = val;
 }
@@ -31,9 +37,7 @@ Val* NumVal::mult_with(Val *other_val) {
     return new NumVal(val * other_num->val);   
 }
 
-std::string NumVal::num_to_string() {
-    return std::to_string(this->val);
-}
+
 
 bool NumVal::is_true() {
     throw std::runtime_error("num cannot be interpreted as bool");
@@ -41,6 +45,10 @@ bool NumVal::is_true() {
 
 Val *NumVal::call(Val *actual_arg) {
     throw std::runtime_error("number cannot be called");
+}
+
+void NumVal::printExp(std::ostream &ot) {
+    ot << val;
 }
 
 BoolVal::BoolVal(bool val) {
@@ -73,16 +81,16 @@ Val* BoolVal::mult_with(Val *other_val) {
     return new BoolVal(val && other_bool->val);   
 }
 
-std::string BoolVal::num_to_string() {
-    return std::to_string(this->val);
-}
-
 bool BoolVal::is_true() {
     return val;
 }
 
 Val *BoolVal::call(Val *actual_arg) {
     throw std::runtime_error("boolean cannot be called");
+}
+
+void BoolVal::printExp(std::ostream &ot) {
+    ot << val;
 }
 
 FunVal::FunVal(std::string arg, Expr *body) {
@@ -110,8 +118,8 @@ Val* FunVal::mult_with(Val *other_val) {
     throw std::runtime_error("function cannot be multiplied");
 }
 
-std::string FunVal::num_to_string() {
-    return arg + " => " + this->body->to_string_p();
+void FunVal::printExp(std::ostream &ot) {
+    ot << this -> to_expr() -> to_string_p();
 }
 
 bool FunVal::is_true() {

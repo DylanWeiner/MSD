@@ -150,11 +150,11 @@ Expr* NumExpr::subst(std::string name, Expr* newVal) {
 * \brief Prints a provided number.
  */
 void NumExpr::printExp(std::ostream &ot) {
-    ot << this->interp()->num_to_string();
+    ot << this->interp()->to_string();
 }
 
 void NumExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos& pos, bool paren) {
-    ot << this->interp()->num_to_string();
+    ot << this->interp()->to_string();
 }
 
 /**
@@ -476,6 +476,9 @@ Val* BoolExpr::equals(Expr* e) {
  */
 Val* BoolExpr::interp() {
     // int n = rhs->interp();
+    if(this->val != true && this->val != false) {
+        throw std::runtime_error("Not a boolean value!");
+    }
     return new BoolVal(this->val);
 }
 
@@ -542,13 +545,15 @@ Val* IfExpr::equals(Expr* e) {
 * \brief Takes a Let expression and turns it into a readable format
  */
 Val* IfExpr::interp() {
-    // int n = rhs->interp();
-    // EqExpr* cond_eq = dynamic_cast<EqExpr*>(cond);
-    if(cond != nullptr && cond->interp()->equals(new BoolVal(true))) {
+    IfExpr* cond_eq = dynamic_cast<IfExpr*>(cond);
+    if(cond_eq != nullptr && cond_eq->interp()->is_true()) {
         return this->then_body->interp();
     }
-    else {
+    else if(cond_eq != nullptr && cond_eq->interp() == new BoolVal(false)) {
         return this->else_body->interp();
+    }
+    else {
+        throw std::runtime_error("Not a boolean value!");
     }
 }
 
