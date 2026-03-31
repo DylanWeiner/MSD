@@ -12,17 +12,14 @@ void free(void* address) {
 }
 
 void smallObjLargeArr() {
-    // std::cout << "Enters smallObjLargeArr." << std::endl;
     int arr_size = 151;
     int* arr[arr_size];
 
     for(int i = 0; i < arr_size; i ++) {
-        // std::cout << "for loop: " << i << std::endl;
         arr[i] = static_cast<int*>(malloc(sizeof(char)));
         
         std::cout << arr[i];
     }
-    // std::cout << "Finishes construction." << std::endl;
 
     for(int i = 0; i < arr_size; i++) {
         std::cout << "Address " << i << ": " << myMal.allocatedBlocks.getAddress(i) << std::endl;

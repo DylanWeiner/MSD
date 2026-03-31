@@ -24,32 +24,44 @@ hashTable::hashTable() {
     }
 }
 
+// hashTable::hashTable(int capacity) { 
+//     this->capacity = 100; // Initial capacity
+//     this->numBytes = sizeof(hTable); // Initial number of bytes allocated
+    
+//     addressTable = static_cast<hTable*>(mmap(this, numBytes, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0)); // Allocate memory for the hash table
+
+//     if (addressTable == MAP_FAILED) {
+//         addressTable = nullptr;
+//         capacity = 0;
+//         numBytes = 0;
+//         return;
+//     } // Catches in case of memory mapping failure
+
+//     addressTable->size = 0; // Initial size
+//     addressTable->capacity = capacity;
+
+//     for(int i = 0; i < addressTable->capacity; i++) {
+//         addressTable->address[i] = nullptr;
+//         addressTable->allocationSize[i] = 0;
+//     }
+// }
+
 hashTable::~hashTable() { 
-    this->numBytes *= this->addressTable->capacity; // Number of bytes allocated
-    for(int i = 0; i < capacity; i++) {
-        if (this->addressTable->address[i] != nullptr) {
-            
-            munmap(this->addressTable->address[i], this->addressTable->size); // Deallocate memory for each address in the hash table
-        }
+    if (addressTable != nullptr) {
+        munmap(addressTable, numBytes);
+        addressTable = nullptr;
     }
 
-    this->capacity = 0;
-    this->addressTable->size = 0;
-
-    munmap(addressTable, numBytes); // Deallocate memory for the hash table
+    capacity = 0;
+    numBytes = 0;
 }
 
 void hashTable::insert(void* address, size_t sizeOfAllocation) {
-    write(1, "Enters insert\n", 15);
-    if(this->addressTable->size >= addressTable->capacity) {
-        write(1, "Enters grow\n", 13);
-        this->addressTable->grow(); // Grow the hash table if the size exceeds the capacity
+    if(this->addressTable->size >= addressTable->capacity-1) {
+        *addressTable = this->addressTable->grow(); // Grow the hash table if the size exceeds the capacity
     }
-    // std::cout << "Checked insert size" << std::endl;
     for(int i = 0; i < this->capacity; i++) {
-        // std::cout << "Enters insert for loop: " << i << std::endl;
         if (this->addressTable->address[i] == nullptr) {
-            // std::cout << "Enters insert if statement" << std::endl;
             this->addressTable->allocationSize[i] = sizeOfAllocation;
             this->addressTable->address[i] = address; // Insert the address into the hash table
             this->addressTable->size++; // Increment the size of the hash table

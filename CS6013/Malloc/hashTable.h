@@ -33,6 +33,7 @@ class hashTable {
 public:
     hashTable();
     ~hashTable();
+    // hashTable(int capacity);
     void* getAddress(int location);
     size_t getSize();
     size_t getCapacity();
