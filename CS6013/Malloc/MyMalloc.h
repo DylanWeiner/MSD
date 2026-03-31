@@ -5,7 +5,7 @@
 
 class MyMalloc {
 public:
-    hashTable * allocatedBlocks;
+    hashTable allocatedBlocks;
     void* allocate(size_t bytesToAllocate);
     void deallocate(void*  ptr);
 };

@@ -5,6 +5,7 @@ struct hTable {
     void* address[100];
     size_t size;
     size_t capacity;
+    size_t allocationSize[100];
 
     int find(void* desiredAddress) {
         for(int i = 0; i < size; i++) {
@@ -36,7 +37,7 @@ public:
     size_t getSize();
     size_t getCapacity();
     void insert(void* address, size_t sizeOfAllocation);
-    void remove(void* address);
+    size_t remove(void* address);
     
 private:
     size_t capacity;

@@ -1,23 +1,26 @@
 #pragma once
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////
 //
-// Author:
-// Date:
-//
+// Author: Dylan Weiner
+// Date:4/3/26
+// Assignment 5 - Thread Safe Queue
 // CS 6013
 //
-// Outline for SerialQueue class.  Fill in the missing data, comments, etc.
-//
-// Code Completed by Dylan Weiner
-// 4/3/26
-// Assignment 5 - Thread Safe Queue
+// Outline for SerialQueue class.
+//  
 ////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 class SerialQueue {
 
 public:
+//     Node(const T & val, T * next) {
+//         data = val;
+//         next = this->next;
+//    }
+
    SerialQueue() :
       head_( new Node{ T{}, nullptr } ), size_( 0 )
    {
@@ -25,14 +28,38 @@ public:
    }
 
    void enqueue( const T & x ) {
-      current_( new Node{x, tail_} ), size_(sizeof(x) + sizeof(tail_));
-   }
+        // std::cout << "Prev Tail Value: " << tail_->data << std::endl;
+        std::cout << "Prev Head Value: " << head_->data << std::endl;
+        
+        Node* current = new Node{x, nullptr};
+        tail_->next = current;
+        tail_= current;
+        if(size_ == 0) {
+            head_ = current;
+        }
+        size_++;
+        
+        std::cout << "New Value: " << current->data << std::endl;
+    }
 
-   bool dequeue( T * ret ) {
-      current_ = head_->next;
-
-      head_->next = current_->next;
-   }
+    bool dequeue(T * ret) {
+        std::cout << "Prev Head Value: " << head_->data << std::endl;
+        Node* tmp = head_;
+        Node * new_head = tmp->next;
+        if(new_head == NULL){
+            // head_m.unlock();
+            return false; // Nothing in queue
+        }
+        T value = new_head->data;
+        head_ = new_head;
+        free( tmp );
+        // head_m.unlock();
+        std::cout << "New Head Value: " << head_->data << std::endl;
+        // *remVal = ret;
+        std::cout << "Removed Value: " << *ret << std::endl;
+        size_--;
+        return true;
+    }
 
    ~SerialQueue() {
 
@@ -44,6 +71,7 @@ public:
    }
 
    int size() const { return size_; }
+
 
 private:
 

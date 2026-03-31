@@ -1,21 +1,22 @@
 #include "MyMalloc.h"
 
-MyMalloc * myMal = new MyMalloc;
+MyMalloc myMal;
 
 void* malloc(size_t capacity) {
     // std::cout << "Enters malloc" << std::endl;
-    return myMal->allocate(capacity);
+    return myMal.allocate(capacity);
 }
 
 void free(void* address) {
-    myMal->deallocate(address);
+    myMal.deallocate(address);
 }
 
 void smallObjLargeArr() {
     // std::cout << "Enters smallObjLargeArr." << std::endl;
-    int* arr[10];
+    int arr_size = 151;
+    int* arr[arr_size];
 
-    for(int i = 0; i < 10; i ++) {
+    for(int i = 0; i < arr_size; i ++) {
         // std::cout << "for loop: " << i << std::endl;
         arr[i] = static_cast<int*>(malloc(sizeof(char)));
         
@@ -23,8 +24,8 @@ void smallObjLargeArr() {
     }
     // std::cout << "Finishes construction." << std::endl;
 
-    for(int i = 0; i < 10; i++) {
-        std::cout << "Address " << i << ": " << myMal->allocatedBlocks->getAddress(i) << std::endl;
+    for(int i = 0; i < arr_size; i++) {
+        std::cout << "Address " << i << ": " << myMal.allocatedBlocks.getAddress(i) << std::endl;
     }
 
     std::cout << "Finishes reading addresses" << std::endl;
@@ -34,7 +35,7 @@ void smallObjLargeArr() {
     //     Verify the data in the objects stays valid
 }
 
-int main(int argc, char **argv) {
+int main() {
     std::cout << "Enters main." << std::endl;
     smallObjLargeArr();
     // Allocate a large number of large memory objects
