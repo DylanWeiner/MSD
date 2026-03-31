@@ -80,7 +80,7 @@ Expr *parse_multicand(std::istream &inn) {
         consume(inn, '(');
         Expr * actual_arg = parse_expr(inn);
         consume(inn, ')');
-        Expr * rhs = new CallExpr(e, actual_arg);
+        e = new CallExpr(e, actual_arg);
     }
     return e;
 }
@@ -222,7 +222,7 @@ Expr *parse_if(std::istream &inn) {
     Expr * rhs;
 
     skip_whitespace(inn);
-    cond = new EqExpr(parse_expr(inn), new BoolExpr(true));
+    cond = parse_expr(inn);
 
     skip_whitespace(inn);
     c = inn.peek();

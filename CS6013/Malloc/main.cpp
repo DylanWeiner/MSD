@@ -3,7 +3,7 @@
 MyMalloc * myMal = new MyMalloc;
 
 void* malloc(size_t capacity) {
-    std::cout << "Enters malloc" << std::endl;
+    // std::cout << "Enters malloc" << std::endl;
     return myMal->allocate(capacity);
 }
 
@@ -12,16 +12,16 @@ void free(void* address) {
 }
 
 void smallObjLargeArr() {
-    std::cout << "Enters smallObjLargeArr." << std::endl;
+    // std::cout << "Enters smallObjLargeArr." << std::endl;
     int* arr[10];
 
     for(int i = 0; i < 10; i ++) {
-        std::cout << "for loop: " << i << std::endl;
+        // std::cout << "for loop: " << i << std::endl;
         arr[i] = static_cast<int*>(malloc(sizeof(char)));
         
-        // std::cout << arr[i];
+        std::cout << arr[i];
     }
-    std::cout << "Finishes construction." << std::endl;
+    // std::cout << "Finishes construction." << std::endl;
 
     for(int i = 0; i < 10; i++) {
         std::cout << "Address " << i << ": " << myMal->allocatedBlocks->getAddress(i) << std::endl;

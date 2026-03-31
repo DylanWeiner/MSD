@@ -89,7 +89,7 @@ Expr* VarExpr::subst(std::string name, Expr* newVal) {
     if(name == val) {
         return newVal;
     }
-    return new VarExpr(name);
+    return new VarExpr(val);
 }
 
 /**
@@ -545,15 +545,14 @@ Val* IfExpr::equals(Expr* e) {
 * \brief Takes a Let expression and turns it into a readable format
  */
 Val* IfExpr::interp() {
-    IfExpr* cond_eq = dynamic_cast<IfExpr*>(cond);
-    if(cond_eq != nullptr && cond_eq->interp()->is_true()) {
+    Val * cond_val = cond->interp();
+    if(!dynamic_cast<BoolVal*>(cond_val)) {
+        throw std::runtime_error("condition is not a boolean");
+    }
+    if(cond_val->is_true()) {
         return this->then_body->interp();
-    }
-    else if(cond_eq != nullptr && cond_eq->interp() == new BoolVal(false)) {
+    } else {
         return this->else_body->interp();
-    }
-    else {
-        throw std::runtime_error("Not a boolean value!");
     }
 }
 

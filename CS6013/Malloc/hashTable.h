@@ -29,9 +29,9 @@ struct hTable {
 };
 
 class hashTable {
-hashTable();
-~hashTable();
 public:
+    hashTable();
+    ~hashTable();
     void* getAddress(int location);
     size_t getSize();
     size_t getCapacity();

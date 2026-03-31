@@ -1,15 +1,19 @@
 #include "hashTable.h"
 #include <iostream>
+#include <unistd.h>
 
 hashTable::hashTable() { 
     this->capacity = 100; // Initial capacity
+    this->numBytes = sizeof(hTable); // Initial number of bytes allocated
+    
+    addressTable = static_cast<hTable*>(mmap(this, numBytes, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0)); // Allocate memory for the hash table
+
     this->addressTable->size = 0; // Initial size
-    for(int i = 0; i < capacity; i++) {
+    this->addressTable->capacity = capacity;
+
+    for(int i = 0; i < this->addressTable->capacity; i++) {
         this->addressTable->address[i] = nullptr;
     }
-
-    this->numBytes *= this->addressTable->capacity; // Initial number of bytes allocated
-    addressTable = static_cast<hTable*>(mmap(this, numBytes, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0)); // Allocate memory for the hash table
 }
 
 hashTable::~hashTable() { 
@@ -27,21 +31,21 @@ hashTable::~hashTable() {
 }
 
 void hashTable::insert(void* address, size_t sizeOfAllocation) {
-    std::cout << "Enters insert" << std::endl;
-    if(this->addressTable->size >= this->capacity) {
-        std::cout << "grows capacity" << std::endl;
+    write(1, "Enters insert\n", 15);
+    if(this->addressTable->size >= addressTable->capacity) {
+        write(1, "Enters grow\n", 13);
         this->addressTable->grow(); // Grow the hash table if the size exceeds the capacity
     }
-    std::cout << "Checked insert size" << std::endl;
+    // std::cout << "Checked insert size" << std::endl;
     for(int i = 0; i < this->capacity; i++) {
-        std::cout << "Enters insert for loop: " << i << std::endl;
+        // std::cout << "Enters insert for loop: " << i << std::endl;
         if (this->addressTable->address[i] == nullptr) {
             std::cout << "Enters insert if statement" << std::endl;
             this->addressTable->address[i] = address; // Insert the address into the hash table
+            this->addressTable->size++; // Increment the size of the hash table
             break;
         }
     }
-    this->addressTable->size++; // Increment the size of the hash table
 }
 
 void hashTable::remove(void* address) {
