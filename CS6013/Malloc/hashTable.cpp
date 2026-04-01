@@ -6,7 +6,7 @@ hashTable::hashTable() {
     this->capacity = 100; // Initial capacity
     this->numBytes = sizeof(HashEntry) * capacity; // Initial number of bytes allocated
     
-    addressTable = static_cast<HashEntry*>(mmap(this, numBytes, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0)); // Allocate memory for the hash table
+    addressTable = static_cast<HashEntry*>(mmap(nullptr, numBytes, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0)); // Allocate memory for the hash table
 
     if (addressTable == MAP_FAILED) {
         addressTable = nullptr;
@@ -49,8 +49,9 @@ hashTable::hashTable() {
 int hashTable::find(void* desiredAddress) {
     for(size_t i = 0; i < capacity; i++) {
         if (addressTable[i].address == desiredAddress && addressTable[i].state == 1) {
-            int* ptr = (int*)addressTable[i].address;
-            return *ptr;
+            // int* ptr = (int*)addressTable[i].address;
+            // return *ptr;
+            return 1;
         } //This might be wrong
     }
     return -1; // Address not found
@@ -61,11 +62,20 @@ void hashTable::grow() {
     size_t oldBytes = numBytes;
     HashEntry* oldTable = addressTable;
     capacity = oldCapacity * 2;
-    numBytes = oldBytes * capacity; // Initial number of bytes allocated
-    addressTable = static_cast<HashEntry*>(mmap(this, numBytes, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0)); // Allocate memory for the hash table
+    numBytes = sizeof(HashEntry) * capacity; // Initial number of bytes allocated
+    addressTable = static_cast<HashEntry*>(mmap(nullptr, numBytes, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_SHARED, -1, 0)); // Allocate memory for the hash table
+
+    for (size_t i = 0; i < capacity; i++) {
+        addressTable[i].address = nullptr;
+        addressTable[i].allocationSize = 0;
+        addressTable[i].state = 0;
+    }
+    // size = 0;
 
     for(size_t i = 0; i < oldCapacity; i++) {
-        insert(oldTable[i].address, oldTable[i].allocationSize);
+        if(addressTable[i].state == 1) {
+            insert(oldTable[i].address, oldTable[i].allocationSize);
+        }
     }
     munmap(oldTable, oldBytes);
 }

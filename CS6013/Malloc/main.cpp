@@ -12,7 +12,7 @@ void free(void* address) {
 }
 
 void smallObjLargeArr() {
-    int arr_size = 151;
+    int arr_size = 1000;
     int* arr[arr_size];
 
     for(int i = 0; i < arr_size; i ++) {
@@ -22,7 +22,7 @@ void smallObjLargeArr() {
     }
 
     for(int i = 0; i < arr_size; i++) {
-        std::cout << "Address " << i << ": " << myMal.allocatedBlocks.getAddress(i) << std::endl;
+        std::cout << "Address " << i+1 << ": " << myMal.allocatedBlocks.getAddress(i) << std::endl;
     }
 
     std::cout << "Finishes reading addresses" << std::endl;
