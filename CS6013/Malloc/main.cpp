@@ -18,7 +18,7 @@ void smallObjLargeArr() {
     for(int i = 0; i < arr_size; i ++) {
         arr[i] = static_cast<int*>(malloc(sizeof(char)));
         
-        std::cout << arr[i];
+        // std::cout << arr[i];
     }
 
     for(int i = 0; i < arr_size; i++) {

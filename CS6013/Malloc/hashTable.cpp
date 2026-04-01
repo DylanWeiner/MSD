@@ -73,7 +73,7 @@ void hashTable::grow() {
     // size = 0;
 
     for(size_t i = 0; i < oldCapacity; i++) {
-        if(addressTable[i].state == 1) {
+        if(oldTable[i].state == 1) {
             insert(oldTable[i].address, oldTable[i].allocationSize);
         }
     }
