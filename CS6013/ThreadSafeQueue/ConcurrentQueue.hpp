@@ -24,32 +24,28 @@ public:
 
    void enqueue( const T & x ) {
         Node* current = new Node{x, nullptr};
-        std::mutex tail_m;
-        std::unique_lock<std::mutex> taillock(tail_m);
+        std::unique_lock<std::mutex> taillock(lock);
         tail_->next = current;
         tail_= current;
-        tail_m.unlock();
+
         val_enqueued_++;
         size_++;
     }
 
     bool dequeue(T * ret) {
-        std::mutex head_m;
-        std::unique_lock<std::mutex> headlock(head_m);
+        std::unique_lock<std::mutex> headlock(lock);
         if(head_ == tail_) {
-            head_m.unlock();
             return false; // Nothing in queue
         }
         Node* tmp = head_;
         Node * new_head = tmp->next;
         *ret = new_head->data;
         head_ = new_head;
-        head_m.unlock();
         delete tmp;
         
         size_--;
         val_dequeued_++;
-        
+
         return true;
     }
 
@@ -75,7 +71,8 @@ private:
 
    Node * head_;
    Node * tail_;
-   int    val_enqueued_;
-   int    val_dequeued_;
+   int    val_enqueued_ = 0;
+   int    val_dequeued_ = 0;
    int    size_;
+   std::mutex lock;
 };

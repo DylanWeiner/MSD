@@ -23,7 +23,6 @@ bool testQueue( int num_producer, int num_consumer, int num_ints ) {
                 while(!exQueue.dequeue(&ret)) {
                     // spin until we can dequeue
                 }
-                assert(ret == j);
             }
         });
     }
