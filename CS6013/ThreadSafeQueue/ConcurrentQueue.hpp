@@ -17,23 +17,22 @@ class ConcurrentQueue {
 
 public:
    ConcurrentQueue() :
-        head_( new Node{ T{}, nullptr } ), size_( 0 )
+        head_( new Node{ T{}, nullptr } )
    {
         tail_ = head_;
    }
 
    void enqueue( const T & x ) {
         Node* current = new Node{x, nullptr};
-        std::unique_lock<std::mutex> taillock(lock);
+        std::unique_lock<std::mutex> taillock(tail_lock);
         tail_->next = current;
         tail_= current;
 
         val_enqueued_++;
-        size_++;
     }
 
     bool dequeue(T * ret) {
-        std::unique_lock<std::mutex> headlock(lock);
+        std::unique_lock<std::mutex> headlock(head_lock);
         if(head_ == tail_) {
             return false; // Nothing in queue
         }
@@ -43,14 +42,12 @@ public:
         head_ = new_head;
         delete tmp;
         
-        size_--;
         val_dequeued_++;
 
         return true;
     }
 
    ~ConcurrentQueue() {
-
       while( head_ != nullptr ) {
          Node* temp = head_->next;
          delete head_;
@@ -73,6 +70,6 @@ private:
    Node * tail_;
    int    val_enqueued_ = 0;
    int    val_dequeued_ = 0;
-   int    size_;
-   std::mutex lock;
+   std::mutex head_lock;
+   std::mutex tail_lock;
 };
