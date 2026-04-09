@@ -1,7 +1,7 @@
 #include <string>
 #include "pointer.h"
 
-CLASS(Expr);
+class Expr;
 
 CLASS(Val) {
 public:

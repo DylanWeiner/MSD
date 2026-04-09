@@ -5,7 +5,7 @@
 // #include <fstream>
 
 // CLASS(Val) {};
-CLASS(Val);
+class Val;
 
 typedef enum {
   prec_none,      // = 0

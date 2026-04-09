@@ -48,7 +48,7 @@ std::string Expr::to_pretty_string() {
 * \brief Sets VarExpr value.
  */
 VarExpr::VarExpr(std::string val) {
-    CAST(VarExpr)(THIS)->val = val; 
+    this->val = val; 
 }
 
 /**
@@ -106,7 +106,7 @@ void VarExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampo
 * \brief Sets NumExpr value.
  */
 NumExpr::NumExpr(int val) {
-    CAST(NumExpr)(THIS)->val = val;
+    this->val = val;
 }
 
 /**
@@ -162,8 +162,8 @@ void NumExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampo
  * \param rhs is our righthand side
  */
 AddExpr::AddExpr(PTR(Expr) lhs, PTR(Expr) rhs) {
-    CAST(AddExpr)(THIS)->lhs = lhs;
-    CAST(AddExpr)(THIS)->rhs = rhs;
+    this->lhs = lhs;
+    this->rhs = rhs;
 }
 
 /**
@@ -253,8 +253,8 @@ void AddExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampo
   * \param rhs is our righthand side
   */
 MultExpr::MultExpr(PTR(Expr) lhs, PTR(Expr) rhs) {
-    CAST(MultExpr)(THIS)->lhs = lhs;
-    CAST(MultExpr)(THIS)->rhs = rhs;
+    this->lhs = lhs;
+    this->rhs = rhs;
 }
 
 /**
@@ -345,9 +345,9 @@ void MultExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streamp
   * \param body is our replacement
   */
 LetExpr::LetExpr(std::string var, PTR(Expr) rhs, PTR(Expr) body) {
-    CAST(LetExpr)(THIS)->var = var;
-    CAST(LetExpr)(THIS)->rhs = rhs;
-    CAST(LetExpr)(THIS)->body = body;
+    this->var = var;
+    this->rhs = rhs;
+    this->body = body;
 }
 
 /**
@@ -452,7 +452,7 @@ void LetExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampo
   * \param val is our boolean value
   */
 BoolExpr::BoolExpr(bool val) {
-    CAST(BoolExpr)(THIS)->val = val;
+    this->val = val;
 }
 
 /**
@@ -520,9 +520,9 @@ void BoolExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streamp
   * \param val is our boolean value
   */
 IfExpr::IfExpr(PTR(Expr) cond, PTR(Expr) then_body, PTR(Expr) else_body) {
-    CAST(IfExpr)(THIS)->cond = cond;
-    CAST(IfExpr)(THIS)->then_body = then_body;
-    CAST(IfExpr)(THIS)->else_body = else_body;
+    this->cond = cond;
+    this->then_body = then_body;
+    this->else_body = else_body;
 }
 
 /**
@@ -629,8 +629,8 @@ void IfExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos
   * \param val is our boolean value
   */
 EqExpr::EqExpr(PTR(Expr) lhs, PTR(Expr) rhs) {
-    CAST(EqExpr)(THIS)->lhs = lhs;
-    CAST(EqExpr)(THIS)->rhs = rhs;
+    this->lhs = lhs;
+    this->rhs = rhs;
 }
 
 /**
@@ -702,8 +702,8 @@ void EqExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampos
   * \param val is our boolean value
   */
 FunExpr::FunExpr(std::string arg, PTR(Expr) body) {
-    CAST(FunExpr)(THIS)->arg = arg;
-    CAST(FunExpr)(THIS)->body = body;
+    this->arg = arg;
+    this->body = body;
 }
 
 /**
@@ -763,8 +763,8 @@ void FunExpr::pretty_print_at(std::ostream &ot, precedence_t prec, std::streampo
   * \param val is our boolean value
   */
 CallExpr::CallExpr(PTR(Expr) fun, PTR(Expr) arg) {
-    CAST(CallExpr)(THIS)->fun = fun;
-    CAST(CallExpr)(THIS)->arg = arg;
+    this->fun = fun;
+    this->arg = arg;
 }
 
 /**
