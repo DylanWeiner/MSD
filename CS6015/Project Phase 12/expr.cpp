@@ -342,7 +342,6 @@ PTR(Val) LetExpr::interp(PTR(Env) env) {
 // }
 
 /**
-/**
 * \brief Prints a provided addition set.
  * \param lhs represents the lefthand side.
  * \param rhs represents the righthand side.

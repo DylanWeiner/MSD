@@ -7,15 +7,15 @@ PTR(Val) EmptyEnv::lookup(std::string var_name) {
     throw std::runtime_error("free variable: " + var_name);
 }
 
-ExtendedEnv::ExtendedEnv(std::string name, PTR(Val) val, PTR(Env) rest) {
-    this->name = name;
-    this->val = val;
-    this->rest = rest;
+ExtendedEnv::ExtendedEnv(std::string lhs, PTR(Val) rhs_val, PTR(Env) env) {
+    this->lhs = lhs;
+    this->rhs_val = rhs_val;
+    this->env = env;
 }
 
 PTR(Val) ExtendedEnv::lookup(std::string find_name) {
-    if (find_name == name)
-        return val;
+    if (find_name == lhs)
+        return rhs_val;
     else
-        return rest->lookup(find_name);
+        return env->lookup(find_name);
 }

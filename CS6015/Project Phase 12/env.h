@@ -20,9 +20,9 @@ public:
 
 class ExtendedEnv : public Env {
 public:
-    std::string name;
-    PTR(Val) val;
-    PTR(Env) rest;
+    std::string lhs;
+    PTR(Val) rhs_val;
+    PTR(Env) env;
     ExtendedEnv(std::string name, PTR(Val) val, PTR(Env) rest);
     PTR(Val) lookup(std::string var_name);
 };
