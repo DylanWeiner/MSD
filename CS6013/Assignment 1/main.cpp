@@ -1,3 +1,6 @@
+// By Dylan Weiner
+// main.cpp file for Assembly Code
+
 #include <sys/time.h>
 #include <iostream>
 
@@ -12,7 +15,8 @@ extern "C" {
 int main() {
     sayHello(); // Prints the assembly value with "puts" correctly.
     myPuts("hello", 6); // Takes the input and prints it correctly.
-    std::cout << "\n" << myGTOD().tv_sec << " seconds \n" << myGTOD().tv_usec << " microseconds.\n";
+    timeval result = myGTOD();
+    std::cout << "\n" << result.tv_sec << " seconds \n" << result.tv_usec << " microseconds.\n";
     // Gave 1769199616 seconds and 395223 microseconds which adds up to the year 2026 and is correct.
     // It also counts up correctly and consistently.
 };

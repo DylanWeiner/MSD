@@ -1,4 +1,10 @@
+; By Dylan Weiner
+; Assembly Code Assignment saved in CADE Lab
+
 extern puts
+
+section .rodata
+helloString:  db        "hello", 0
 
 section .text
 
@@ -8,18 +14,16 @@ sayHello: mov       rax, 1                  ; system call for write
             mov       rdi, helloString            ; address of string to puts
             call      puts                     ; invoke operating system to do the write
             ret
-    helloString:  db        "hello", 0
 
 global myPuts
 
 myPuts:
           mov     rax, 1
-          mov       rdx, rsi            
-          mov       rsi, rdi            
+          mov       rdx, rsi
+          mov       rsi, rdi
           mov       rdi, 1              ; states stdout
           syscall
-          xor rax, rax                                       
-          ret                           
+          ret
 
           section   .rodata
 myHello:  db        "hello", 10

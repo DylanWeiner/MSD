@@ -12,35 +12,46 @@ void free(void* address) {
 }
 
 void smallObjLargeArr() {
-    int arr_size = 1000;
-    int* arr[arr_size];
+    const size_t arr_size = 100;
+    size_t* arr[arr_size];
 
-    for(int i = 0; i < arr_size; i ++) {
-        arr[i] = static_cast<int*>(malloc(sizeof(char)));
-        
-        // std::cout << arr[i];
+    for(size_t i = 0; i < arr_size; i++) {
+        arr[i] = static_cast<size_t*>(malloc(sizeof(size_t)));
+        if(arr[i] != nullptr) {
+            *arr[i] = i;  // Store the index as test data
+        }
     }
 
-    for(int i = 0; i < arr_size; i++) {
-        std::cout << "Address " << i+1 << ": " << myMal.allocatedBlocks.getAddress(i) << std::endl;
+    // Only print occupied entries (filter by state)
+    size_t occupied = 0;
+    std::cout << "Allocated Addresses:\n";
+    for(size_t i = 0; i < myMal.allocatedBlocks.getCapacity(); i++) {
+        if(myMal.allocatedBlocks.getState(i) == State::Occupied) {
+            occupied++;
+            std::cout << "  Address " << occupied << ": " << myMal.allocatedBlocks.getAddress(i) 
+                      << " (size: " << myMal.allocatedBlocks.getSize() << ")\n";
+        }
     }
+    std::cout << "Total Occupied Slots: " << occupied << std::endl;
 
-    std::cout << "Finishes reading addresses" << std::endl;
-    // Allocate a large number of small memory objects
-    //     Manipulate the data in those objects
-    //     Create more objects
-    //     Verify the data in the objects stays valid
+    // Verify data integrity
+    bool dataOk = true;
+    for(size_t i = 0; i < arr_size; i++) {
+        if(arr[i] != nullptr && *arr[i] != static_cast<size_t>(i)) {
+            dataOk = false;
+            std::cout << "Data corruption at index " << i << std::endl;
+        }
+    }
+    std::cout << "Data integrity check: " << (dataOk ? "PASSED" : "FAILED") << std::endl;
+
+    // Deallocate all
+    for(size_t i = 0; i < arr_size; i++) {
+        free(arr[i]);
+    }
 }
 
 int main() {
     std::cout << "Enters main." << std::endl;
     smallObjLargeArr();
-    // Allocate a large number of large memory objects
-    //     Test them
-    // Deallocate your objects
-    //     Verify MyMalloc / hash table are correct
-    // Allocate small and large blocks of memory
-    // Time how long it takes to malloc() and free() memory.  Note, if you have overloaded malloc() and free() (to allocate() and deallocate()), these times will be for your version.  Un-overload them when timing the system malloc() and free().
-    // Come up with more tests...
     return 0;
 }

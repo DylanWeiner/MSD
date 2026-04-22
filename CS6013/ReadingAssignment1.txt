@@ -14,7 +14,7 @@ elf (in terms of Unix programs)
 	elf instructs the assembler to package the machine code into a structured format when working in assembly.
 
 Thrashing
-	An issue in workload scheduling where there are constant context switches which result in a lack of any real work being done.
+	An issue in workload scheduling where there are constant context switches which result in a lack of any real work being done. It is caused by pulling data into the disk and we then need to replace it so we waste our time constantly swapping data.
 
 Virtual Memory
 		Virtual Memory address spaces are the virtualization of memory which simulates, to the system, the illusion of having a contiguous range of addresses and having all of the memory available allotted for the current process. However, in reality, the storage is segmented into 4 KB segments and placed wherever there is memory at any given moment. The actual addresses are pointers to a physical location on the RAM which currently contains the desired information. A Virtual Memory machine accounts for a shortage of physical memory by paging information from the RAM to disk storage and vice versa.

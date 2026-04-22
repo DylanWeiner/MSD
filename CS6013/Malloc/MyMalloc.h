@@ -3,6 +3,9 @@
 #include <iostream>
 #include "hashTable.h"
 
+// Re-export State enum for convenience
+using State = ::State;
+
 class MyMalloc {
 public:
     hashTable allocatedBlocks;
