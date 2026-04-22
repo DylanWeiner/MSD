@@ -1,5 +1,7 @@
 // By Dylan Weiner
-// Unix Shell
+// Unix Shell from Scratch
+// CS 6013
+// Handles user input and passes it to the shelpers functions to be parsed and executed as desired.
 // 2/13/26
 
 #include <iostream>

@@ -210,8 +210,8 @@ vector<Command> getCommands( const vector<string> & tokens ) {
             // (all others get input from a pipe)
             // Only the LAST command can have output redirection!
             else {
-                assert( false );
-            }
+                throw runtime_error("Redirection error: Only the first command can have input redirection and only the last command can have output redirection.");
+            } // Throws error if redirection is not in the correct place.
          }
          else if( tokens[j] == "&" ){
             command.background = true;
@@ -223,7 +223,11 @@ vector<Command> getCommands( const vector<string> & tokens ) {
       }
 
       if( !error ) {
-        command.inputFd = previousPipe;
+        // Only set inputFd to previousPipe if input redirection wasn't already set
+        // (input redirection can only happen for the first command)
+        if (command.inputFd == STDIN_FILENO) {
+            command.inputFd = previousPipe;
+        }
 
         if (cmdNumber < commands.size() - 1) {
             if (pipe(fds) < 0) { // This means something is wrong when trying to pipe.
@@ -256,6 +260,8 @@ vector<Command> getCommands( const vector<string> & tokens ) {
             if (fd >= 0) close(fd);
         }
         perror("File Descriptor Read Error");
+        // Return empty vector on error as documented
+        return vector<Command>();
     }
 
    return commands;
@@ -267,6 +273,18 @@ void runCommands( const vector<Command> & allCommands ) {
     vector<pid_t> backgroundChildPids;
     bool isBackground = !allCommands.empty() && allCommands.back().background;
     for(int i = 0; i < allCommands.size(); i++) {
+        if(allCommands[i].execName == "cd") {
+            if(allCommands[i].argv.size() == 2) {
+                const char* home = getenv("HOME"); // Creates home directory environment.
+                chdir(home); // Takes us to home directory.
+            }
+            else {
+                const char* newDir = allCommands[i].argv[1];
+                if(chdir(newDir) != 0) { // Tries to take us to specified path.
+                    perror("File Error"); // Errors out if file does not exist.
+                }
+            }
+        }
         pid_t pID = fork(); // Forks and saves process id for future verification.
         if(pID < 0) { // This means something is wrong when trying to fork.
             perror("\nfork error");
@@ -295,6 +313,7 @@ void runCommands( const vector<Command> & allCommands ) {
             }
             if(execvp(allCommands[i].argv[0], const_cast<char *const*>(allCommands[i].argv.data())) < 0) { // Attempts to execute code in child process.
                 perror("\nexecvp Failed!");
+                exit(1); // Exits if execvp fails.
             }
             exit(EXIT_SUCCESS);
         }
@@ -305,18 +324,18 @@ void runCommands( const vector<Command> & allCommands ) {
                 close(allCommands[i].inputFd);
             if(allCommands[i].outputFd != STDOUT_FILENO) 
                 close(allCommands[i].outputFd);
-            if(allCommands[i].execName == "cd") {
-                if(allCommands[i].argv.size() == 2) {
-                    const char* home = getenv("HOME"); // Creates home directory environment.
-                    chdir(home); // Takes us to home directory.
-                }
-                else {
-                    const char* newDir = allCommands[i].argv[1];
-                    if(chdir(newDir) != 0) { // Tries to take us to specified path.
-                        perror("File Error"); // Errors out if file does not exist.
-                    }
-                }
-            }
+            // if(allCommands[i].execName == "cd") {
+            //     if(allCommands[i].argv.size() == 2) {
+            //         const char* home = getenv("HOME"); // Creates home directory environment.
+            //         chdir(home); // Takes us to home directory.
+            //     }
+            //     else {
+            //         const char* newDir = allCommands[i].argv[1];
+            //         if(chdir(newDir) != 0) { // Tries to take us to specified path.
+            //             perror("File Error"); // Errors out if file does not exist.
+            //         }
+            //     }
+            // }
         }
         
     }
