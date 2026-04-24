@@ -4,6 +4,7 @@
 #include <utility>
 #include <atomic>
 #include <chrono>
+#include <omp.h>
 
 #pragma once
 

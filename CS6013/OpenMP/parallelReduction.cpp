@@ -17,14 +17,14 @@ std::pair<T, double> parallel_sum_std(T a[], size_t N, size_t num_threads) {
     std::vector<std::thread> threads;
     std::vector<T> partial_sums(num_threads, T{});
     size_t chunk_size = N / num_threads;
-    std::atomic<T> total_sum = T{};
+    T total_sum = T{};
     auto start_time = std::chrono::high_resolution_clock::now();
 
     for (size_t i = 0; i < num_threads; ++i) {
         threads.emplace_back([&, i]() {
             size_t start = i * chunk_size;
             size_t end = (i == num_threads - 1) ? N : start + chunk_size;
-            std::atomic<T> local_sum = T{};
+            T local_sum = T{};
             for (size_t j = start; j < end; ++j) {
                 local_sum += a[j];
             }
@@ -76,7 +76,7 @@ std::pair<T, double> parallel_sum_openmp(T a[], size_t N, size_t num_threads) {
         partial_sums[id] = local_sum;
     }
 
-    std::atomic<T> total_sum = T{};
+    T total_sum = T{};
     for (const auto& s : partial_sums) {
         total_sum += s;
     }
@@ -110,3 +110,7 @@ std::pair<T, double> parallel_sum_openmp_builtin(T a[], size_t N, size_t num_thr
 
     return std::make_pair(total_sum, duration.count());
 }
+
+template std::pair<double, double> parallel_sum_std<double>(double[], size_t, size_t);
+template std::pair<double, double> parallel_sum_openmp<double>(double[], size_t, size_t);
+template std::pair<double, double> parallel_sum_openmp_builtin<double>(double[], size_t, size_t);

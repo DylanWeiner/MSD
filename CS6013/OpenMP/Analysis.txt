@@ -1,0 +1,3 @@
+The OpenMP custom reduction worked best for one thread. The builtin reduction works
+best for 2-4 threads. the custom reduction pulled through again for 5-16 threads
+again.
