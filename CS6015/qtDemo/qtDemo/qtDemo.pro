@@ -1,5 +1,13 @@
-#include <QApplication>
+QT += widgets
 
-int main(int argc, char **argv) {
+SOURCES += \
+    main.cpp \
+    mainScene.cpp \
+    man.cpp
 
-}
+RESOURCES += \
+    AppResources.qrc
+
+HEADERS += \
+    mainScene.h \
+    man.h
