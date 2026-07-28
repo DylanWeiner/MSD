@@ -1,0 +1,151 @@
+story_id,rank,title,title_length,age_hours,points,comments,source_page,scraped_at
+48311647,1,Claude Opus 4.8,15,2.0,717,532,1,2026-05-28T19:14:23Z
+48313530,2,Just Use Postgres for Durable Workflows,39,0.5333333333333333,40,10,1,2026-05-28T19:14:23Z
+48313219,3,About LLMs at Zig Days,22,0.8833333333333333,29,6,1,2026-05-28T19:14:23Z
+48308376,4,Show HN: Continue? Y/N: A 60-second game about AI agent permission fatigue,74,6.0,142,69,1,2026-05-28T19:14:23Z
+48282180,5,Indoor Wi-Fi Roaming with OpenWRT,33,6.0,144,68,1,2026-05-28T19:14:23Z
+48310280,6,The Permanent Upper Crow,24,3.0,81,28,1,2026-05-28T19:14:23Z
+48309986,7,Show HN: Ktx – Open-source executable context layer for data agents,67,2.0,20,3,1,2026-05-28T19:14:23Z
+48313538,8,Google Hates You,16,0.5166666666666666,30,6,1,2026-05-28T19:14:23Z
+48272948,9,US's big bet on quantum computing may not be legal,50,4.0,72,62,1,2026-05-28T19:14:23Z
+48276598,10,News about Raspberry Pi 6 and Microcontroller Development,57,4.0,45,28,1,2026-05-28T19:14:23Z
+48312528,11,I hated writing–until I learned there's a science to it(2024),61,1.0,10,0,1,2026-05-28T19:14:23Z
+48309302,12,EU fines Temu €200M for allowing sale of illegal products,57,4.0,220,158,1,2026-05-28T19:14:23Z
+48272545,13,Using Tailscale with an OrbStack VM on macOS,44,3.0,20,2,1,2026-05-28T19:14:23Z
+48313048,14,Anthropic raises $65B in Series H funding at $965B post-money valuation,71,1.0,72,53,1,2026-05-28T19:14:23Z
+48311539,15,Trivial Pursuits,16,2.0,13,5,1,2026-05-28T19:14:23Z
+48272402,16,Boston and Bermuda,18,5.0,35,9,1,2026-05-28T19:14:23Z
+48304260,17,Show HN: Hallucinate – Massively Multiplayer Online Rave,56,15.0,370,160,1,2026-05-28T19:14:23Z
+48311705,18,Dynamic Workflows in Claude Code,32,2.0,94,82,1,2026-05-28T19:14:23Z
+48312082,19,"Legislation Killed Would Have Effectively Blocked Police LPR, Including Flock",77,2.0,30,10,1,2026-05-28T19:14:23Z
+48299753,20,YouTube to automatically label AI-generated videos,50,23.0,1231,729,1,2026-05-28T19:14:23Z
+48312616,21,"Bitburner, programming-based incremental game",45,1.0,6,1,1,2026-05-28T19:14:23Z
+48300280,22,Show HN: Open-Source AI Racing Harness,38,8.0,52,6,1,2026-05-28T19:14:23Z
+48303881,23,Bttf is a command line datetime Swiss army knife,48,16.0,114,79,1,2026-05-28T19:14:23Z
+48299638,24,"I'm Getting into Mesh Networks (Meshtastic, MeshCore, and Reticulum)",68,23.0,332,127,1,2026-05-28T19:14:23Z
+48299220,25,What Apple and Google are doing to push notifications,53,23.0,392,389,1,2026-05-28T19:14:23Z
+48312734,26,Hold on for Dear Life,21,1.0,19,4,1,2026-05-28T19:14:23Z
+48303599,27,RamAIn (YC W26) Is Hiring,25,16.0,0,0,1,2026-05-28T19:14:23Z
+48298819,28,Thornton Wilder's Last Play Vanished into Thin Air. Or Did It?,62,3.0,4,0,1,2026-05-28T19:14:23Z
+48255525,29,Show HN: TapToyPia,18,3.0,10,4,1,2026-05-28T19:14:23Z
+48307887,30,Disagreement among frontier LLMs on real-world fact-checks,58,6.0,461,319,1,2026-05-28T19:14:23Z
+48311551,31,Tuning LLVM's SLP Vectorizer Cost Model,39,2.0,3,0,2,2026-05-28T19:14:24Z
+48270265,32,Ruby vs. Java vs. TypeScript: my experience on building a Cowork DOCX plugin,76,10.0,58,38,2,2026-05-28T19:14:24Z
+48311490,33,Endive: A JVM native WebAssembly runtime,40,2.0,5,1,2,2026-05-28T19:14:24Z
+48265668,34,Seeing Around Corners Using Smartphone-Grade Lidar,50,11.0,65,17,2,2026-05-28T19:14:24Z
+48309645,35,Creusot helps you prove your Rust code is correct,49,4.0,59,7,2,2026-05-28T19:14:24Z
+48310452,36,W3C Leadership Transition,25,3.0,6,0,2,2026-05-28T19:14:24Z
+48310947,37,Data Parallel C++,17,3.0,4,0,2,2026-05-28T19:14:24Z
+48276429,38,Investigating how prompt politeness affects LLM accuracy (2025),63,20.0,134,174,2,2026-05-28T19:14:24Z
+48299623,39,Rust (and Slint) on a Jailbroken Kindle,39,23.0,225,35,2,2026-05-28T19:14:24Z
+48296649,40,DuckDuckGo search saw 28% more visits after Google said people love AI mode,75,24.0,1032,497,2,2026-05-28T19:14:24Z
+48281336,41,More Whimsical OEIS Sequences,29,10.0,48,9,2,2026-05-28T19:14:24Z
+48309584,42,New York passes pied-a-terre tax,32,4.0,217,321,2,2026-05-28T19:14:24Z
+48313038,43,Microsoft's stance on zero day exploits is a dumpster fire of their own making,78,1.0,7,0,2,2026-05-28T19:14:24Z
+48300342,44,Warm up your MacBook (2019),27,22.0,125,119,2,2026-05-28T19:14:24Z
+48311446,45,ICE has spent over $25M on iris scanners in no-bid contracts,60,2.0,38,11,2,2026-05-28T19:14:24Z
+48267558,46,The Ask,7,18.0,136,100,2,2026-05-28T19:14:24Z
+48296622,47,"Stress disrupts hippocampal integration of overlapping events, memory inference",79,24.0,163,24,2,2026-05-28T19:14:24Z
+48257224,48,"Libwce: The entropy layer of a wavelet codec, on its own",56,8.0,31,1,2,2026-05-28T19:14:24Z
+48310215,49,Gradle Is Javamaxxing,21,3.0,4,0,2,2026-05-28T19:14:24Z
+48296794,50,I think Anthropic and OpenAI have found product-market fit,58,24.0,1059,1173,2,2026-05-28T19:14:24Z
+48275255,51,A New Typst Template for Pandoc (2025),38,21.0,107,26,2,2026-05-28T19:14:24Z
+48305446,52,A Eureka machine that thinks like nature and explores what AI cannot,68,12.0,139,42,2,2026-05-28T19:14:24Z
+48262160,53,The Green Side of the Lua,25,16.0,62,59,2,2026-05-28T19:14:24Z
+48309858,54,Adding Reflection to C,22,4.0,4,1,2,2026-05-28T19:14:24Z
+48267432,55,"Why Ctrl+V won't paste images in Claude Code on WSL, with a fix",63,18.0,54,77,2,2026-05-28T19:14:24Z
+48264705,56,Rapira (Рапира) – Soviet programming language interpreter,57,12.0,83,56,2,2026-05-28T19:14:24Z
+48279507,57,Zero Lines Maze: What the 8-Bit Guy's One-Liner Can Still Teach Us,66,19.0,70,30,2,2026-05-28T19:14:24Z
+48297645,58,SimCity 3k in 4k (2025),23,24.0,465,185,2,2026-05-28T19:14:24Z
+48291225,59,All of human cooking compressed into 2 megabytes,48,24.0,430,168,2,2026-05-28T19:14:24Z
+48268185,60,My new obsession: A horse-racing board game of pure luck,56,24.0,93,56,2,2026-05-28T19:14:24Z
+48302822,61,Google employee charged with $1M Polymarket insider trading bet on search term,78,18.0,288,196,3,2026-05-28T19:14:26Z
+48309532,62,Local-First and Portable CI,27,4.0,5,1,3,2026-05-28T19:14:26Z
+48309509,63,Modern C++ Tutorial: C++ 11/14/17/20 On the Fly,47,4.0,3,0,3,2026-05-28T19:14:26Z
+48312427,64,Attention Spans Aren't Shrinking,32,1.0,6,3,3,2026-05-28T19:14:26Z
+48302220,65,I analysed 20 years of my chats,31,15.0,240,137,3,2026-05-28T19:14:26Z
+48309375,66,Ipv6catnow.org – Ipv6actnow.org,31,4.0,4,0,3,2026-05-28T19:14:26Z
+48297467,67,"Gemini, Gophers, and Fingers. Oh My Alternative Internets Beyond HTTPS",70,24.0,135,73,3,2026-05-28T19:14:26Z
+48309266,68,Package managers that package package managers,46,4.0,4,0,3,2026-05-28T19:14:26Z
+48309229,69,"Show HN: Beacon CLI for self-hosted monitoring, remote access and deployments",77,5.0,6,1,3,2026-05-28T19:14:26Z
+48247005,70,Matrix Multiplications on GPUs Run Faster When Given “Predictable” Data (2024),78,24.0,167,54,3,2026-05-28T19:14:26Z
+48295892,71,Last.fm is now independent,26,24.0,779,204,3,2026-05-28T19:14:26Z
+48292941,72,Private equity bought America's essential services,50,24.0,528,539,3,2026-05-28T19:14:26Z
+48272763,73,What Is a Direct Attach Copper (DAC) Cable? (2021),50,24.0,114,88,3,2026-05-28T19:14:26Z
+48309233,74,"Citing 'severe' math deficits, UC faculty demand a return to SAT tests for STEM",79,5.0,363,533,3,2026-05-28T19:14:26Z
+48296994,75,Canada to order military plane fleet from Sweden in shift from US suppliers,75,24.0,592,462,3,2026-05-28T19:14:26Z
+48302745,76,Can we have the day off?,24,18.0,1275,721,3,2026-05-28T19:14:26Z
+48302151,77,FBI Arrests CIA Official with $40M in Gold Bars in His Home,59,19.0,444,357,3,2026-05-28T19:14:26Z
+48295679,78,Tech CEOs are apparently suffering from AI psychosis,52,24.0,693,348,3,2026-05-28T19:14:26Z
+48280356,79,Interleaved Deltas,18,22.0,72,1,3,2026-05-28T19:14:26Z
+48305323,80,Dispatches from the possibly last days of human relevance,57,12.0,25,20,3,2026-05-28T19:14:26Z
+48254336,81,Human Bottlenecks,17,24.0,143,39,3,2026-05-28T19:14:26Z
+48312236,82,Opus 4.8 System Card [pdf],26,1.0,4,0,3,2026-05-28T19:14:26Z
+48277723,83,Raft Consensus with a Minority of Nodes,39,24.0,137,21,3,2026-05-28T19:14:26Z
+48291575,84,Go: Support for Generic Methods,31,24.0,297,242,3,2026-05-28T19:14:26Z
+48306461,85,"Iran's Internet is partially restored, Cloudflare Radar data shows",66,10.0,11,4,3,2026-05-28T19:14:26Z
+48284711,86,The Melancholy of Slaying Monsters,34,24.0,294,142,3,2026-05-28T19:14:26Z
+48289950,87,"Claude Code as a Daily Driver: Claude.md, Skills, Subagents, Plugins, and MCPs",78,24.0,422,249,3,2026-05-28T19:14:26Z
+48311003,88,Only 17% of all 64-bit Integers are products of two 32-bit integers,67,3.0,6,0,3,2026-05-28T19:14:26Z
+48262703,89,"Freediving, Embodiment and Humanity",35,24.0,36,19,3,2026-05-28T19:14:26Z
+48299335,90,On Labubu and the Hyperreal,27,23.0,84,94,3,2026-05-28T19:14:26Z
+48292718,91,Ripgrep AI Policy,17,24.0,92,14,4,2026-05-28T19:14:27Z
+48310604,92,We replaced Zendesk,19,3.0,101,76,4,2026-05-28T19:14:27Z
+48293080,93,"Incident with Pull Requests, Issues, Git Operations and API Requests",68,24.0,329,208,4,2026-05-28T19:14:27Z
+48295071,94,"Show HN: Open-source Workspace (mail,docs,spreadsheet,drive) web/iOS",68,24.0,102,38,4,2026-05-28T19:14:27Z
+48297723,95,Multi-Agent LLM System for Automated Vulnerability Discovery and Reproduction,77,24.0,54,8,4,2026-05-28T19:14:27Z
+48311757,96,Cities Are Covering Flock Cameras with Trash Bags,49,2.0,28,10,4,2026-05-28T19:14:27Z
+48309492,97,Websites have a new way to spy on visitors: analyzing their SSD activity,72,4.0,14,1,4,2026-05-28T19:14:27Z
+48311493,98,Who Makes the Makefiles?,24,2.0,5,0,4,2026-05-28T19:14:27Z
+48291947,99,Mini Micro Fantasy Computer,27,24.0,272,85,4,2026-05-28T19:14:27Z
+48307455,100,I cut my AI API costs 99% by switching from Claude to DeepSeek,62,7.0,21,14,4,2026-05-28T19:14:27Z
+48294791,101,Show HN: I made an emergency page for my family,47,24.0,79,102,4,2026-05-28T19:14:27Z
+48277107,102,BadHost – CVE-2026-48710: Starlette Host-Header Auth Bypass,59,24.0,124,50,4,2026-05-28T19:14:27Z
+48256733,103,"We are Poles, so, of course, we print in Latin",46,24.0,107,89,4,2026-05-28T19:14:27Z
+48280729,104,Launch HN: Minicor (YC P26) – Windows desktop automations at scale,66,48.0,104,62,4,2026-05-28T19:14:27Z
+48312716,105,Ask HN: I found out that I'm about to be laid off. How do people find jobs?,75,1.0,6,3,4,2026-05-28T19:14:27Z
+48272984,106,Using AI to write better code more slowly,41,48.0,1235,446,4,2026-05-28T19:14:27Z
+48266323,107,Fully in-browser container builds,33,24.0,55,27,4,2026-05-28T19:14:27Z
+48292224,108,I'm Tired of Talking to AI,26,24.0,1951,929,4,2026-05-28T19:14:27Z
+48302618,109,StumbleTV: Chat Roulette but for Exposed Webcams,48,18.0,25,11,4,2026-05-28T19:14:27Z
+48293014,110,XLIDE: VBA without excel,24,24.0,65,29,4,2026-05-28T19:14:27Z
+48292560,111,Atomically precise mechanosynthesis of carbon structures on hydrogenated Silicon,80,24.0,57,8,4,2026-05-28T19:14:27Z
+48287468,112,Cloudflare Flagship,19,24.0,347,172,4,2026-05-28T19:14:27Z
+48303516,113,Safescript – A Language for AI Era,34,17.0,10,2,4,2026-05-28T19:14:27Z
+48285344,114,The worst job interview I ever had,34,24.0,642,531,4,2026-05-28T19:14:27Z
+48263560,115,C array types are weird,23,24.0,127,131,4,2026-05-28T19:14:27Z
+48313243,116,Our Military Is Built for the Wrong Century,43,0.8333333333333334,4,0,4,2026-05-28T19:14:27Z
+48260289,117,I am not a black belt,21,20.0,25,27,4,2026-05-28T19:14:27Z
+48310507,118,Git checkouts slow or timing out from EU,40,3.0,4,0,4,2026-05-28T19:14:27Z
+48307098,119,AI sticker shock hits corporate America,39,8.0,144,130,4,2026-05-28T19:14:27Z
+48296359,120,Training our own AI models,26,24.0,209,142,4,2026-05-28T19:14:27Z
+48307098,121,AI sticker shock hits corporate America,39,8.0,144,130,5,2026-05-28T19:14:28Z
+48306066,122,Hetzner Price Adjustment,24,11.0,33,11,5,2026-05-28T19:14:28Z
+48284712,123,That Methyl Methacrylate Tank,29,24.0,430,189,5,2026-05-28T19:14:28Z
+48265206,124,Magnifica Humanitas,19,72.0,1629,952,5,2026-05-28T19:14:28Z
+48290881,125,Unicode 18.0.0 Beta,19,24.0,57,64,5,2026-05-28T19:14:28Z
+48278610,126,Outsourcing plus local AI will soon become more economical vs. frontier labs,76,48.0,321,364,5,2026-05-28T19:14:28Z
+48306179,127,"The GitHub Actions Language: Usage, Evolution, and Workflow Reliability",71,10.0,4,0,5,2026-05-28T19:14:28Z
+48275059,128,The user is visibly frustrated,30,48.0,301,275,5,2026-05-28T19:14:28Z
+48264328,129,Theseus: Translating Win32 to WASM,34,24.0,66,28,5,2026-05-28T19:14:28Z
+48307818,130,A New York cemetery was hiding 5.5M bees underground,52,7.0,13,0,5,2026-05-28T19:14:28Z
+48295438,131,How the ZX80 Works (2019),25,24.0,35,9,5,2026-05-28T19:14:28Z
+48299384,132,"tsz: high performance TypeScript checker, emitter, and language service in Rust",79,23.0,18,7,5,2026-05-28T19:14:28Z
+48288709,133,TSDuck: Open-source toolkit for MPEG-TS analysis and manipulation,65,24.0,79,9,5,2026-05-28T19:14:28Z
+48303273,134,"Zig 2026: No-AI Policy, $670K Foundation, Left GitHub and Why Zig Isn't 1.0 [video]",83,17.0,80,8,5,2026-05-28T19:14:28Z
+48247416,135,Opaque Types in Python,22,48.0,129,58,5,2026-05-28T19:14:28Z
+48279453,136,Dropbox CEO Drew Houston to step down,37,48.0,371,439,5,2026-05-28T19:14:28Z
+48251709,137,The Steinwinter Supercargo,26,48.0,87,27,5,2026-05-28T19:14:28Z
+48270514,138,"A Comma and a Question Mark, Redux: Quick Terminal Helpers Using Pi",67,24.0,40,10,5,2026-05-28T19:14:28Z
+48287929,139,The Best Engineers Write Less Code,34,24.0,61,25,5,2026-05-28T19:14:28Z
+48272670,140,"Taking a walk may lead to more creativity than sitting, study finds (2014)",74,48.0,606,234,5,2026-05-28T19:14:28Z
+48279842,141,C64 Basic: Game Map Overhead “Camera View”,42,48.0,92,15,5,2026-05-28T19:14:28Z
+48281611,142,The real cost of owning a home,30,48.0,425,852,5,2026-05-28T19:14:28Z
+48286028,143,Phloto for My Photo Flow,24,24.0,35,4,5,2026-05-28T19:14:28Z
+48271448,144,A few interesting modern pixel fonts,36,48.0,413,110,5,2026-05-28T19:14:28Z
+48304379,145,MIT president: Why so many optimistic scientists are losing heart,65,15.0,44,5,5,2026-05-28T19:14:28Z
+48256053,146,What I've Learned (So Far) Building Online Mini Games with Elixir and Swift,75,24.0,85,42,5,2026-05-28T19:14:28Z
+48289624,147,"Show HN: Posthorn, self-hosted mail gateway",43,24.0,79,60,5,2026-05-28T19:14:28Z
+48307237,148,Commission fines Temu €200M for breaching the Digital Services Act,66,8.0,85,81,5,2026-05-28T19:14:28Z
+48278406,149,Netherlands blocks US takeover of vital digital supplier,56,48.0,597,233,5,2026-05-28T19:14:28Z
+48238703,150,I built a Git-tracked book production pipeline,46,48.0,284,78,5,2026-05-28T19:14:28Z

@@ -1,0 +1,11 @@
+Testing msdscript: There were no errors in interp, print, or pretty-print for addition, multiplication, or let expressions.
+
+Comparing msdscript to other provided msdscripts had the following errors:
+msdscript0: Got stuck in an infinite loop (Errored out on first interpretation)
+msdscript1: terminating due to uncaught exception of type std::runtime_error: different interp results (Errored out on _let expressions)
+msdscript2: terminating due to uncaught exception of type std::runtime_error: different interp results (Errored out on _let expressions)
+msdscript3: terminating due to uncaught exception of type std::runtime_error: different print results (Errored out on addition expressions)
+msdscript4: terminating due to uncaught exception of type std::runtime_error: different interp results (Errored out on addition expressions)
+msdscript5: terminating due to uncaught exception of type std::runtime_error: different pretty-print results (Errored out on multiplication expressions)
+msdscript6: terminating due to uncaught exception of type std::runtime_error: different interp results (Errored out on addition expressions)
+msdscript7: terminating due to uncaught exception of type std::runtime_error: different interp results (Errored out on _let expressions)

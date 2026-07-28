@@ -1,0 +1,72 @@
+Hop: 1
+IP Address - 10.18.128.2
+Average Delay: 20.7255 ms
+Hop: 2
+IP Address - 155.99.130.69
+Average Delay: 4.874499999999999 ms
+Hop: 3
+IP Address - 155.99.130.71
+Average Delay: 4.47 ms
+Hop: 4
+IP Address - 155.99.130.64
+Average Delay: 4.483 ms
+Hop: 5
+IP Address - 155.99.130.66
+Average Delay: 4.34 ms
+Hop: 6
+IP Address - 155.99.130.58
+Average Delay: 4.967 ms
+Hop: 7
+IP Address - 199.104.93.34
+Average Delay: 4.787 ms
+Hop: 8
+IP Address - 199.104.93.30
+Average Delay: 4.636 ms
+Hop: 9
+IP Address - 199.104.93.21
+Average Delay: 6.843 ms
+Hop: 10
+IP Address - 140.197.253.138
+Average Delay: 5.466166666666666 ms
+Hop: 11
+IP Address - 140.197.248.40
+Average Delay: 3.9644999999999997 ms
+Hop: 12
+IP Address - 140.197.249.116
+Average Delay: 4.228833333333333 ms
+Hop: 13
+IP Address - 198.71.47.124
+Average Delay: 5.2115 ms
+Hop: 14
+IP Address - 163.253.1.29
+Average Delay: 13.949666666666667 ms
+Hop: 15
+IP Address - 163.253.1.114
+Average Delay: 13.690666666666665 ms
+Hop: 16
+IP Address - 163.253.1.197
+Average Delay: 18.06 ms
+Hop: 17
+IP Address - 163.253.2.59
+Average Delay: 18.320500000000003 ms
+Hop: 18
+IP Address - 72.14.216.178
+Average Delay: 13.7815 ms
+Hop: 19
+IP Address - 142.250.226.44
+Average Delay: 20.691 ms
+Hop: 20
+IP Address - 142.251.60.132
+Average Delay: 20.362 ms
+Hop: 21
+IP Address - 142.251.60.96
+Average Delay: 21.565 ms
+Hop: 22
+IP Address - 108.170.252.108
+Average Delay: 17.684 ms
+Hop: 23
+IP Address - 142.250.68.14
+Average Delay: 19.838 ms
+Hop: 24
+IP Address - 108.170.252.118
+Average Delay: 20.071 ms

@@ -1,0 +1,24 @@
+INCS = Caps.h Clothing.h Pants.h # This ties in the .h files
+OBJS = main.o Caps.o Clothing.o Pants.o # This ties in the .o files
+CXXFLAGS = --std=c++14 -O2
+
+clothes: $(OBJS) # This makes the executable out of the .o files
+	$(CXX) $(CXXFLAGS) -o clothes $(OBJS)
+
+main.o: main.cpp $(INCS) # This makes the .o file for main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+Caps.o: Caps.cpp $(INCS) # This makes the .o file for Caps.cpp
+	$(CXX) $(CXXFLAGS) -c Caps.cpp
+
+Clothing.o: Clothing.cpp $(INCS) #This makes the .o file for Clothing.cpp
+	$(CXX) $(CXXFLAGS) -c Clothing.cpp
+
+Pants.o: Pants.cpp $(INCS) #This makes the .o file for Pants.cpp
+	$(CXX) $(CXXFLAGS) -c Pants.cpp
+
+clean: #This removes all of the .o files
+	rm -rf *.o clothes
+
+run: $(OBJS) #This is used to run the executable that would be made
+	./clothes

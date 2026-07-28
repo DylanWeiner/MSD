@@ -1,0 +1,16 @@
+First, time your data structure "creation". For varying sizes of N, how long does it take to build you data structure?
+For the tree based data structure, just call add on each element, for the heap version, use the constructor taking an
+arraylist. Try the following 4 combinations: In-order data (ie arraylists with [0 .. N]), or permuted data (same values, but
+shuffled)
+
+For the TreeSet based structure, it was substantially slower, especially when the values were inserted as permuted data.
+However, the heap version took far less time and its timing was not impacted in any meaningful way regardless of whether the
+data was inserted in order or in a permuted state.
+
+Second, time the following loop with each data structures:
+while(!pqueue.isEmpty()){ pqueue.removeMin(); }
+Briefly summarize your results. This does not need to be as in depth/polished as an assignment analysis document.
+Submit your code + experiment results + analysis to your github repo. If you worked with a partner, make it clear where to
+find the code/analysis and who worked together.
+
+Once again, the Treeset exhibited much slower behavior when testing the rate at which the first value could be removed.

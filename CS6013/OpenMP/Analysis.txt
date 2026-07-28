@@ -1,0 +1,13 @@
+The OpenMP custom reduction worked best for one thread. The builtin reduction works
+best for 2-4 threads. the custom reduction pulled through again for 5-16 threads
+again.
+
+For a single thread, custom OpenMP has less overhead since it avoids a lot of the
+inherent costs associated with the builtin method's reduction mechanism.
+
+For 2-4 threads, the builtin is optimal because there is more optimization from the
+parallel work than there is overhead from the reduction.
+
+For 5-16 threads, the custom pulls back ahead because the reduction can cause more
+conflict than time efficiency when we exceed 4 threads. The scope locking of the
+custom OpenMP scales better here.

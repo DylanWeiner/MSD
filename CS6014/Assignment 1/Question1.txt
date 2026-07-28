@@ -1,0 +1,7 @@
+When 5 packets of size 500 bytes are transmitted through the link K, TB–TA is measured to be 10 ms, 2.8 ms, 2.4 ms, 4 ms, and 5.5 ms. When 5 packets of size 1000 bytes are transmitted through the link K, TB–TA is measured to be 11.0 ms, 10 ms, 2.8 ms, 3.0 ms, and 5.5 ms. Assume that processing delay at the router is negligible.
+
+What is the average queuing delay experienced by the 1000-byte packets?
+	32.3/5 = 6.46 ms
+
+What are reasonable estimates of transmission and propagation delays that will be experienced by a packet of size 600 bytes sent through the link K?
+	We can take the difference of the smallest delay from the 1000 byte packets and the 500 byte packets and assume that that value will account for the propagation delay. So it should be 2.8 - 2.4 = 0.4 ms

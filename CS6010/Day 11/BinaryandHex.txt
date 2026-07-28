@@ -1,0 +1,23 @@
+Convert the following decimal numbers to binary and hexadecimal
+
+12: 1100, 0xC
+63: 11 1111, 0x3F
+100: 0110 0100, 0x64
+127: 111 1111, 0x7F
+254: 1111 1110, 0xFE
+
+Convert the following binary numbers to decimal and hexadecimal
+
+100: 2^2=4, 0x4
+1 0001: 2^0 + 2^4 = 17, 0x101
+10 0010: 2^1 + 2^5 = 34, 0x22
+1100 0000: 2^7 + 2^6 = 192, 0xC0
+1111 1111: 255, 0xFF
+
+Convert the following hexadecimal numbers to binary and decimal
+
+A: 10, 0x1010
+C0: 192, 1100 0000
+FF: 2^0 + 2^1 + 2^2 + 2^3 + 2^4 + 2^5 + 2^6 + 2^7 = 255, 1111 1111 
+BEEF:  2^0+2^1+2^2+2^3+2^5+2^6+2^7+2^9+2^10+2^11+2^12+2^13+2^15=48,879, 1011 1110 1110 1111
+F00D:  2^0+2^2+2^3+2^12+2^13+2^14+2^15=61,453, 1111 0000 0000 1101

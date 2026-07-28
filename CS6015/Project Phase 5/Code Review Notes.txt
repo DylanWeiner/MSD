@@ -1,0 +1,12 @@
+We make a virtual void _let(std::istream &in) and override it everywhere. 
+
+We make a string var, an Expr rhs, and an Expr body.
+
+We can compare out casted member variables with ->equals() not ==.
+
+Check to make sure they're not a nullptr.
+
+Use a Num when substituting the variable in let interp().
+
+We do the comparison in subst.
+

@@ -1,0 +1,27 @@
+body {
+background-color : #BBFFBB;
+}
+
+p {
+color : blue;
+font-size: 24;
+text-align: center;
+font-weight: 8;
+text-decoration: bold;
+}
+
+ul li {
+color : blue;
+font-size: 20;
+text-align: center;
+font-weight: 5;
+text-decoration: underline;
+}
+
+ol li {
+color : blue;
+font-size: 20;
+text-align: center;
+font-weight: 5;
+text-decoration: underline;
+}

@@ -1,0 +1,8 @@
+subst we can call the name we are substituting and we check if the name provided is the same as the previous name, we either return the substitution or the initial name.
+
+we'll be making expr.cpp and expr.h
+
+We can pass the string into each fcn as a const reference of the initial variable.
+
+This subst should be overridden by the var subst. If you have a nested expression where you keep substituting, it should land in this override. Try substituting a var, a mult, a num, and an add 
+
