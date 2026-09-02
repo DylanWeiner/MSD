@@ -88,12 +88,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MajorDropdown(classVM: MyToDoViewModel) {
     val courseReqs = mapOf(
-        "Computer Science" to listOf("CS 1010 OR CS 1011", "CS 2010", "CS 3010", "CS 4010"),
-        "Languages" to listOf("LNG 1010 OR LNG 1011", "LNG 2010", "LNG 3010", "LNG 4010"),
-        "Biology" to listOf("BIO 1010 OR BIO 1011", "BIO 2010", "BIO 3010", "BIO 4010"),
-        "Chemistry" to listOf("CHEM 1010 OR CHEM 1011", "CHEM 2010", "CHEM 3010", "CHEM 4010"),
-        "History" to listOf("HS 1010 OR HS 1011", "HS 2010", "HS 3010", "HS 4010"),
-        "Art" to listOf("ART 1010 OR ART 1011", "ART 2010", "ART 3010", "ART 4010")
+        "Computer Science" to listOf("CS 1010", "CS 2010", "CS 3010", "CS 4010"),
+        "Languages" to listOf("LNG 1010", "LNG 2010", "LNG 3010", "LNG 4010"),
+        "Biology" to listOf("BIO 1010", "BIO 2010", "BIO 3010", "BIO 4010"),
+        "Chemistry" to listOf("CHEM 1010", "CHEM 2010", "CHEM 3010", "CHEM 4010"),
+        "History" to listOf("HS 1010", "HS 2010", "HS 3010", "HS 4010"),
+        "Art" to listOf("ART 1010", "ART 2010", "ART 3010", "ART 4010")
     )
     val majors = listOf("None", "Computer Science", "Languages", "Biology", "Chemistry", "History", "Art")
 
