@@ -40,26 +40,26 @@ import kotlinx.coroutines.flow.StateFlow
 class MyToDoViewModel : ViewModel()
 {
     // MyModel
-    private val tasks = MutableStateFlow(listOf<String>())
+    private val classes = MutableStateFlow(listOf<String>())
     private val reqs = MutableStateFlow(listOf<String>())
 
-    val taskPublic : StateFlow<List<String>> = tasks // This is so other classes can access this information.
-    val reqPublic : StateFlow<List<String>> = reqs // This is so other classes can access this information.
+    val classesPublic : StateFlow<List<String>> = classes // This is so other classes can access this information.
+    val reqPublic : StateFlow<List<String>> = reqs
 
-    fun addTask(strTask : String) {
-        val target = strTask
+    fun addClass(strVal : String) {
+        val target = strVal
         if (target in reqs.value) {
-            reqs.value = reqs.value.map { if (it == target) "$strTask (DONE)" else it }
+            reqs.value = reqs.value.map { if (it == target) "$strVal (DONE)" else it }
         }
-        tasks.value += strTask
+        classes.value += strVal
     }
 
-    fun removeTask(strTask : String) {
+    fun removeClass(strTask : String) {
         val target = "$strTask (DONE)"
         if (target in reqs.value) {
             reqs.value = reqs.value.map { if (it == target) strTask else it }
         }
-        tasks.value -= strTask
+        classes.value -= strTask
     }
 
     fun addReq(strTask : String) {
@@ -140,7 +140,7 @@ fun MajorDropdown(classVM: MyToDoViewModel) {
 
 @Composable
 fun CourseNameInput(classVM : MyToDoViewModel) {
-    val tasks by classVM.taskPublic.collectAsState()
+    val classes by classVM.classesPublic.collectAsState()
     val reqs by classVM.reqPublic.collectAsState()
 
     Column(Modifier.fillMaxWidth().padding(50.dp),
@@ -170,7 +170,7 @@ fun CourseNameInput(classVM : MyToDoViewModel) {
         Row {
             var courseInfo = "$courseName $courseId"
             Button(
-                onClick = { classVM.addTask(courseInfo) }) {
+                onClick = { classVM.addClass(courseInfo) }) {
                 Text("Add Item")
             }
         }
@@ -179,7 +179,7 @@ fun CourseNameInput(classVM : MyToDoViewModel) {
         Text("Class Schedule", fontSize = 23.sp, fontWeight = FontWeight.ExtraBold, color = Color.Blue)
         Row{
             LazyColumn() {
-                items(tasks){
+                items(classes){
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -194,7 +194,7 @@ fun CourseNameInput(classVM : MyToDoViewModel) {
                             fontWeight = FontWeight.Bold
                         )
                         Button(
-                            onClick = { classVM.removeTask(it) }) {
+                            onClick = { classVM.removeClass(it) }) {
                             Text("Remove Item")
                         }
                     }
