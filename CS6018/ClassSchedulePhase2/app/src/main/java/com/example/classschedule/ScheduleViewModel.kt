@@ -1,10 +1,9 @@
 package com.example.classschedule
 
-import android.net.http.HttpResponseCache.install
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
@@ -14,22 +13,43 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.coroutines.launch
-import kotlinx.serialization.InternalSerializationApi
 
-@InternalSerializationApi @Serializable
+// ==================== DATA MODELS ====================
+
+@Serializable
+data class DegreePlansResponse(
+    val plans: List<DegreePlan>
+)
+
+@Serializable
 data class DegreePlan(
     val name: String,
     val path: String
 )
 
-@InternalSerializationApi @Serializable
-data class DegreeRequirements(
-    val requirements: List<String>
+@Serializable
+data class DegreeRequirementsResponse(
+    val name: String,
+    val requirements: List<Requirement>
 )
 
+@Serializable
+data class Requirement(
+    val type: String,
+    val course: CourseInfo? = null,
+    val courses: List<CourseInfo>? = null
+)
 
+@Serializable
+data class CourseInfo(
+    val department: String,
+    val number: String
+)
 
-@OptIn(InternalSerializationApi::class)
+fun CourseInfo.toDisplayString(): String = "$department $number"
+
+// ==================== VIEW MODEL ====================
+
 class ScheduleViewModel : ViewModel() {
     private val classes = MutableStateFlow(listOf<String>())
     private val reqs = MutableStateFlow(listOf<String>())
@@ -37,39 +57,28 @@ class ScheduleViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     private val _errorMessage = MutableStateFlow<String?>(null)
 
-    // Public read-only exports
     val classesPublic: StateFlow<List<String>> = classes
     val reqPublic: StateFlow<List<String>> = reqs
     val availablePlans: StateFlow<List<DegreePlan>> = _availablePlans
     val isLoading: StateFlow<Boolean> = _isLoading
     val errorMessage: StateFlow<String?> = _errorMessage
 
-    // HTTP Client
-    private val httpClient = HttpClient {
+    private val httpClient = HttpClient(Android) {
         install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true })
+            json(Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            })
         }
     }
 
-    // Hardcoded fallback requirements (in case HTTP fails)
-    private val courseReqs = mapOf(
-        "Computer Science" to listOf("CS 1010", "CS 2010", "CS 3010", "CS 4010"),
-        "Languages" to listOf("LNG 1010", "LNG 2010", "LNG 3010", "LNG 4010"),
-        "Biology" to listOf("BIO 1010", "BIO 2010", "BIO 3010", "BIO 4010"),
-        "Chemistry" to listOf("CHEM 1010", "CHEM 2010", "CHEM 3010", "CHEM 4010"),
-        "History" to listOf("HS 1010", "HS 2010", "HS 3010", "HS 4010"),
-        "Art" to listOf("ART 1010", "ART 2010", "ART 3010", "ART 4010")
-    )
-
-    init {
-        // Fetch degree plans on initialization
-        fetchDegreePlans()
-    }
+    // ==================== HTTP LOGIC ====================
 
     /**
      * Fetch the list of available degree plans from the server.
+     * Call this from MainActivity, NOT from init{}.
      */
-    private fun fetchDegreePlans() {
+    fun fetchDegreePlans() {
         viewModelScope.launch {
             _isLoading.value = true
             _errorMessage.value = null
@@ -78,15 +87,19 @@ class ScheduleViewModel : ViewModel() {
                     "https://msd2026.github.io/degreePlans/degreePlans.json"
                 ).body()
 
-                // Parse the JSON response
-                val plans = Json.decodeFromString<List<DegreePlan>>(response)
-                _availablePlans.value = plans
-            } catch (e: Exception) {
-                _errorMessage.value = "Failed to load degree plans: ${e.message}"
-                // Fallback: create plans from hardcoded majors
-                _availablePlans.value = courseReqs.keys.map { major ->
-                    DegreePlan(name = major, path = major.lowercase().replace(" ", "-"))
+                android.util.Log.d("ScheduleVM", "Raw response: $response")
+
+                try {
+                    val plansResponse = Json.decodeFromString<DegreePlansResponse>(response)
+                    _availablePlans.value = plansResponse.plans
+                    android.util.Log.d("ScheduleVM", "Successfully parsed ${plansResponse.plans.size} plans")
+                } catch (parseError: Exception) {
+                    android.util.Log.e("ScheduleVM", "Parse error: ${parseError.message}")
+                    _errorMessage.value = "Parse error: ${parseError.message}"
                 }
+            } catch (e: Exception) {
+                android.util.Log.e("ScheduleVM", "Network error: ${e.message}")
+                _errorMessage.value = "Failed to load degree plans: ${e.message}"
             } finally {
                 _isLoading.value = false
             }
@@ -95,31 +108,57 @@ class ScheduleViewModel : ViewModel() {
 
     /**
      * Fetch a specific degree plan from the server.
-     * If the fetch fails, falls back to hardcoded requirements.
      */
     private suspend fun fetchDegreeRequirements(planPath: String): List<String> {
         return try {
+            android.util.Log.d("ScheduleVM", "Fetching requirements from: $planPath")
+
             val response: String = httpClient.get(
                 "https://msd2026.github.io/degreePlans/$planPath"
             ).body()
 
-            val degreeReqs = Json.decodeFromString<DegreeRequirements>(response)
-            degreeReqs.requirements
+            android.util.Log.d("ScheduleVM", "Requirements response: $response")
+
+            val degreeReqs = Json.decodeFromString<DegreeRequirementsResponse>(response)
+
+            // Extract all course requirements and convert to display strings
+            val courseList = mutableListOf<String>()
+
+            for (req in degreeReqs.requirements) {
+                when (req.type) {
+                    "requiredCourse" -> {
+                        if (req.course != null) {
+                            courseList.add(req.course.toDisplayString())
+                        }
+                    }
+                    "oneOf" -> {
+                        if (req.courses != null) {
+                            for (course in req.courses) {
+                                courseList.add(course.toDisplayString())
+                            }
+                        }
+                    }
+                    // Add other types as needed
+                }
+            }
+
+            android.util.Log.d("ScheduleVM", "Parsed requirements: ${courseList.size} courses")
+            courseList
         } catch (e: Exception) {
-            // Fallback to hardcoded if fetch fails
-            val majorName = courseReqs.keys.find { it.lowercase().replace(" ", "-") == planPath }
-            courseReqs[majorName] ?: emptyList()
+            android.util.Log.e("ScheduleVM", "Error fetching requirements: ${e.message}")
+            emptyList()
         }
     }
+
+    // ==================== BUSINESS LOGIC ====================
 
     /**
      * Add a class to the schedule.
      * If a matching requirement exists, mark it as "(DONE)".
      */
     fun addClass(strVal: String) {
-        val target = strVal
-        if (target in reqs.value) {
-            reqs.value = reqs.value.map { if (it == target) "$strVal (DONE)" else it }
+        if (strVal in reqs.value) {
+            reqs.value = reqs.value.map { if (it == strVal) "$strVal (DONE)" else it }
         }
         classes.value += strVal
     }
@@ -138,15 +177,32 @@ class ScheduleViewModel : ViewModel() {
 
     /**
      * Edit an existing class.
-     * Replaces oldCourseName with newCourseName.
-     * Updates requirements based on whether new course satisfies them.
+     * Only changes the course name in the classes list.
+     * Automatically updates requirement marks based on whether the NEW course matches.
      */
     fun editClass(oldCourseName: String, newCourseName: String) {
-        // Step 1: Remove the old course (unmarks any matching requirement)
-        removeClass(oldCourseName)
+        // Step 1: Check if old course was marking a requirement as DONE
+        val oldWasMarked = "$oldCourseName (DONE)" in reqs.value
+        val oldUnmarkedReq = if (oldWasMarked) oldCourseName else null
 
-        // Step 2: Add the new course (marks if it matches a requirement)
-        addClass(newCourseName)
+        // Step 2: Update the course name in classes list
+        classes.value = classes.value.map {
+            if (it == oldCourseName) newCourseName else it
+        }
+
+        // Step 3: Unmark the old requirement if it was marked
+        if (oldUnmarkedReq != null) {
+            reqs.value = reqs.value.map {
+                if (it == "$oldUnmarkedReq (DONE)") oldUnmarkedReq else it
+            }
+        }
+
+        // Step 4: Check if new course matches any requirement and mark it
+        if (newCourseName in reqs.value) {
+            reqs.value = reqs.value.map {
+                if (it == newCourseName) "$newCourseName (DONE)" else it
+            }
+        }
     }
 
     /**
@@ -164,8 +220,10 @@ class ScheduleViewModel : ViewModel() {
     }
 
     /**
-     * Select a major and populate its requirements from the server.
+     * Select a major and populate its requirements.
+     * Fetches from server.
      * Classes are preserved (not cleared).
+     * Existing classes are checked against new requirements.
      */
     fun selectMajor(major: String) {
         if (major == "None") {
@@ -174,24 +232,34 @@ class ScheduleViewModel : ViewModel() {
         }
 
         viewModelScope.launch {
-            _isLoading.value = true
-            _errorMessage.value = null
             try {
-                val planPath = major.lowercase().replace(" ", "-")
-                val requirements = fetchDegreeRequirements("$planPath.json")
+                // Find the plan that matches the major name
+                val selectedPlan = _availablePlans.value.find { it.name == major }
+
+                if (selectedPlan == null) {
+                    _errorMessage.value = "Major not found: $major"
+                    return@launch
+                }
+
+                // Use the path from the plan, not derived from the name
+                val requirements = fetchDegreeRequirements(selectedPlan.path)
 
                 clearReqs()
                 requirements.forEach { req ->
                     addReq(req)
-                    // If we have a matching class, mark it as DONE
-                    if (req in classes.value) {
-                        reqs.value = reqs.value.map { if (it == req) "$req (DONE)" else it }
+                }
+
+                // Check existing classes against new requirements and mark if they match
+                classes.value.forEach { course ->
+                    if (course in requirements) {
+                        reqs.value = reqs.value.map {
+                            if (it == course) "$course (DONE)" else it
+                        }
                     }
                 }
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load major requirements: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                android.util.Log.e("ScheduleVM", "selectMajor error: ${e.message}")
             }
         }
     }

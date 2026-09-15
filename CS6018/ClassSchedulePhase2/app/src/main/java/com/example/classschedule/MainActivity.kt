@@ -1,6 +1,5 @@
 package com.example.classschedule
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
@@ -35,29 +33,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.flow.StateFlow
 import com.example.classschedule.ui.theme.ClassScheduleTheme
-import kotlinx.serialization.InternalSerializationApi
 
 class MainActivity : ComponentActivity() {
-    @OptIn(InternalSerializationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ClassScheduleTheme {
-                val classVM: ScheduleViewModel = viewModel()
-                CourseNameInput(
-                    addClass = classVM::addClass,
-                    removeClass = classVM::removeClass,
-                    editClass = classVM::editClass,
-                    selectMajor = classVM::selectMajor,
-                    classesFlow = classVM.classesPublic,
-                    requirementsFlow = classVM.reqPublic,
-                    availablePlansFlow = classVM.availablePlans,
-                    isLoadingFlow = classVM.isLoading,
-                    errorMessageFlow = classVM.errorMessage
-                )
+                val scheduleVM: ScheduleViewModel = viewModel()
+                scheduleVM.fetchDegreePlans()
+                CourseNameInput(scheduleVM)
             }
         }
     }
@@ -65,7 +51,6 @@ class MainActivity : ComponentActivity() {
 
 /**
  * Edit course dialog.
- * Pops up when user clicks "Edit Item" on a course.
  */
 @Composable
 fun EditCourseDialog(
@@ -162,7 +147,7 @@ fun RequirementRow(
 }
 
 /**
- * The course input form (department + number).
+ * The course input form.
  */
 @Composable
 fun CourseInputForm(
@@ -207,10 +192,8 @@ fun CourseInputForm(
 }
 
 /**
- * Major dropdown selector that works with fetched plans.
+ * Major dropdown selector (fetches from server, falls back to hardcoded).
  */
-
-@OptIn(InternalSerializationApi::class)
 @Composable
 fun MajorDropdown(
     selectedMajor: String,
@@ -237,14 +220,13 @@ fun MajorDropdown(
         )
 
         if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.padding(16.dp))
             Text("Loading majors...", fontSize = 14.sp, color = Color.Gray)
         }
 
         if (errorMessage != null) {
             Text(
                 errorMessage,
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = Color.Red,
                 modifier = Modifier.padding(8.dp)
             )
@@ -254,7 +236,6 @@ fun MajorDropdown(
             expanded = expanded && !isLoading,
             onDismissRequest = { expanded = false }
         ) {
-            // Add "None" option
             DropdownMenuItem(
                 text = { Text("None") },
                 onClick = {
@@ -262,7 +243,6 @@ fun MajorDropdown(
                     expanded = false
                 }
             )
-            // Add all available plans
             availablePlans.forEach { plan ->
                 DropdownMenuItem(
                     text = { Text(plan.name) },
@@ -284,7 +264,7 @@ fun MajorDropdown(
 }
 
 /**
- * Container for the class schedule list with edit dialog management.
+ * Container for the class schedule list.
  */
 @Composable
 fun ClassScheduleList(
@@ -369,43 +349,30 @@ fun RequirementsList(
 
 /**
  * Main composable that orchestrates the app.
- * Receives only the functions and flows it needs (dependency injection).
  */
-@OptIn(InternalSerializationApi::class) // Allows the use of serialization
 @Composable
-fun CourseNameInput(
-    addClass: (String) -> Unit,
-    removeClass: (String) -> Unit,
-    editClass: (String, String) -> Unit,
-    selectMajor: (String) -> Unit,
-    classesFlow: StateFlow<List<String>>,
-    requirementsFlow: StateFlow<List<String>>,
-    availablePlansFlow: StateFlow<List<DegreePlan>>,
-    isLoadingFlow: StateFlow<Boolean>,
-    errorMessageFlow: StateFlow<String?>,
-    modifier: Modifier = Modifier
-) {
-    val classes by classesFlow.collectAsState()
-    val reqs by requirementsFlow.collectAsState()
-    val availablePlans by availablePlansFlow.collectAsState()
-    val isLoading by isLoadingFlow.collectAsState()
-    val errorMessage by errorMessageFlow.collectAsState()
+fun CourseNameInput(scheduleVM: ScheduleViewModel) {
+    val classes by scheduleVM.classesPublic.collectAsState()
+    val reqs by scheduleVM.reqPublic.collectAsState()
+    val availablePlans by scheduleVM.availablePlans.collectAsState()
+    val isLoading by scheduleVM.isLoading.collectAsState()
+    val errorMessage by scheduleVM.errorMessage.collectAsState()
 
     var selectedMajor by remember { mutableStateOf("None") }
 
     Column(
-        modifier
+        Modifier
             .fillMaxWidth()
             .padding(50.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
-        // Major selector (now with fetched plans)
+        // Major selector with dynamic plans
         MajorDropdown(
             selectedMajor = selectedMajor,
             onMajorSelected = { major ->
                 selectedMajor = major
-                selectMajor(major)
+                scheduleVM.selectMajor(major)
             },
             availablePlans = availablePlans,
             isLoading = isLoading,
@@ -417,7 +384,7 @@ fun CourseNameInput(
         // Course input form
         CourseInputForm(
             onAddCourse = { dept, number ->
-                addClass("$dept $number")
+                scheduleVM.addClass("$dept $number")
             }
         )
 
@@ -427,9 +394,9 @@ fun CourseNameInput(
         ClassScheduleList(
             classes = classes,
             onEditCourse = { oldName, newName ->
-                editClass(oldName, newName)
+                scheduleVM.editClass(oldName, newName)
             },
-            onRemoveCourse = removeClass
+            onRemoveCourse = { scheduleVM.removeClass(it) }
         )
 
         Spacer(Modifier.height(20.dp))
