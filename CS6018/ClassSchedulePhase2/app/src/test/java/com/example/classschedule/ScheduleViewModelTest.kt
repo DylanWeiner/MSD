@@ -1,12 +1,13 @@
 package com.example.classschedule
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+
+import org.junit.Test
+import org.junit.Assert.*
+//import kotlin.test.assertEquals
+//import kotlin.test.assertFalse
+//import kotlin.test.assertTrue
 
 class ScheduleViewModelTest {
-
     @Test
     fun testAddClassAddsToList() {
         val vm = ScheduleViewModel()
@@ -67,4 +68,5 @@ class ScheduleViewModelTest {
         vm.removeClass("CS 2010")
         assertEquals(1, vm.classesPublic.value.size)
     }
+
 }

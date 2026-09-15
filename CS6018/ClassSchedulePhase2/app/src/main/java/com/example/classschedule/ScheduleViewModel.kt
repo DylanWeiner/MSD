@@ -1,7 +1,9 @@
 package com.example.classschedule
 
+import android.net.http.HttpResponseCache.install
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
