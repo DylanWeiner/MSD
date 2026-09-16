@@ -14,8 +14,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.coroutines.launch
 
-// ==================== DATA MODELS ====================
-
 @Serializable
 data class DegreePlansResponse(
     val plans: List<DegreePlan>
@@ -48,8 +46,6 @@ data class CourseInfo(
 
 fun CourseInfo.toDisplayString(): String = "$department $number"
 
-// ==================== VIEW MODEL ====================
-
 class ScheduleViewModel : ViewModel() {
     private val classes = MutableStateFlow(listOf<String>())
     private val reqs = MutableStateFlow(listOf<String>())
@@ -72,8 +68,6 @@ class ScheduleViewModel : ViewModel() {
             })
         }
     }
-
-    // ==================== HTTP LOGIC ====================
 
     /**
      * Fetch the list of available degree plans from the server.
@@ -159,8 +153,6 @@ class ScheduleViewModel : ViewModel() {
             emptyList()
         }
     }
-
-    // ==================== BUSINESS LOGIC ====================
 
     /**
      * Add a class to the schedule.
