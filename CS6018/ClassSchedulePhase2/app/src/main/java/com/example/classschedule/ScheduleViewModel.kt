@@ -14,6 +14,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.coroutines.launch
 
+// ==================== DATA MODELS ====================
+
 @Serializable
 data class DegreePlansResponse(
     val plans: List<DegreePlan>
@@ -46,12 +48,15 @@ data class CourseInfo(
 
 fun CourseInfo.toDisplayString(): String = "$department $number"
 
+// ==================== VIEW MODEL ====================
+
 class ScheduleViewModel : ViewModel() {
     private val classes = MutableStateFlow(listOf<String>())
     private val reqs = MutableStateFlow(listOf<String>())
     private val _availablePlans = MutableStateFlow<List<DegreePlan>>(emptyList())
     private val _isLoading = MutableStateFlow(false)
     private val _errorMessage = MutableStateFlow<String?>(null)
+    private val _oneOfGroups = MutableStateFlow<List<List<String>>>(emptyList())
 
     val classesPublic: StateFlow<List<String>> = classes
     val reqPublic: StateFlow<List<String>> = reqs
@@ -67,6 +72,8 @@ class ScheduleViewModel : ViewModel() {
             })
         }
     }
+
+    // ==================== HTTP LOGIC ====================
 
     /**
      * Fetch the list of available degree plans from the server.
@@ -117,6 +124,7 @@ class ScheduleViewModel : ViewModel() {
 
             // Extract all course requirements and convert to display strings
             val courseList = mutableListOf<String>()
+            val oneOfGroupsList = mutableListOf<List<String>>()
 
             for (req in degreeReqs.requirements) {
                 when (req.type) {
@@ -127,16 +135,24 @@ class ScheduleViewModel : ViewModel() {
                     }
                     "oneOf" -> {
                         if (req.courses != null) {
-                            for (course in req.courses) {
-                                courseList.add(course.toDisplayString())
+                            val groupCourses = req.courses.map { it.toDisplayString() }
+                            for (course in groupCourses) {
+                                courseList.add(course)
                             }
+                            // Store this group for oneOf logic
+                            oneOfGroupsList.add(groupCourses)
+                            android.util.Log.d("ScheduleVM", "Found oneOf group: $groupCourses")
                         }
                     }
                     // Add other types as needed
                 }
             }
 
-            android.util.Log.d("ScheduleVM", "Parsed requirements: ${courseList.size} courses")
+            // Update the oneOf groups STATE FLOW
+            _oneOfGroups.value = oneOfGroupsList
+            android.util.Log.d("ScheduleVM", "Set oneOf groups to: $oneOfGroupsList")
+
+            android.util.Log.d("ScheduleVM", "Parsed requirements: ${courseList.size} courses, ${oneOfGroupsList.size} oneOf groups")
             courseList
         } catch (e: Exception) {
             android.util.Log.e("ScheduleVM", "Error fetching requirements: ${e.message}")
@@ -144,15 +160,50 @@ class ScheduleViewModel : ViewModel() {
         }
     }
 
+    // ==================== BUSINESS LOGIC ====================
+
     /**
      * Add a class to the schedule.
      * If a matching requirement exists, mark it as "(DONE)".
+     * For oneOf groups, if ANY course in the group is added, mark ALL as done.
      */
     fun addClass(strVal: String) {
+        android.util.Log.d("ScheduleVM", "Adding class: $strVal")
+        android.util.Log.d("ScheduleVM", "Current oneOf groups: ${_oneOfGroups.value}")
+
         if (strVal in reqs.value) {
             reqs.value = reqs.value.map { if (it == strVal) "$strVal (DONE)" else it }
+            android.util.Log.d("ScheduleVM", "Marked direct requirement as done: $strVal")
         }
+
+        // Check if this course satisfies a oneOf requirement
+        markOneOfAsDone(strVal)
+
         classes.value += strVal
+    }
+
+    /**
+     * If a course satisfies a oneOf requirement, mark all courses in that group as DONE.
+     */
+    private fun markOneOfAsDone(course: String) {
+        // This will be populated when we parse requirements
+        val oneOfGroups = _oneOfGroups.value
+
+        for (group in oneOfGroups) {
+            if (course in group) {
+                // Mark all courses in this group as DONE
+                reqs.value = reqs.value.map { req ->
+                    val cleanReq = req.removeSuffix(" (DONE)")
+                    if (cleanReq in group) {
+                        "$cleanReq (DONE)"
+                    } else {
+                        req
+                    }
+                }
+                android.util.Log.d("ScheduleVM", "Marked oneOf group as done: $group")
+                break  // Only need to mark one group
+            }
+        }
     }
 
     /**
@@ -171,6 +222,7 @@ class ScheduleViewModel : ViewModel() {
      * Edit an existing class.
      * Only changes the course name in the classes list.
      * Automatically updates requirement marks based on whether the NEW course matches.
+     * For oneOf groups, if ANY course in the group is added, mark ALL as done.
      */
     fun editClass(oldCourseName: String, newCourseName: String) {
         // Step 1: Check if old course was marking a requirement as DONE
@@ -195,6 +247,9 @@ class ScheduleViewModel : ViewModel() {
                 if (it == newCourseName) "$newCourseName (DONE)" else it
             }
         }
+
+        // Step 5: Check if new course is part of a oneOf group
+        markOneOfAsDone(newCourseName)
     }
 
     /**
@@ -209,6 +264,7 @@ class ScheduleViewModel : ViewModel() {
      */
     fun clearReqs() {
         reqs.value = listOf()
+        _oneOfGroups.value = emptyList()
     }
 
     /**
@@ -236,7 +292,7 @@ class ScheduleViewModel : ViewModel() {
                 // Use the path from the plan, not derived from the name
                 val requirements = fetchDegreeRequirements(selectedPlan.path)
 
-                clearReqs()
+                reqs.value = listOf()
                 requirements.forEach { req ->
                     addReq(req)
                 }
