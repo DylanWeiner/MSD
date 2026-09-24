@@ -5,6 +5,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 class ShakeDetector(
@@ -18,12 +19,15 @@ class ShakeDetector(
     private var baselineAcceleration = 9.81f
     private var lastShakeTime = 0L
     private val COOLDOWN_MS = 300L
-    private val SHAKE_THRESHOLD = 15f
+
+    // 1. Lowered threshold (from 15f to 4.5f) for high sensitivity
+    private val SHAKE_THRESHOLD = 4.5f
     private val baselineReadings = mutableListOf<Float>()
     private val BASELINE_SAMPLE_SIZE = 20
 
     fun start() {
-        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
+        // 2. Changed to SENSOR_DELAY_FASTEST for better emulator responsiveness
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST)
     }
 
     fun stop() {
@@ -33,9 +37,11 @@ class ShakeDetector(
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type != Sensor.TYPE_ACCELEROMETER) return
 
-        val magnitude = sqrt(event.values[0] * event.values[0] +
-                event.values[1] * event.values[1] +
-                event.values[2] * event.values[2])
+        val magnitude = sqrt(
+            event.values[0] * event.values[0] +
+                    event.values[1] * event.values[1] +
+                    event.values[2] * event.values[2]
+        )
 
         if (baselineReadings.size < BASELINE_SAMPLE_SIZE) {
             baselineReadings.add(magnitude)
@@ -45,7 +51,8 @@ class ShakeDetector(
             return
         }
 
-        val delta = magnitude - baselineAcceleration
+        // 3. Added abs() so negative spikes (sudden deceleration/reversals) trigger it too
+        val delta = abs(magnitude - baselineAcceleration)
         val currentTime = System.currentTimeMillis()
 
         if (delta > SHAKE_THRESHOLD && currentTime - lastShakeTime > COOLDOWN_MS) {
