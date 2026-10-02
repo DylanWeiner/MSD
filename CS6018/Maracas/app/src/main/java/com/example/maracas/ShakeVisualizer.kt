@@ -60,7 +60,7 @@ fun MaracaScreen(viewModel: MaracaViewModel) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text("🎵 Maraca", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
+        Text("🎵 ~Maraca~", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color.White)
 
         Row(
             modifier = Modifier
