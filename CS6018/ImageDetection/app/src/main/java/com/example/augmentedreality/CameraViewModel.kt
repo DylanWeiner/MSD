@@ -22,8 +22,15 @@ class CameraViewModel(private val cameraManager: CameraManager) : ViewModel() {
         _uiState.update {
             val next = if (it.lensFacing == CameraSelector.LENS_FACING_BACK)
                 CameraSelector.LENS_FACING_FRONT else CameraSelector.LENS_FACING_BACK
-            it.copy(lensFacing = next, highlightPoint = null)
+            it.copy(lensFacing = next, detectionResult = null)
         }
+    }
+
+    /** Switches the active model at runtime. No camera rebind needed. */
+    fun selectModel(model: ModelType) {
+        if (model == _uiState.value.selectedModel) return
+        cameraManager.setModel(model)
+        _uiState.update { it.copy(selectedModel = model, detectionResult = null) } // clear stale boxes
     }
 
     /** Suspends until cancelled; cancelling unbinds the camera (see CameraManager.bind). */
@@ -34,7 +41,7 @@ class CameraViewModel(private val cameraManager: CameraManager) : ViewModel() {
             onSurfaceRequest = { request ->
                 _uiState.update { it.copy(surfaceRequest = request) }
             },
-            onAnalysis = ::onBrightestPoint
+            onDetections = ::onDetections
         )
     }
 
@@ -46,8 +53,14 @@ class CameraViewModel(private val cameraManager: CameraManager) : ViewModel() {
         )
     }
 
-    fun onBrightestPoint(result: AnalysisResult) {
-        _uiState.update { it.copy(highlightPoint = result) }
+    fun onDetections(result: DetectionResult) {
+        _uiState.update {
+            // A frame still in flight from the previous model can land after a switch; drop it.
+            if (result.model == it.selectedModel) it.copy(detectionResult = result) else it
+        }
+    }
+
+    override fun onCleared() {
+        cameraManager.close()
     }
 }
-

@@ -17,21 +17,29 @@ import java.util.concurrent.Executors
 
 class CameraManager(
     private val context: Context,
-    private val storage: ImageStorage
+    private val storage: ImageStorage,
+    private val detectors: Map<ModelType, FrameDetector>
 ) {
     private val analysisExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     private var imageCapture: ImageCapture? = null
 
+    // Read on the analysis thread every frame, so switching models needs no rebind.
+    @Volatile
+    private var activeModel: ModelType = ModelType.MLKIT
+
+    fun setModel(model: ModelType) {
+        activeModel = model
+    }
+
     /**
      * Binds Preview + ImageCapture + ImageAnalysis, then suspends.
-     * When the calling coroutine is cancelled (lens flip, screen leaves composition),
-     * the finally block unbinds. Flipping = cancel + call again with the other lens.
+     * Cancelling the calling coroutine (lens flip, screen leaves composition) unbinds.
      */
     suspend fun bind(
         lifecycleOwner: LifecycleOwner,
         lensFacing: Int,
         onSurfaceRequest: (SurfaceRequest) -> Unit,
-        onAnalysis: (AnalysisResult) -> Unit
+        onDetections: (DetectionResult) -> Unit
     ) {
         val provider = ProcessCameraProvider.awaitInstance(context)
 
@@ -42,7 +50,15 @@ class CameraManager(
         val analysis = ImageAnalysis.Builder()
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .build()
-            .apply { setAnalyzer(analysisExecutor, ImageAnalyzer(onAnalysis)) }
+            .apply {
+                setAnalyzer(
+                    analysisExecutor,
+                    ImageAnalyzer(
+                        detectorProvider = { detectors.getValue(activeModel) },
+                        onResult = onDetections
+                    )
+                )
+            }
 
         val selector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
@@ -72,5 +88,11 @@ class CameraManager(
                 override fun onError(exception: ImageCaptureException) = onFailure(exception)
             }
         )
+    }
+
+    /** Called from the ViewModel's onCleared(). */
+    fun close() {
+        analysisExecutor.shutdown()
+        detectors.values.forEach { it.close() }
     }
 }

@@ -8,11 +8,14 @@ import androidx.camera.compose.CameraXViewfinder
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.SurfaceRequest
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,18 +23,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlin.math.max
-
-
-// CameraUI file: top-level composables, no wrapper class
 
 @Composable
 fun CameraScreen(viewModel: CameraViewModel) {
@@ -60,9 +66,14 @@ fun CameraScreen(viewModel: CameraViewModel) {
     if (state.permissionGranted) {
         Box(Modifier.fillMaxSize()) {
             displayCamera(state.surfaceRequest)                    // bottom layer
-            displayBrightestPixel(                                 // on top of viewfinder
-                point = state.highlightPoint,
+            displayDetections(                                     // on top of viewfinder
+                result = state.detectionResult,
                 mirror = state.lensFacing == CameraSelector.LENS_FACING_FRONT
+            )
+            displayModelSelector(
+                selected = state.selectedModel,
+                onSelect = viewModel::selectModel,
+                modifier = Modifier.align(Alignment.TopStart).padding(16.dp)
             )
             displayFlipCamera(
                 onClick = viewModel::flipCamera,
@@ -72,16 +83,14 @@ fun CameraScreen(viewModel: CameraViewModel) {
                 modifier = Modifier.align(Alignment.BottomCenter).padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (state.saveStatus != SaveStatus.Idle) {
-                    Text("Save: ${state.saveStatus}", color = Color.White)
-                }
+                displayStatus(state)
                 displayCaptureButton(onClick = viewModel::capture)
             }
         }
     } else {
         Column(
             Modifier.fillMaxSize().padding(24.dp),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text("Camera permission is required to use this app.")
@@ -101,6 +110,23 @@ fun displayCamera(surfaceRequest: SurfaceRequest?) {
 }
 
 @Composable
+fun displayModelSelector(
+    selected: ModelType,
+    onSelect: (ModelType) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        ModelType.entries.forEach { model ->
+            FilterChip(
+                selected = model == selected,
+                onClick = { onSelect(model) },
+                label = { Text(model.displayName) }
+            )
+        }
+    }
+}
+
+@Composable
 fun displayFlipCamera(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Button(onClick = onClick, modifier = modifier) { Text("Flip") }
 }
@@ -111,37 +137,66 @@ fun displayCaptureButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun displayBrightestPixel(point: AnalysisResult?, mirror: Boolean, modifier: Modifier = Modifier) {
-    Canvas(modifier.fillMaxSize()) {
-        if (point == null) return@Canvas
-        val c = point.toViewOffset(size, mirror)
-        val r = 28.dp.toPx()
-        val stroke = Stroke(width = 3.dp.toPx())
-        drawCircle(Color.Red, radius = r, center = c, style = stroke)
-        drawLine(Color.Red, Offset(c.x - r * 1.6f, c.y), Offset(c.x + r * 1.6f, c.y), strokeWidth = stroke.width)
-        drawLine(Color.Red, Offset(c.x, c.y - r * 1.6f), Offset(c.x, c.y + r * 1.6f), strokeWidth = stroke.width)
+fun displayStatus(state: CameraUiState) {
+    val result = state.detectionResult
+    val detectionText = if (result != null) {
+        "${state.selectedModel.displayName} · ${result.inferenceMs} ms · ${result.detections.size} objects"
+    } else {
+        "${state.selectedModel.displayName} · waiting for detections"
+    }
+    Text(detectionText, color = Color.White)
+    if (state.saveStatus != SaveStatus.Idle) {
+        Text("Save: ${state.saveStatus}", color = Color.White)
     }
 }
 
-/** Analysis-buffer coords -> on-screen coords: rotate, mirror (front cam), then crop-scale. */
-private fun AnalysisResult.toViewOffset(view: Size, mirror: Boolean): Offset {
-    val nx = normalizedX
-    val ny = normalizedY
-    val (rx, ry) = when (rotationDegrees) {
-        90 -> (1f - ny) to nx
-        180 -> (1f - nx) to (1f - ny)
-        270 -> ny to (1f - nx)
-        else -> nx to ny
-    }
-    val upW = if (rotationDegrees % 180 == 0) imageWidth else imageHeight
-    val upH = if (rotationDegrees % 180 == 0) imageHeight else imageWidth
+@Composable
+fun displayDetections(result: DetectionResult?, mirror: Boolean, modifier: Modifier = Modifier) {
+    val textMeasurer = rememberTextMeasurer()
+    Canvas(modifier.fillMaxSize()) {
+        if (result == null || result.frameWidth <= 0 || result.frameHeight <= 0) return@Canvas
 
-    val scale = max(view.width / upW, view.height / upH)
-    val drawnW = upW * scale
-    val drawnH = upH * scale
+        val color = result.model.boxColor()
+        val stroke = Stroke(width = 3.dp.toPx())
+        val labelStyle = TextStyle(color = Color.Black, fontSize = 14.sp)
+
+        for (d in result.detections) {
+            val rect = d.toViewRect(result, size, mirror)
+            drawRect(color, topLeft = rect.topLeft, size = rect.size, style = stroke)
+
+            val text = d.confidence?.let { "${d.label} ${(it * 100).toInt()}%" } ?: d.label
+            val layout = textMeasurer.measure(text, labelStyle)
+            val labelTopLeft = Offset(rect.left, (rect.top - layout.size.height).coerceAtLeast(0f))
+            drawRect(color, topLeft = labelTopLeft, size = layout.size.toSize())
+            drawText(layout, topLeft = labelTopLeft)
+        }
+    }
+}
+
+private fun ModelType.boxColor(): Color = when (this) {
+    ModelType.MLKIT -> Color(0xFFFF9800)         // orange
+    ModelType.EFFICIENTDET -> Color(0xFF00E5FF)  // cyan
+}
+
+/**
+ * Normalized upright box -> on-screen rect. Rotation is already handled by the detectors,
+ * so this only mirrors (front camera) and reproduces the viewfinder's crop scaling.
+ */
+private fun Detection.toViewRect(result: DetectionResult, view: Size, mirror: Boolean): Rect {
+    val scale = max(view.width / result.frameWidth, view.height / result.frameHeight)
+    val drawnW = result.frameWidth * scale
+    val drawnH = result.frameHeight * scale
     val offX = (view.width - drawnW) / 2f
     val offY = (view.height - drawnH) / 2f
 
-    val fx = if (mirror) 1f - rx else rx
-    return Offset(offX + fx * drawnW, offY + ry * drawnH)
+    // Mirroring flips which edge is left and which is right, so swap them.
+    val l = if (mirror) 1f - right else left
+    val r = if (mirror) 1f - left else right
+
+    return Rect(
+        left = offX + l * drawnW,
+        top = offY + top * drawnH,
+        right = offX + r * drawnW,
+        bottom = offY + bottom * drawnH
+    )
 }

@@ -7,12 +7,21 @@ import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import kotlin.collections.associateBy
 
 class MainActivity : ComponentActivity() {
 
-    // applicationContext so nothing long-lived holds the Activity
+    // applicationContext so nothing long-lived holds the Activity.
+    // Both detectors exist up front; EfficientDet loads its model lazily on first frame.
     private val cameraManager by lazy {
-        CameraManager(applicationContext, ImageStorage(applicationContext))
+        CameraManager(
+            context = applicationContext,
+            storage = ImageStorage(applicationContext),
+            detectors = listOf<FrameDetector>(
+                MlKitDetector(),
+                EfficientDetDetector(applicationContext)
+            ).associateBy { it.type }
+        )
     }
 
     private val viewModel: CameraViewModel by viewModels {
