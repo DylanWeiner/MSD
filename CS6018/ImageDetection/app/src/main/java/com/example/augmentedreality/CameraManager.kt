@@ -1,12 +1,16 @@
 package com.example.augmentedreality
 
 import android.content.Context
+import android.util.Size
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.core.SurfaceRequest
+import androidx.camera.core.resolutionselector.AspectRatioStrategy
+import androidx.camera.core.resolutionselector.ResolutionSelector
+import androidx.camera.core.resolutionselector.ResolutionStrategy
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
 import androidx.core.content.ContextCompat
@@ -27,6 +31,23 @@ class CameraManager(
     @Volatile
     private var activeModel: ModelType = ModelType.MLKIT
 
+    // All three use cases share a 4:3 aspect ratio, so the saved photo matches the preview
+    // and the overlay's crop math stays simple.
+    private val previewAndCaptureSelector = ResolutionSelector.Builder()
+        .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
+        .build()
+
+    // Analysis frames are capped near 640x480: plenty for models that resize to 320-448 anyway.
+    private val analysisSelector = ResolutionSelector.Builder()
+        .setAspectRatioStrategy(AspectRatioStrategy.RATIO_4_3_FALLBACK_AUTO_STRATEGY)
+        .setResolutionStrategy(
+            ResolutionStrategy(
+                Size(640, 480),
+                ResolutionStrategy.FALLBACK_RULE_CLOSEST_LOWER_THEN_HIGHER
+            )
+        )
+        .build()
+
     fun setModel(model: ModelType) {
         activeModel = model
     }
@@ -43,12 +64,20 @@ class CameraManager(
     ) {
         val provider = ProcessCameraProvider.awaitInstance(context)
 
-        val preview = Preview.Builder().build().apply {
-            setSurfaceProvider { request -> onSurfaceRequest(request) }
-        }
-        val capture = ImageCapture.Builder().build()
+        val preview = Preview.Builder()
+            .setResolutionSelector(previewAndCaptureSelector)
+            .build()
+            .apply { setSurfaceProvider { request -> onSurfaceRequest(request) } }
+
+        val capture = ImageCapture.Builder()
+            .setResolutionSelector(previewAndCaptureSelector)
+            .build()
+
         val analysis = ImageAnalysis.Builder()
+            .setResolutionSelector(analysisSelector)
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            // RGBA makes ImageProxy.toBitmap() a cheap copy instead of a YUV->JPEG->bitmap round trip.
+            .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
             .build()
             .apply {
                 setAnalyzer(

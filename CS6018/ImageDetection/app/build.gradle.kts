@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.androidx.camera.compose)
     implementation(libs.androidx.camera.camera2)
     implementation(libs.mlkit.objectdetection)
-    implementation(libs.tensorflow.lite.task.vision)
+    implementation(libs.mediapipe.vision)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

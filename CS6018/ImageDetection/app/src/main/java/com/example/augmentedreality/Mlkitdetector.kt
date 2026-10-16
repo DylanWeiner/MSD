@@ -2,7 +2,6 @@ package com.example.augmentedreality
 
 import android.os.SystemClock
 import android.util.Log
-import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageProxy
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.objects.ObjectDetection
@@ -20,22 +19,25 @@ class MlKitDetector : FrameDetector {
             .build()
     )
 
-    @androidx.annotation.OptIn(ExperimentalGetImage::class)
     override fun detect(image: ImageProxy, onFinished: (DetectionResult?) -> Unit) {
-        val mediaImage = image.image
-        if (mediaImage == null) {
+        val rotation = image.imageInfo.rotationDegrees
+
+        // Frames are RGBA now (shared with EfficientDet), so ML Kit gets a bitmap plus rotation.
+        val bitmap = try {
+            image.toBitmap()
+        } catch (e: Exception) {
+            Log.e(TAG, "Bitmap conversion failed", e)
             onFinished(null)
             return
         }
 
-        val rotation = image.imageInfo.rotationDegrees
-        val uprightW = if (rotation % 180 == 0) image.width else image.height
-        val uprightH = if (rotation % 180 == 0) image.height else image.width
+        val uprightW = if (rotation % 180 == 0) bitmap.width else bitmap.height
+        val uprightH = if (rotation % 180 == 0) bitmap.height else bitmap.width
 
-        val input = InputImage.fromMediaImage(mediaImage, rotation)
+        val input = InputImage.fromBitmap(bitmap, rotation)
         val start = SystemClock.elapsedRealtime()
 
-        // Async: the frame must stay open until one of these listeners runs.
+        // Async: the frame stays open until one of these listeners runs.
         detector.process(input)
             .addOnSuccessListener { objects ->
                 val result = try {
