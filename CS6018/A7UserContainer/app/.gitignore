@@ -1,0 +1,8 @@
+# Server data: the database and every user's photos
+data/
+
+# Gradle / IDE
+.gradle/
+build/
+.idea/
+*.iml
